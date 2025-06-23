@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 
-import IntentionSetup from "./IntentionSetup.jsx";
-import WelcomeScreen from "./WelcomeScreen.jsx";
+import Footer from "./components/Footer.jsx";
+import Header from "./components/Header.jsx";
+import WelcomeScreen from "./sections/WelcomeScreen.jsx";
 
 export const App = () => {
   const [darkMode, setDarkMode] = useState(false);
@@ -19,13 +20,12 @@ export const App = () => {
 
   return (
     <>
+      <Header />
       <button onClick={toggleDarkMode}>
         Switch to {darkMode ? "Light" : "Dark"} Mode
       </button>
-
-      <h1>Welcome to Final Project!</h1>
       <WelcomeScreen />
-      <IntentionSetup />
+      <Footer />
     </>
   );
 };

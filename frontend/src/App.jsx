@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 
 import Footer from "./components/Footer.jsx";
 import Header from "./components/Header.jsx";
+import IntentionSetup from "./sections/IntentionSetup.jsx";
 import WelcomeScreen from "./sections/WelcomeScreen.jsx";
 
 export const App = () => {
@@ -25,6 +26,7 @@ export const App = () => {
         Switch to {darkMode ? "Light" : "Dark"} Mode
       </button>
       <WelcomeScreen />
+      <IntentionSetup />
       <Footer />
     </>
   );

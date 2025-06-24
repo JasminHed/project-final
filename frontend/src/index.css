@@ -1,0 +1,14 @@
+
+
+
+/* Standard */
+body {
+  background: white;
+  color: black;
+}
+
+/* Dark mode */
+.dark body {
+  background: black;
+  color: white;
+}

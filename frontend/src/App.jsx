@@ -3,11 +3,11 @@ import { Route, Routes } from "react-router-dom";
 
 import Footer from "./components/Footer.jsx";
 import Header from "./components/Header.jsx";
-import Community from "./sections/Community.jsx";
-import Dashboard from "./sections/Dashboard.jsx";
-import Onboarding from "./sections/Onboarding.jsx";
-import Setup from "./sections/Setup.jsx";
-import WelcomeScreen from "./sections/WelcomeScreen.jsx";
+import Onboarding from "./components/Onboarding.jsx";
+import Setup from "./components/Setup.jsx";
+import Community from "./pages/Community.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
+import WelcomeScreen from "./pages/WelcomeScreen.jsx";
 
 export const App = () => {
   const [darkMode, setDarkMode] = useState(false);
@@ -31,8 +31,6 @@ export const App = () => {
 
       <Routes>
         <Route path="/" element={<WelcomeScreen />} />
-        <Route path="/onboarding" element={<Onboarding />} />
-        <Route path="/setup" element={<Setup />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/community" element={<Community />} />
       </Routes>

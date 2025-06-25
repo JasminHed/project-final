@@ -1,17 +1,11 @@
 import React, { useState } from "react";
 
-const Onboarding = () => {
+const Onboarding = ({ onDone }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [completed, setCompleted] = useState({
-    intention: false,
-    smartGoals: false,
-    smartDetails: false,
-  });
-  const [showError, setShowError] = useState(false);
 
   const modules = [
     {
-      key: "intention",
+      key: "intention", //unique, helps track where we are
       title: "Intention",
       image: "notebook.jpg",
       content: (
@@ -89,10 +83,10 @@ const Onboarding = () => {
             impossible missions. For instance, if you want to run a marathon,
             don't expect to do it next month if you're just starting. If you
             want to find your first job, don't expect to land your dream role
-            immediately—set attainable steps toward it.
+            immediately. Instead set attainable steps toward it.
           </p>
           <p>
-            <strong>Time-bound</strong> - Set deadlines to encourage focus and
+            <strong>Time-bound</strong> Set deadlines to encourage focus and
             urgency. For example, decide to finish an online coding course
             within three months. Time-sensitive goals help keep you on track and
             motivated.
@@ -104,38 +98,25 @@ const Onboarding = () => {
 
   const currentModule = modules[currentSlide];
 
-  const handleMarkComplete = () => {
-    const moduleKey = currentModule.key;
-    setCompleted((prev) => ({ ...prev, [moduleKey]: true }));
-    setShowError(false);
-  };
-
   const handleNext = () => {
     if (currentSlide < modules.length - 1) {
-      setCurrentSlide(currentSlide + 1);
+      //arrays count from 0
+      setCurrentSlide(currentSlide + 1); //move 1 forward
+    } else {
+      // Last slide reached,
+      if (onDone) onDone();
     }
   };
 
   const handlePrevious = () => {
     if (currentSlide > 0) {
       setCurrentSlide(currentSlide - 1);
-      setShowError(false);
     }
   };
 
-  const handleFinalNext = () => {
-    // Navigate to next step
-  };
-
-  const allDone = Object.values(completed).every(Boolean);
-
   return (
     <div>
-      <h1>Onboarding Modules</h1>
-      <p>
-        Please read and check off modules when done. This will take you to the
-        next step.
-      </p>
+      <h1>Onboarding</h1>
 
       <div>
         <img src={currentModule.image} alt={currentModule.title} />
@@ -145,11 +126,19 @@ const Onboarding = () => {
 
       {currentSlide > 0 && <button onClick={handlePrevious}>Previous</button>}
 
-      {currentSlide < modules.length - 1 && (
-        <button onClick={handleNext}>
-          Next ({currentSlide + 1} of {modules.length})
-        </button>
-      )}
+      <button
+        onClick={() => {
+          if (currentSlide < modules.length - 1) {
+            handleNext();
+          } else {
+            if (onDone) onDone(); // navigate to setup section if logged in
+          }
+        }}
+      >
+        {currentSlide < modules.length - 1
+          ? `Next (${currentSlide + 1} of ${modules.length})`
+          : "Done. On to setting everything up"}
+      </button>
     </div>
   );
 };

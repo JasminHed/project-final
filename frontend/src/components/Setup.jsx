@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+//to add: Disable the save button when inputs are incomplete. Confirmation / feedback on save. Persist data in backend so data does not go away on page reload.
 const Setup = () => {
   const [values, setValues] = useState({
     specific: "",

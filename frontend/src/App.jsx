@@ -3,7 +3,10 @@ import { Route, Routes } from "react-router-dom";
 
 import Footer from "./components/Footer.jsx";
 import Header from "./components/Header.jsx";
-import IntentionSetup from "./sections/IntentionSetup.jsx";
+import Community from "./sections/Community.jsx";
+import Dashboard from "./sections/Dashboard.jsx";
+import Onboarding from "./sections/Onboarding.jsx";
+import Setup from "./sections/Setup.jsx";
 import WelcomeScreen from "./sections/WelcomeScreen.jsx";
 
 export const App = () => {
@@ -25,8 +28,15 @@ export const App = () => {
       <button onClick={toggleDarkMode}>
         Switch to {darkMode ? "Light" : "Dark"} Mode
       </button>
-      <WelcomeScreen />
-      <IntentionSetup />
+
+      <Routes>
+        <Route path="/" element={<WelcomeScreen />} />
+        <Route path="/onboarding" element={<Onboarding />} />
+        <Route path="/setup" element={<Setup />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/community" element={<Community />} />
+      </Routes>
+
       <Footer />
     </>
   );

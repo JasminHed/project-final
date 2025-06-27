@@ -125,6 +125,28 @@ const Dashboard = () => {
     return <div>Loading your goals...</div>;
   }
 
+  //this is function to the share to community button
+  const shareToCommunity = () => {
+    const token = localStorage.getItem("accessToken");
+
+    fetch("http://localhost:8080/community-posts", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+      body: JSON.stringify({
+        intention: goal.intention,
+        specific: goal.specific,
+        measurable: goal.measurable,
+        achievable: goal.achievable,
+        relevant: goal.relevant,
+        timebound: goal.timebound,
+        userName: user.name,
+      }),
+    });
+  };
+
   return (
     <div>
       <h1>Your Intention and Goals</h1>
@@ -150,16 +172,7 @@ const Dashboard = () => {
           )
         )}
 
-        <button onClick={toggleComplete}>
-          {completed ? "Mark as Incomplete" : "Mark as Complete"}
-        </button>
-
-        <button onClick={togglePublic}>
-          {isPublic ? "Make Private" : "Make Public"}
-        </button>
-
-        <p>Status: {completed ? "Completed 🏆" : "In Progress ⏳"}</p>
-        <p>Visibility: {isPublic ? "Public 📢" : "Private 🔒"}</p>
+        <button onClick={shareToCommunity}>Share to Community</button>
       </div>
 
       <h3>Tracking & Gamification</h3>

@@ -1,16 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
+import Authform from "../components/Authform.jsx";
 import Onboarding from "../components/Onboarding.jsx";
 import Setup from "../components/Setup.jsx";
 
 const WelcomeScreen = () => {
-  // For now: hardcoded logged-in status
-  const isLoggedIn = false;
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [completed, setCompleted] = useState({
     onboarding: false,
     setup: false,
   });
+
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   const [showError, setShowError] = useState("");
   const [currentStep, setCurrentStep] = useState("welcome");
@@ -49,9 +56,7 @@ const WelcomeScreen = () => {
 
   return (
     <main>
-      <button onClick={() => console.log("Redirect to sign up / login")}>
-        Get Started
-      </button>
+      <Authform setIsLoggedIn={setIsLoggedIn} />
 
       <img src="" alt="" />
       <p>

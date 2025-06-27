@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const LoginButton = styled.button`
@@ -125,6 +126,7 @@ const Register = ({ setShowRegister }) => {
   });
 
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = () => {
     if (!formData.name || !formData.email || !formData.password) {
@@ -145,10 +147,10 @@ const Register = ({ setShowRegister }) => {
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-          localStorage.setItem("accessToken", data.accessToken);
-          localStorage.setItem("userId", data.id);
+          //localStorage.setItem("accessToken", data.accessToken);
+          //localStorage.setItem("userId", data.id);
           setFormData({ name: "", email: "", password: "" });
-          setError("Registration successful! Please log in"); //should this not be a error sucess message?
+          setError("Registration successful! Please log in"); //should this be a error sucess message?
           setTimeout(() => setError(""), 3000);
         } else {
           setError(data.message);
@@ -204,6 +206,7 @@ const Login = ({ setIsLoggedIn }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
   const [logoutMessage, setLogoutMessage] = useState("");
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -239,6 +242,11 @@ const Login = ({ setIsLoggedIn }) => {
           setError("Login successful!"); //same here!
           setTimeout(() => setError(""), 3000);
           setIsLoggedIn(true);
+
+          if (localStorage.getItem("hasCompletedOnboarding")) {
+            //if user has completed onboarding send to dashboard directly
+            navigate("/dashboard");
+          }
         }
       });
   };

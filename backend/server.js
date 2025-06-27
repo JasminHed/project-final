@@ -14,11 +14,18 @@ const mongoUrl = process.env.MONGO_URL || "mongodb://localhost/final-project";
 mongoose.connect(mongoUrl);
 mongoose.Promise = Promise;
 
-// Authentication middleware
+//testing
+mongoose.connection.on('connected', () => {
+  console.log('Connected to database:', mongoose.connection.db.databaseName);
+});
+
+//Authenitcation middleware
 const authenticateUser = async (req, res, next) => {
-  const user = await User.findOne({ 
-    accessToken: req.header("Authorization") 
-  });
+  console.log("Authorization received:", req.header("Authorization"));
+
+  const user = await User.findOne({ accessToken: req.header("Authorization") });
+  console.log("User found:", user ? "YES" : "NO");
+
   if (user) {
     req.user = user;
     next();
@@ -38,10 +45,10 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.send("Hello Intention App!");
+  res.send("Hello, Welcome to The Intention App!");
 });
 
-// Auth endpoints
+// Auth endpoints to signup and login
 app.post("/users", async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -97,9 +104,100 @@ app.post("/sessions", async (req, res) => {
   }
 });
 
-// Add goal endpoints here later
-// app.post("/goals", authenticateUser, async (req, res) => { ... });
-// app.get("/goals", authenticateUser, async (req, res) => { ... });
+//Authorization
+//To post, get and edit a goal in setup page
+
+// POST - Create goals
+app.post("/goals", authenticateUser, async (req, res) => {
+
+  console.log("Goal creation started");
+  console.log("Request body:", req.body);
+  console.log("User ID:", req.user._id);
+  const { intention, specific, measurable, achievable, relevant, timebound } = req.body;
+  
+  try {
+    const newGoal = new Goal({
+      userId: req.user._id, //is this needed?
+      intention,
+      specific,
+      measurable, 
+      achievable,
+      relevant,
+      timebound
+    });
+    console.log("About to save goal:", newGoal);
+    const savedGoal = await newGoal.save();
+    console.log("Goal saved successfully:", savedGoal);
+
+    res.status(201).json({
+      success: true,
+      response: savedGoal,
+      message: "Goal created successfully"
+    });
+  } catch (error) {
+    console.log("Error saving goal:", error);
+    res.status(500).json({
+      success: false,
+      response: error,
+      message: "Failed to create goal. Try again."
+    });
+  }
+});
+
+// GET - Get user's goals
+app.get("/goals", authenticateUser, async (req, res) => {
+  try {
+    const goals = await Goal.find({ userId: req.user._id });
+    res.json(goals);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch goals" });
+  }
+});
+
+// PATCH - Update goal
+app.patch("/goals/:id", authenticateUser, async (req, res) => {
+  const { id } = req.params;
+  const updates = req.body;
+  
+  try {
+    const updatedGoal = await Goal.findOneAndUpdate(
+      { _id: id, userId: req.user._id },
+      updates,
+      { new: true, runValidators: true }
+    );
+    
+    if (!updatedGoal) {
+      return res.status(404).json({
+        success: false,
+        message: "Goal not found. Try again."
+      });
+    }
+    
+    res.status(200).json({
+      success: true,
+      response: updatedGoal,
+      message: "Goal updated successfully."
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      response: error,
+      message: "Failed to update goal. Try again."
+    });
+  }
+});
+
+//GET - Get user data 
+app.get("/users/:id", authenticateUser, async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    res.json({ name: user.name, email: user.email });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch user data" });
+  }
+});
+
+
 
 // Start the server
 app.listen(port, () => {

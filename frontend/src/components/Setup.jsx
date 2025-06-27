@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 //to add: Disable the save button when inputs are incomplete. Confirmation / feedback on save. Persist data in backend so data does not go away on page reload.
 const Setup = () => {
   const [values, setValues] = useState({
+    intention: "",
     specific: "",
     measurable: "",
     achievable: "",
@@ -23,8 +24,27 @@ const Setup = () => {
     if (hasEmpty) {
       setShowError(true);
     } else {
-      // Save logic to dahsboard here?
-      navigate("/dashboard");
+      const token = localStorage.getItem("accessToken");
+
+      fetch("http://localhost:8080/goals", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+        body: JSON.stringify(values),
+      })
+        .then((response) => {
+          if (response.ok) {
+            localStorage.setItem("hasCompletedOnboarding", "true"); //if onboarding complete
+            navigate("/dashboard");
+          } else {
+            console.error("Failed to save goal. Try again");
+          }
+        })
+        .catch((error) => {
+          console.error("Error", error);
+        });
     }
   };
 
@@ -34,9 +54,43 @@ const Setup = () => {
       <h1>Set your intention + SMART goal</h1>
 
       <div>
+        <h2>Your Intention & Vision</h2>
+        <div>
+          <h3>Reflect on these questions:</h3>
+          <ul>
+            <li>
+              What are my top priorities in life, and how can my goals help me
+              get there?
+            </li>
+            <li>Thinking long term, where do I want to be in five years?</li>
+            <li>
+              If I could achieve just one major milestone in the next year, what
+              would it be, and why?
+            </li>
+          </ul>
+        </div>
+
+        <p>
+          Write your intention. Based on your reflections above, write your main
+          intention/goal. It can be broad, you will specify how to get there in
+          your SMART goals."
+        </p>
+        <textarea
+          placeholder="Write your intention here"
+          value={values.intention}
+          onChange={(e) => handleChange("intention", e.target.value)}
+          maxLength="150"
+        />
+        <p>{values.intention.length}/150</p>
+
+        {showError && <p>Please fill in your intention</p>}
+      </div>
+
+      <div>
+        <h3>Now Create Your SMART Goals</h3>
         <p>Specific</p>
         <textarea
-          placeholder="Enter your specific goal..."
+          placeholder="Enter your specific goal"
           value={values.specific}
           onChange={(e) => handleChange("specific", e.target.value)}
         ></textarea>
@@ -44,7 +98,7 @@ const Setup = () => {
 
         <p>Measurable</p>
         <textarea
-          placeholder="Enter your measurable goal..."
+          placeholder="Enter your measurable goal"
           value={values.measurable}
           onChange={(e) => handleChange("measurable", e.target.value)}
         ></textarea>
@@ -52,7 +106,7 @@ const Setup = () => {
 
         <p>Achievable</p>
         <textarea
-          placeholder="Enter your achievable goal..."
+          placeholder="Enter your achievable goal"
           value={values.achievable}
           onChange={(e) => handleChange("achievable", e.target.value)}
         ></textarea>
@@ -60,7 +114,7 @@ const Setup = () => {
 
         <p>Relevant</p>
         <textarea
-          placeholder="Enter your relevant goal..."
+          placeholder="Enter your relevant goal"
           value={values.relevant}
           onChange={(e) => handleChange("relevant", e.target.value)}
         ></textarea>
@@ -68,16 +122,16 @@ const Setup = () => {
 
         <p>Timebound</p>
         <textarea
-          placeholder="Enter your timebound goal..."
+          placeholder="Enter your timebound goal"
           value={values.timebound}
           onChange={(e) => handleChange("timebound", e.target.value)}
         ></textarea>
         <p>{values.timebound.length}/150</p>
       </div>
 
-      {showError && <p>Please fill in all fields</p>}
+      {showError && <p>Please fill in all fields before moving forward</p>}
 
-      <button onClick={handleSave}>Save and go to dashboard</button>
+      <button onClick={handleSave}>Save. To dashboard.</button>
     </div>
   );
 };

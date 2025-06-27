@@ -59,23 +59,23 @@ const Header = () => {
           ☰
         </button>
 
-        {/*Desktop*/}
+        {/*Desktop- change links*/}
         <nav>
-          <a href="#about">About</a>
-          <a href="#dashboard">Dashboard</a>
-          <a href="#community">Community</a>
+          <a to="/">About</a>
+          <a to="/dashboard">Dashboard</a>
+          <a to="/community">Community</a>
         </nav>
 
-        {/* Mobile */}
+        {/* Mobile -change links*/}
         {menuOpen && (
           <nav>
-            <a href="#about" onClick={closeMenu}>
+            <a to="/" onClick={closeMenu}>
               About
             </a>
-            <a href="#dashboard" onClick={closeMenu}>
+            <a to="/dashboard" onClick={closeMenu}>
               Dashboard
             </a>
-            <a href="#community" onClick={closeMenu}>
+            <a to="/community" onClick={closeMenu}>
               Community
             </a>
           </nav>

@@ -6,6 +6,8 @@ const goalSchema = new mongoose.Schema({
     ref: "User", 
     required: true 
   },
+
+  intention: { type: String, required: true, maxlength: 150 },
   specific: { type: String, required: true, maxlength: 150 },
   measurable: { type: String, required: true, maxlength: 150 },
   achievable: { type: String, required: true, maxlength: 150 },

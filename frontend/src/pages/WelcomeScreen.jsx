@@ -28,7 +28,7 @@ const WelcomeScreen = () => {
       setShowError("");
     } else if (step === "setup") {
       if (!isLoggedIn) {
-        setShowError("You must be logged in to access your creation");
+        setShowError("You must be logged in to access this section");
         return;
       }
       if (!completed.onboarding) {
@@ -39,7 +39,7 @@ const WelcomeScreen = () => {
       setShowError("");
     } else if (step === "dashboard") {
       if (!isLoggedIn) {
-        setShowError("You must be logged in to access your dashboard");
+        setShowError("You must be logged in to access this section");
         return;
       }
       if (!completed.setup) {
@@ -61,8 +61,8 @@ const WelcomeScreen = () => {
       <img src="" alt="" />
       <p>
         The Intention App is a personal growth tool. You'll reflect, set
-        intentions, define doable goals, and follow through — all supported by
-        SMART goals, AI coach, a progress dashboard, and a positive community.
+        intentions, define doable goals and follow through — all supported by
+        SMART goals, AI helper, a progress dashboard and a positive community.
       </p>
 
       <nav>

@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
 
+import CommunityPost from "./models/CommunityPost.js";
 import Goal from "./models/Goal.js"
 import User from "./models/User.js";
 
@@ -197,6 +198,25 @@ app.get("/users/:id", authenticateUser, async (req, res) => {
   }
 });
 
+//Post in community
+app.post('/community-posts', authenticateUser, async (req, res) => {
+  const post = new CommunityPost({
+    ...req.body,
+    userId: req.user_id
+  });
+  await post.save();
+  res.json(post);
+});
+
+//Get the post to be able to post them
+app.get('/community-posts', async (req, res) => {
+  try {
+    const posts = await CommunityPost.find().sort({ createdAt: -1 });
+    res.json(posts);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch posts" });
+  }
+});
 
 
 // Start the server

@@ -11,14 +11,11 @@ import User from "./models/User.js";
 
 dotenv.config(); 
 
+//Connects to mongoDB database
 const mongoUrl = process.env.MONGO_URL || "mongodb://localhost/final-project";
 mongoose.connect(mongoUrl);
 mongoose.Promise = Promise;
 
-//testing
-mongoose.connection.on('connected', () => {
-  console.log('Connected to database:', mongoose.connection.db.databaseName);
-});
 
 //Authenitcation middleware
 const authenticateUser = async (req, res, next) => {
@@ -49,7 +46,7 @@ app.get("/", (req, res) => {
   res.send("Hello, Welcome to The Intention App!");
 });
 
-// Auth endpoints to signup and login
+// Endpoint to register 
 app.post("/users", async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -89,6 +86,7 @@ app.post("/users", async (req, res) => {
   }
 });
 
+//Endpoint for log in
 app.post("/sessions", async (req, res) => {
   const user = await User.findOne({
     email: req.body.email
@@ -106,19 +104,36 @@ app.post("/sessions", async (req, res) => {
 });
 
 //Authorization
-//To post, get and edit a goal in setup page
 
-// POST - Create goals
+//Dashboard
+//GET - Get user data (name and email) of a user by their user ID
+app.get("/users/:id", authenticateUser, async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    res.json({ name: user.name, email: user.email });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch user data" });
+  }
+});
+
+//Setup
+
+//Checks for exisiting intention+goal. No duplicates aload
+const existingGoal = await Goal.findOne({ userId: req.user._id, intention });
+if (existingGoal) {
+  return res.status(400).json({
+    success: false,
+    message: "You already have a goal with this intention."
+  });
+}
+
+// POST - Create intention+smart goal as a logged in user
 app.post("/goals", authenticateUser, async (req, res) => {
-
-  console.log("Goal creation started");
-  console.log("Request body:", req.body);
-  console.log("User ID:", req.user._id);
   const { intention, specific, measurable, achievable, relevant, timebound } = req.body;
   
   try {
     const newGoal = new Goal({
-      userId: req.user._id, //is this needed?
+      userId: req.user._id, //associate each user with each goal they create
       intention,
       specific,
       measurable, 
@@ -126,9 +141,9 @@ app.post("/goals", authenticateUser, async (req, res) => {
       relevant,
       timebound
     });
-    console.log("About to save goal:", newGoal);
+    
     const savedGoal = await newGoal.save();
-    console.log("Goal saved successfully:", savedGoal);
+    
 
     res.status(201).json({
       success: true,
@@ -136,7 +151,7 @@ app.post("/goals", authenticateUser, async (req, res) => {
       message: "Goal created successfully"
     });
   } catch (error) {
-    console.log("Error saving goal:", error);
+   
     res.status(500).json({
       success: false,
       response: error,
@@ -145,7 +160,7 @@ app.post("/goals", authenticateUser, async (req, res) => {
   }
 });
 
-// GET - Get user's goals
+// GET - gets all goals that belong to the logged-in user so they can see them in dahsboard
 app.get("/goals", authenticateUser, async (req, res) => {
   try {
     const goals = await Goal.find({ userId: req.user._id });
@@ -155,7 +170,7 @@ app.get("/goals", authenticateUser, async (req, res) => {
   }
 });
 
-// PATCH - Update goal
+// PATCH - Update goal by id, so only user can update their own intention+goals
 app.patch("/goals/:id", authenticateUser, async (req, res) => {
   const { id } = req.params;
   const updates = req.body;
@@ -188,17 +203,21 @@ app.patch("/goals/:id", authenticateUser, async (req, res) => {
   }
 });
 
-//GET - Get user data 
-app.get("/users/:id", authenticateUser, async (req, res) => {
+
+//Community
+
+//GET community-post 
+app.get('/community-posts', async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
-    res.json({ name: user.name, email: user.email });
+    const posts = await CommunityPost.find().sort({ createdAt: -1 });
+    res.json(posts);
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch user data" });
+    res.status(500).json({ error: "Failed to fetch posts" });
   }
 });
 
-//Post in community
+
+//POST in community
 app.post('/community-posts', authenticateUser, async (req, res) => {
   const post = new CommunityPost({
     ...req.body,
@@ -208,15 +227,84 @@ app.post('/community-posts', authenticateUser, async (req, res) => {
   res.json(post);
 });
 
-//Get the post to be able to post them
-app.get('/community-posts', async (req, res) => {
+
+// POST - Like a community-post
+app.post("/community-posts/:id/like", authenticateUser, async (req, res) => {
+  const { id } = req.params;
+
   try {
-    const posts = await CommunityPost.find().sort({ createdAt: -1 });
-    res.json(posts);
+    const updatedPost = await CommunityPost.findByIdAndUpdate(
+      id,
+      { $inc: { likes: 1 } },  
+      { new: true }           
+    );
+
+    if (!updatedPost) {
+      return res.status(404).json({
+        success: false,
+        message: "Community post not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      response: updatedPost,
+      message: "Like added successfully",
+    });
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch posts" });
+    res.status(500).json({
+      success: false,
+      response: error,
+      message: "Failed to like the post",
+    });
   }
 });
+
+// POST Comment on a specific community‑post  
+app.post("/community-posts/:id/comments", authenticateUser, async (req, res) => {
+  const { id } = req.params;
+  const { text } = req.body;
+
+  if (!text?.trim()) {
+    return res.status(400).json({
+      success: false,
+      message: "Comment text is required",
+    });
+  }
+
+  try {
+    const post = await CommunityPost.findById(id);
+    if (!post) {
+      return res.status(404).json({
+        success: false,
+        message: "Community post not found",
+      });
+    }
+
+    const comment = {
+      text,
+      userName: req.user.name,   
+      createdAt: new Date(),
+    };
+
+    post.comments.push(comment);
+    await post.save();
+
+    res.status(201).json({
+      success: true,
+      response: comment,
+      message: "Comment added successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      response: error,
+      message: "Failed to add comment",
+    });
+  }
+});
+
+
 
 
 // Start the server

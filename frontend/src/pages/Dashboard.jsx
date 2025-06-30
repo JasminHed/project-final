@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Doughnut } from "react-chartjs-2";
 //external library for in-place editing
 import { EditText } from "react-edit-text";
+import { useNavigate } from "react-router-dom";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -11,6 +12,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 // Dashboard shows the user's intention and SMART goals, plus allows interaction with the goal (edit, complete, share)
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   // Local state to store goal details (intention + SMART fields)
   const [goal, setGoal] = useState({
     intention: "",
@@ -67,7 +69,7 @@ const Dashboard = () => {
             relevant: latestGoal.relevant,
             timebound: latestGoal.timebound,
           });
-          setCompleted(latestGoal.completed); //users can choose to put it as complete or public
+          setCompleted(latestGoal.completed); //Users can choose to put it as complete or public
           setIsPublic(latestGoal.isPublic);
         }
         setLoading(false);
@@ -96,14 +98,14 @@ const Dashboard = () => {
     }).catch((error) => console.error("Error updating goal:", error));
   };
 
-  //Toggles intention + ALL goal completion + updates front and backend. Add completion for seperate goals?
+  //Toggles intention + ALL goal completion + updates front and backend
   const toggleComplete = () => {
     const token = localStorage.getItem("accessToken");
     const newCompleted = !completed;
 
     setCompleted(newCompleted);
     if (newCompleted) {
-      setGoal(null); //if completed remove
+      setGoal(null); //If completed remove
     }
 
     fetch(`http://localhost:8080/goals/${goal._id}`, {
@@ -134,21 +136,28 @@ const Dashboard = () => {
     }).catch((error) => console.error("Error updating visibility:", error));
   };
 
+  //Visible trackng of goals, donught chart
+  const data = () => {
+    return {
+      labels: ["Completed", "Not Completed"],
+      datasets: [
+        {
+          data: [completed ? 1 : 0, completed ? 0 : 1],
+          backgroundColor: ["#4caf50", "#e0e0e0"],
+        },
+      ],
+    };
+  };
   //function that returns data for a doughnut chart
-  const data = () => ({
-    labels: ["Completed", "In Progress"],
-    datasets: [
-      {
-        data: [completed ? 5 : 0, completed ? 0 : 5],
-        backgroundColor: ["#4caf50", "#ff9800"],
-      },
-    ],
-  });
-
-  //Loading state
-  if (loading) {
-    return <p>Loading your goals...</p>;
-  }
+  //const data = () => ({
+  //labels: ["Completed", "In Progress"],
+  //datasets: [
+  //{
+  //data: [completed ? 5 : 0, completed ? 0 : 5],
+  // backgroundColor: ["#4caf50", "#ff9800"],
+  //},
+  //],
+  //});
 
   // Create a community post to community page, using intention + goal + user info
   const shareToCommunity = () => {
@@ -169,11 +178,26 @@ const Dashboard = () => {
         timebound: goal.timebound,
         userName: user.name,
       }),
-    });
+    })
+      .then(() => {
+        navigate("/community");
+      })
+      // Navigate user to community page after sharing
+      .catch((error) => {
+        console.error("Error sharing to community:", error);
+      });
   };
+
+  //Loading state
+  if (loading) {
+    return <p>Loading your goals...</p>;
+  }
 
   return (
     <div>
+      <button onClick={() => navigate("/setup")}>
+        Add new intention and goals
+      </button>
       {goal && ( //only shows int+goal card if it is not complete
         <div>
           <h1>Your Intention and Goals</h1>
@@ -204,13 +228,13 @@ const Dashboard = () => {
                 <EditText name={field} value={goal[field]} onSave={onSave} />
               </div>
             ))}
-            <button onClick={toggleComplete}>Mark as Completed</button>
+
+            <button onClick={toggleComplete}>Mark as Completed 🏅 </button>
             <button onClick={shareToCommunity}>Share to Community</button>
           </div>
         </div>
       )}
 
-      <h3>Tracking & Gamification</h3>
       <Doughnut data={data()} />
     </div>
   );

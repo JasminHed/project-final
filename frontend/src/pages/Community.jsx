@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 //Display a single community post and manages local like count state
 const CommunityPost = ({ post, onLike, onCommentClick }) => {
@@ -46,6 +47,7 @@ const CommunityPost = ({ post, onLike, onCommentClick }) => {
 //Component that holds and manages the list of posts
 const Community = () => {
   const [posts, setPosts] = useState([]);
+  const navigate = useNavigate();
 
   //Fetches the list of community posts from the backend API
   useEffect(() => {
@@ -76,6 +78,7 @@ const Community = () => {
   return (
     <div>
       <h1>Community</h1>
+      <button onClick={() => navigate("/dashboard")}>Back to dashboard</button>
       {posts.map((post) => (
         <CommunityPost
           key={post._id}

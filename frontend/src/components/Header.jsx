@@ -1,54 +1,37 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-
-//from accessibility project, style more
-const SkipLink = styled.a`
-  position: absolute;
-  top: -2.5rem;
-  left: 0;
-  padding: 8px;
-  z-index: 100;
-  transition: top 0.3s;
-  text-decoration: none;
-
-  &:focus {
-    top: 0;
-    outline-offset: 2px;
-  }
-
-  &:focus-visible {
-    outline-offset: 2px;
-    border-radius: 2px;
-  }
-`;
 
 const Header = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false); //Track if mobile menu is open or closed
 
-  const toggleMenu = () => setMenuOpen((prev) => !prev);
-  const closeMenu = () => setMenuOpen(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const navigate = useNavigate();
+  const toggleMenu = () => setMenuOpen((prev) => !prev); //Open and close menu toogle
+  const closeMenu = () => setMenuOpen(false); //Close menu
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false); //Track if user is logged in
+
+  const navigate = useNavigate(); // React-router hook to change pages
+
+  //Check if user has a saved token to know if user is logged in
   useEffect(() => {
-    const token = localStorage.getItem("accessToken"); //saves token locally until user log out or close browser
-    setIsLoggedIn(!!token); //!! converts to boolean, can be both true/false
+    const token = localStorage.getItem("accessToken");
+    setIsLoggedIn(!!token); // Convert token to true/false (boolean)
   }, []);
 
+  // When user clicks logout button
   const handleLogout = () => {
     localStorage.removeItem("userId");
     localStorage.removeItem("accesstoken");
-    setIsLoggedIn(false);
-    navigate("/"); //after clicked log out user back to homepage
+    setIsLoggedIn(false); //update state to logged out
+    navigate("/"); //Redirect user to homepage after logout
   };
   return (
     <>
-      <SkipLink href="#main-content" className="skip-link">
+      <a href="#main-content" className="skip-link">
         Skip to main content
-      </SkipLink>
+      </a>
 
       <header>
+        {/* Show logout button only if logged in */}
         {isLoggedIn && <button onClick={handleLogout}>Logout</button>}
         <div>
           <h4>Clarity.Consistency.Community.</h4>

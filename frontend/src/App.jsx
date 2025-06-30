@@ -5,6 +5,7 @@ import Footer from "./components/Footer.jsx";
 import Header from "./components/Header.jsx";
 import Onboarding from "./components/Onboarding.jsx";
 import Setup from "./components/Setup.jsx";
+import GlobalStyles from "./GlobalStyling.jsx";
 import Community from "./pages/Community.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import WelcomeScreen from "./pages/WelcomeScreen.jsx";
@@ -24,6 +25,7 @@ export const App = () => {
 
   return (
     <>
+      <GlobalStyles />
       <Header />
       <button onClick={toggleDarkMode}>
         Switch to {darkMode ? "Light" : "Dark"} Mode

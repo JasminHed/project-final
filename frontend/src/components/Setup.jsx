@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 //to add: Disable the save button when inputs are incomplete. Confirmation / feedback on save. Persist data in backend so data does not go away on page reload.
+
+// Setup component for setting intention and SMART goals
 const Setup = () => {
+  // Local state to store all goal fields
   const [values, setValues] = useState({
     intention: "",
     specific: "",
@@ -11,21 +14,26 @@ const Setup = () => {
     relevant: "",
     timebound: "",
   });
+  // State to show error message if fields are not filled in
   const [showError, setShowError] = useState(false);
+  // Hook to navigate to another page
   const navigate = useNavigate();
 
+  // Update goal fields when user types
   const handleChange = (field, value) => {
     setValues((prev) => ({ ...prev, [field]: value }));
     setShowError(false);
   };
 
+  // Save goals to backend when user clicks save button
   const handleSave = () => {
+    //Check if field is empty
     const hasEmpty = Object.values(values).some((value) => value.trim() === "");
     if (hasEmpty) {
       setShowError(true);
     } else {
       const token = localStorage.getItem("accessToken");
-
+      //Send POST request to save goal data
       fetch("http://localhost:8080/goals", {
         method: "POST",
         headers: {
@@ -36,7 +44,9 @@ const Setup = () => {
       })
         .then((response) => {
           if (response.ok) {
-            localStorage.setItem("hasCompletedOnboarding", "true"); //if onboarding complete
+            // Mark onboarding complete in local storage
+            localStorage.setItem("hasCompletedOnboarding", "true");
+            //Navigate to dahsboard page
             navigate("/dashboard");
           } else {
             console.error("Failed to save goal. Try again");

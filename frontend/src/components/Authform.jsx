@@ -7,15 +7,18 @@ const LoginButton = styled.button`
   top: 10px;
   left: 10px;
   padding: 8px 16px;
-  background: #3a3f6b;
-  color: white;
+  cursor: pointer;
+  background-color: var(--color-button-bg);
+  color: var(--color-button-text);
   border: none;
   border-radius: 4px;
+  padding: 8px 16px;
   cursor: pointer;
+
   &:hover,
   &:focus {
-    background-color: #2b2f5c;
-    outline: 2px solid white;
+    background-color: var(--color-button-hover);
+    outline: 2px solid var(--color-focus);
   }
 `;
 
@@ -24,15 +27,18 @@ const LogoutButton = styled.button`
   top: 10px;
   left: 110px;
   padding: 8px 16px;
-  background: #3a3f6b;
-  color: white;
+  cursor: pointer;
+  background-color: var(--color-button-bg);
+  color: var(--color-button-text);
   border: none;
   border-radius: 4px;
+  padding: 8px 16px;
   cursor: pointer;
+
   &:hover,
   &:focus {
-    background-color: #2b2f5c;
-    outline: 2px solid white;
+    background-color: var(--color-button-hover);
+    outline: 2px solid var(--color-focus);
   }
 `;
 
@@ -48,15 +54,18 @@ const CloseButton = styled.button`
   top: 10px;
   left: 10px;
   padding: 8px 16px;
-  background: #3a3f6b;
-  color: white;
+  cursor: pointer;
+  background-color: var(--color-button-bg);
+  color: var(--color-button-text);
   border: none;
   border-radius: 4px;
+  padding: 8px 16px;
   cursor: pointer;
+
   &:hover,
   &:focus {
-    background-color: #2b2f5c;
-    outline: 2px solid white;
+    background-color: var(--color-button-hover);
+    outline: 2px solid var(--color-focus);
   }
 `;
 
@@ -119,26 +128,30 @@ const BackButton = styled.button`
 
 // Register Component
 const Register = ({ setShowRegister }) => {
+  // Store form input values for name, email, password
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
   });
 
-  const [error, setError] = useState("");
+  const [error, setError] = useState(""); //// error or status message to show to user
   const navigate = useNavigate();
 
+  // Called when user clicks "Sign up"
   const handleSubmit = () => {
+    // Basic validation: all fields must be filled
     if (!formData.name || !formData.email || !formData.password) {
       setError("Please fill in all fields");
       return;
     }
-
+    //Password check
     if (formData.password.length < 5) {
       setError("Password must be at least 5 characters");
       return;
     }
 
+    // Send registration data to backend server
     fetch("http://localhost:8080/users", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -147,11 +160,13 @@ const Register = ({ setShowRegister }) => {
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
+          // Clear form on success
           //localStorage.setItem("accessToken", data.accessToken);
           //localStorage.setItem("userId", data.id);
           setFormData({ name: "", email: "", password: "" });
-          setError("Registration successful! Please log in"); //should this be a error sucess message?
+          setError("Registration successful! Please log in");
           setTimeout(() => setError(""), 3000);
+          //  Automatically switch to login here, or keep as is??
         } else {
           setError(data.message);
         }
@@ -201,13 +216,14 @@ const Register = ({ setShowRegister }) => {
   );
 };
 
-// Main Login Component
+// Login, handles login and toggling register form
 const Login = ({ setIsLoggedIn }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [showRegister, setShowRegister] = useState(false);
-  const [logoutMessage, setLogoutMessage] = useState("");
+  const [isOpen, setIsOpen] = useState(false); //Popup open and close toogle
+  const [showRegister, setShowRegister] = useState(false); //Toogle register form
+  const [logoutMessage, setLogoutMessage] = useState(""); //Show logout message
   const navigate = useNavigate();
 
+  //Store email and password
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -222,10 +238,11 @@ const Login = ({ setIsLoggedIn }) => {
       setError("Please fill in both fields");
       return;
     }
-
+    //Clears input and messages
     setError("");
     setFormData({ email: "", password: "" });
 
+    //Send login data to backend
     fetch("http://localhost:8080/sessions", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -239,18 +256,18 @@ const Login = ({ setIsLoggedIn }) => {
         } else {
           localStorage.setItem("userId", data.userId);
           localStorage.setItem("accessToken", data.accessToken);
-          setError("Login successful!"); //same here!
+          setError("Login successful!");
           setTimeout(() => setError(""), 3000);
-          setIsLoggedIn(true);
+
+          setIsLoggedIn(true); //Updates login state
 
           if (localStorage.getItem("hasCompletedOnboarding")) {
-            //if user has completed onboarding send to dashboard directly
             navigate("/dashboard");
           }
         }
       });
   };
-
+  // Logout function clears data and resets login state
   const handleLogout = () => {
     localStorage.removeItem("userId");
     localStorage.removeItem("accessToken");

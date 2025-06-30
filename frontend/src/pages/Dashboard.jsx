@@ -1,9 +1,17 @@
+import { ArcElement, Chart as ChartJS, Legend, Tooltip } from "chart.js";
 import React, { useEffect, useState } from "react";
+import { Doughnut } from "react-chartjs-2";
+//external library for in-place editing
 import { EditText } from "react-edit-text";
 
-//todo: should the mark complee complete all, just one goal at a time not the whole main goal. Where is the intention? Cannot edit at the momen
+ChartJS.register(ArcElement, Tooltip, Legend);
+
+//Add useGoalTracker!!
+
+// Dashboard shows the user's intention and SMART goals, plus allows interaction with the goal (edit, complete, share)
 
 const Dashboard = () => {
+  // Local state to store goal details (intention + SMART fields)
   const [goal, setGoal] = useState({
     intention: "",
     specific: "",
@@ -13,13 +21,12 @@ const Dashboard = () => {
     timebound: "", //should this be a calendar?
   });
 
-  const [completed, setCompleted] = useState(false);
-  const [isPublic, setIsPublic] = useState(false);
-  const [points, setPoints] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState({ name: "", email: "" }); //usign name + emial of user dynamically
+  const [completed, setCompleted] = useState(false); //goal completion
+  const [isPublic, setIsPublic] = useState(false); //sharing visability
+  const [loading, setLoading] = useState(true); //loading state
+  const [user, setUser] = useState({ name: "", email: "" }); //user info
 
-  // Fetch user data separately
+  // Fetch users info
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     const userId = localStorage.getItem("userId");
@@ -35,7 +42,7 @@ const Dashboard = () => {
     }
   }, []);
 
-  // Fetch goals from backend
+  // Fetch users latest goal
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
 
@@ -47,8 +54,9 @@ const Dashboard = () => {
       .then((response) => response.json())
       .then((data) => {
         if (data.length > 0) {
+          // only most recent goal
           const latestGoal = data.sort(
-            (a, b) => new Date(b.createdAt) - new Date(a.createdAt) //only show latest int+goal
+            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
           )[0];
           setGoal({
             _id: latestGoal._id,
@@ -70,12 +78,14 @@ const Dashboard = () => {
       });
   }, []);
 
+  //Inline editing of goals (edittext)
   const onSave = ({ name, value }) => {
     const token = localStorage.getItem("accessToken");
 
+    //update local state of change so it shows directly
     setGoal((prev) => ({ ...prev, [name]: value }));
 
-    // Update backend instead of localStorage when edited
+    // Sync edit change, if any, to backend
     fetch(`http://localhost:8080/goals/${goal._id}`, {
       method: "PATCH",
       headers: {
@@ -86,14 +96,16 @@ const Dashboard = () => {
     }).catch((error) => console.error("Error updating goal:", error));
   };
 
+  //Toggles intention + ALL goal completion + updates front and backend. Add completion for seperate goals?
   const toggleComplete = () => {
     const token = localStorage.getItem("accessToken");
     const newCompleted = !completed;
 
     setCompleted(newCompleted);
-    setPoints((prev) => (completed ? prev - 10 : prev + 10));
+    if (newCompleted) {
+      setGoal(null); //if completed remove
+    }
 
-    // Update backend with goals
     fetch(`http://localhost:8080/goals/${goal._id}`, {
       method: "PATCH",
       headers: {
@@ -104,6 +116,7 @@ const Dashboard = () => {
     }).catch((error) => console.error("Error updating completion:", error));
   };
 
+  //Toggle visibility of intention+goal (public/private). Not user
   const togglePublic = () => {
     const token = localStorage.getItem("accessToken");
     const newIsPublic = !isPublic;
@@ -121,11 +134,23 @@ const Dashboard = () => {
     }).catch((error) => console.error("Error updating visibility:", error));
   };
 
+  //function that returns data for a doughnut chart
+  const data = () => ({
+    labels: ["Completed", "In Progress"],
+    datasets: [
+      {
+        data: [completed ? 5 : 0, completed ? 0 : 5],
+        backgroundColor: ["#4caf50", "#ff9800"],
+      },
+    ],
+  });
+
+  //Loading state
   if (loading) {
-    return <div>Loading your goals...</div>;
+    return <p>Loading your goals...</p>;
   }
 
-  //this is function to the share to community button
+  // Create a community post to community page, using intention + goal + user info
   const shareToCommunity = () => {
     const token = localStorage.getItem("accessToken");
 
@@ -149,35 +174,44 @@ const Dashboard = () => {
 
   return (
     <div>
-      <h1>Your Intention and Goals</h1>
-      <p>Welcome, {user.name}</p>
-      <p>Email: {user.email}</p>
-
-      <div>
-        <h3>Your Intention</h3>
+      {goal && ( //only shows int+goal card if it is not complete
         <div>
-          <EditText
-            name="intention"
-            value={goal.intention || "No intention set"}
-            onSave={onSave}
-          />
-        </div>
-        <h3>Your detailed goals</h3>
-        {["specific", "measurable", "achievable", "relevant", "timebound"].map(
-          (field) => (
-            <div key={field}>
-              <strong>{field.charAt(0).toUpperCase() + field.slice(1)}:</strong>
-              <EditText name={field} value={goal[field]} onSave={onSave} />
-            </div>
-          )
-        )}
+          <h1>Your Intention and Goals</h1>
+          <p>Welcome, {user.name}</p>
+          <p>Email: {user.email}</p>
 
-        <button onClick={shareToCommunity}>Share to Community</button>
-      </div>
+          <div>
+            <h3>Your Intention</h3>
+            <div>
+              <EditText
+                name="intention"
+                value={goal.intention || "No intention set"}
+                onSave={onSave}
+              />
+            </div>
+            <h3>Your detailed goals</h3>
+            {[
+              "specific",
+              "measurable",
+              "achievable",
+              "relevant",
+              "timebound",
+            ].map((field) => (
+              <div key={field}>
+                <strong>
+                  {field.charAt(0).toUpperCase() + field.slice(1)}:
+                </strong>
+                <EditText name={field} value={goal[field]} onSave={onSave} />
+              </div>
+            ))}
+            <button onClick={toggleComplete}>Mark as Completed</button>
+            <button onClick={shareToCommunity}>Share to Community</button>
+          </div>
+        </div>
+      )}
 
       <h3>Tracking & Gamification</h3>
-
-      <p>Points earned: {points}</p>
+      <Doughnut data={data()} />
     </div>
   );
 };

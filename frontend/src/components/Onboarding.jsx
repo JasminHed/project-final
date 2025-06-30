@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 
+//Track module to know where user is, to show next slide
 const Onboarding = ({ onDone }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
-
+  //List of onboarding modules
   const modules = [
     {
-      key: "intention", //unique, helps track where we are
+      key: "intention", //key makes it unique, helps track where we are
       title: "Intention",
       image: "notebook.jpg",
       content: (
@@ -97,14 +98,13 @@ const Onboarding = ({ onDone }) => {
   ];
 
   const currentModule = modules[currentSlide];
-
+  //When next button is clicked, show next slide. If last slide - onboarding complete
   const handleNext = () => {
     if (currentSlide < modules.length - 1) {
       //arrays count from 0
       setCurrentSlide(currentSlide + 1); //move 1 forward
     } else {
-      // Last slide reached,
-      if (onDone) onDone();
+      if (onDone) onDone(); //onboarding done(button says done)
     }
   };
 
@@ -131,13 +131,13 @@ const Onboarding = ({ onDone }) => {
           if (currentSlide < modules.length - 1) {
             handleNext();
           } else {
-            if (onDone) onDone(); // navigate to setup section if logged in
+            if (onDone) onDone();
           }
         }}
       >
         {currentSlide < modules.length - 1
           ? `Next (${currentSlide + 1} of ${modules.length})`
-          : "Done. On to setting everything up"}
+          : "Next - Set up"}
       </button>
     </div>
   );

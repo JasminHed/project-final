@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from "react";
 
+// Importing components for authentication, onboarding, and setup steps
 import Authform from "../components/Authform.jsx";
 import Onboarding from "../components/Onboarding.jsx";
 import Setup from "../components/Setup.jsx";
 
+// Local state to track if user is logged in (why not global, because only affects this components behavior)
 const WelcomeScreen = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  //// Track completion status of onboarding and setup steps
   const [completed, setCompleted] = useState({
     onboarding: false,
     setup: false,
   });
 
+  //Checks if token i saved, then consider user logged in
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     if (token) {
@@ -19,9 +23,12 @@ const WelcomeScreen = () => {
     }
   }, []);
 
+  //State to hold error messages
   const [showError, setShowError] = useState("");
+  //State to track which step/page is currently shown
   const [currentStep, setCurrentStep] = useState("welcome");
 
+  //Function to handle navigation between different steps.
   const handleNavigation = (step) => {
     if (step === "onboarding") {
       setCurrentStep("onboarding");
@@ -93,7 +100,7 @@ const WelcomeScreen = () => {
           goBack={() => setCurrentStep("welcome")}
         />
       )}
-
+      {/*Setup only if user is loggedin and done with onboarding*/}
       {currentStep === "setup" && isLoggedIn && (
         <Setup
           onDone={() => {

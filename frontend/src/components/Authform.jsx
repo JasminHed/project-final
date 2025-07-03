@@ -2,83 +2,31 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-const LoginButton = styled.button`
+const ButtonContainer = styled.div`
   position: fixed;
-  top: 10px;
-  left: 10px;
-  padding: 8px 16px;
-  cursor: pointer;
-  background-color: var(--color-button-bg);
-  color: var(--color-button-text);
-  border: none;
-  border-radius: 4px;
-  padding: 8px 16px;
-  cursor: pointer;
-
-  &:hover,
-  &:focus {
-    background-color: var(--color-button-hover);
-    outline: 2px solid var(--color-focus);
-  }
-`;
-
-const LogoutButton = styled.button`
-  position: fixed;
-  top: 10px;
-  left: 110px;
-  padding: 8px 16px;
-  cursor: pointer;
-  background-color: var(--color-button-bg);
-  color: var(--color-button-text);
-  border: none;
-  border-radius: 4px;
-  padding: 8px 16px;
-  cursor: pointer;
-
-  &:hover,
-  &:focus {
-    background-color: var(--color-button-hover);
-    outline: 2px solid var(--color-focus);
-  }
+  bottom: 20px;
+  left: 20px;
+  display: flex;
+  gap: 10px;
 `;
 
 const LogoutMessage = styled.p`
   position: absolute;
-  color: white;
-  top: 30px;
+  color: var(--color-text-primary);
+  bottom: 60px;
   left: 110px;
-`;
-
-const CloseButton = styled.button`
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  padding: 8px 16px;
-  cursor: pointer;
-  background-color: var(--color-button-bg);
-  color: var(--color-button-text);
-  border: none;
-  border-radius: 4px;
-  padding: 8px 16px;
-  cursor: pointer;
-
-  &:hover,
-  &:focus {
-    background-color: var(--color-button-hover);
-    outline: 2px solid var(--color-focus);
-  }
 `;
 
 const PopUp = styled.div`
   position: fixed;
-  top: 0;
+  bottom: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
+  z-index: 2000;
 `;
 
 const Form = styled.form`
@@ -121,37 +69,26 @@ const LinkSpan = styled.span`
   cursor: pointer;
 `;
 
-const BackButton = styled.button`
-  margin-top: 10px;
-  margin-left: 15px;
-`;
-
 // Register Component
-const Register = ({ setShowRegister }) => {
-  // Store form input values for name, email, password
+const Register = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
   });
 
-  const [error, setError] = useState(""); //// error or status message to show to user
-  const navigate = useNavigate();
+  const [error, setError] = useState("");
 
-  // Called when user clicks "Sign up"
   const handleSubmit = () => {
-    // Basic validation: all fields must be filled
     if (!formData.name || !formData.email || !formData.password) {
       setError("Please fill in all fields");
       return;
     }
-    //Password check
     if (formData.password.length < 5) {
       setError("Password must be at least 5 characters");
       return;
     }
 
-    // Send registration data to backend server
     fetch("http://localhost:8080/users", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -160,13 +97,16 @@ const Register = ({ setShowRegister }) => {
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-          // Clear form on success
-          //localStorage.setItem("accessToken", data.accessToken);
-          //localStorage.setItem("userId", data.id);
+          localStorage.setItem("userId", data.userId);
+          localStorage.setItem("accessToken", data.accessToken);
+          setIsLoggedIn(true);
+
           setFormData({ name: "", email: "", password: "" });
-          setError("Registration successful! Please log in");
-          setTimeout(() => setError(""), 3000);
-          //  Automatically switch to login here, or keep as is??
+          setError("Registration successful! You are now logged in.");
+          setTimeout(() => {
+            setError("");
+            setIsOpen(false);
+          }, 2000);
         } else {
           setError(data.message);
         }
@@ -203,46 +143,32 @@ const Register = ({ setShowRegister }) => {
       <button type="button" onClick={handleSubmit}>
         Sign up
       </button>
-      <BackButton
-        type="button"
-        onClick={() => {
-          setFormData({ name: "", email: "", password: "" });
-          setShowRegister(false);
-        }}
-      >
-        Back to Login
-      </BackButton>
+
+      <RegisterLink>
+        <LinkSpan>Already a user? </LinkSpan>
+        <LinkSpan onClick={() => setShowLogin(true)}>Log in here</LinkSpan>
+      </RegisterLink>
     </>
   );
 };
 
-// Login, handles login and toggling register form
-const Login = ({ setIsLoggedIn }) => {
-  const [isOpen, setIsOpen] = useState(false); //Popup open and close toogle
-  const [showRegister, setShowRegister] = useState(false); //Toogle register form
-  const [logoutMessage, setLogoutMessage] = useState(""); //Show logout message
-  const navigate = useNavigate();
-
-  //Store email and password
+const LoginForm = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
+  const handleSubmit = () => {
     if (!formData.email || !formData.password) {
       setError("Please fill in both fields");
       return;
     }
-    //Clears input and messages
+
     setError("");
     setFormData({ email: "", password: "" });
 
-    //Send login data to backend
     fetch("http://localhost:8080/sessions", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -250,16 +176,18 @@ const Login = ({ setIsLoggedIn }) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("log in");
         if (data.notFound) {
           setError("Invalid email or password");
         } else {
           localStorage.setItem("userId", data.userId);
           localStorage.setItem("accessToken", data.accessToken);
           setError("Login successful!");
-          setTimeout(() => setError(""), 3000);
+          setTimeout(() => {
+            setError("");
+            setIsOpen(false);
+          }, 3000);
 
-          setIsLoggedIn(true); //Updates login state
+          setIsLoggedIn(true);
 
           if (localStorage.getItem("hasCompletedOnboarding")) {
             navigate("/dashboard");
@@ -267,65 +195,77 @@ const Login = ({ setIsLoggedIn }) => {
         }
       });
   };
-  // Logout function clears data and resets login state
+
+  return (
+    <>
+      <Label htmlFor="email">Email</Label>
+      <Input
+        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+        type="text"
+        name="email"
+        value={formData.email}
+      />
+      <Label htmlFor="password">Password</Label>
+      <Input
+        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+        type="password"
+        name="password"
+        value={formData.password}
+      />
+      {error && <ErrorDiv>{error}</ErrorDiv>}
+      <button type="button" onClick={handleSubmit}>
+        Log In
+      </button>
+
+      <RegisterLink>
+        <LinkSpan>New user? </LinkSpan>
+        <LinkSpan onClick={() => setShowLogin(false)}>Sign up here</LinkSpan>
+      </RegisterLink>
+    </>
+  );
+};
+
+const Login = ({ setIsLoggedIn }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
+  const [logoutMessage, setLogoutMessage] = useState("");
+
   const handleLogout = () => {
     localStorage.removeItem("userId");
     localStorage.removeItem("accessToken");
     setIsLoggedIn(false);
     setLogoutMessage("You are now logged out.");
-    setTimeout(() => setLogoutMessage(""), 3000);
+    setTimeout(() => setLogoutMessage(""), 2000);
   };
 
   return (
     <>
-      <LoginButton onClick={() => setIsOpen(true)}>Log In</LoginButton>
-      <LogoutButton type="button" onClick={handleLogout}>
-        Logout
-      </LogoutButton>
+      <ButtonContainer>
+        <button onClick={() => setIsOpen(true)}>Sign Up</button>
+        <button type="button" onClick={handleLogout}>
+          Logout
+        </button>
+      </ButtonContainer>
       {logoutMessage && <LogoutMessage>{logoutMessage}</LogoutMessage>}
       {isOpen && (
         <PopUp onClick={() => setIsOpen(false)}>
-          <Form onSubmit={handleSubmit} onClick={(e) => e.stopPropagation()}>
-            {!showRegister ? (
-              <>
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  onChange={(e) =>
-                    setFormData({ ...formData, email: e.target.value })
-                  }
-                  type="text"
-                  name="email"
-                  value={formData.email}
-                />
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  onChange={(e) =>
-                    setFormData({ ...formData, password: e.target.value })
-                  }
-                  type="password"
-                  name="password"
-                  value={formData.password}
-                />
-                {error && <ErrorDiv>{error}</ErrorDiv>}
-                <button type="submit">Log In</button>
-
-                <RegisterLink>
-                  No account?{" "}
-                  <LinkSpan
-                    onClick={() => {
-                      setFormData({ email: "", password: "" });
-                      setShowRegister(true);
-                    }}
-                  >
-                    Register here
-                  </LinkSpan>
-                </RegisterLink>
-                <CloseButton type="button" onClick={() => setIsOpen(false)}>
-                  Close
-                </CloseButton>
-              </>
+          {" "}
+          {/*Click outside of pop up, it closes*/}
+          <Form onClick={(e) => e.stopPropagation()}>
+            {" "}
+            {/*Hinders  closing of form, when clicks are made inside inside*/}
+            {!showLogin ? (
+              <Register
+                setShowLogin={setShowLogin}
+                setIsLoggedIn={setIsLoggedIn}
+                setIsOpen={setIsOpen}
+              />
             ) : (
-              <Register setShowRegister={setShowRegister} />
+              <LoginForm
+                setShowLogin={setShowLogin}
+                setIsLoggedIn={setIsLoggedIn}
+                setIsOpen={setIsOpen}
+              />
             )}
           </Form>
         </PopUp>

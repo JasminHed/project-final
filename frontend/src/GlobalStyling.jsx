@@ -3,6 +3,18 @@ import { createGlobalStyle } from "styled-components";
 
 const GlobalStyles = createGlobalStyle`
   /* Light mode (default) */
+
+
+  :root {
+  --color-text-primary: #000000;          /* Behåller svart text */
+  --color-text-link: #70658d;             /* Lila - bra kontrast */
+  --color-button-bg: #0f9b8f;             /* Teal - stark kontrast */
+  --color-button-text: #FFFFFF;           /* Vit text på teal */
+  --color-button-hover: #b44650;          /* Röd hover - bra kontrast */
+  --color-focus: #e47885;                 /* Rosa focus ring */
+  --color-background: #FFFFFF;            /* Behåller vit bakgrund */
+}
+/*
   :root {
     --color-text-primary: #000000;
     --color-text-link: #005FCC;
@@ -11,9 +23,19 @@ const GlobalStyles = createGlobalStyle`
     --color-button-hover: #005FCC;
     --color-focus: #1ABC9C;
     --color-background: #FFFFFF;
-  }
+  }*/
 
   /* Dark mode overrides */
+.dark {
+  --color-text-primary: #FFFFFF;          /* Behåller vit text */
+  --color-text-link: #fac04b;             /* Gul - syns bra på mörkt */
+  --color-button-bg: #0f9b8f;             /* Samma teal - fungerar på båda */
+  --color-button-text: #FFFFFF;           /* Vit text */
+  --color-button-hover: #e47885;          /* Rosa hover */
+  --color-focus: #fac04b;                 /* Gul focus - syns bra */
+  --color-background: #000000;            /* Behåller svart bakgrund */
+}
+/*
   .dark {
     --color-text-primary: #FFFFFF;
     --color-text-link: #66AFFF;
@@ -22,7 +44,7 @@ const GlobalStyles = createGlobalStyle`
     --color-button-hover: #66AFFF;
     --color-focus: #1ABC9C;
     --color-background: #000000;
-  }
+  }*/
 
   /* Base reset and theme */
   * {
@@ -86,6 +108,8 @@ const GlobalStyles = createGlobalStyle`
   outline-offset: 2px;
   border-radius: 2px;
 }
+
+
 
 `;
 

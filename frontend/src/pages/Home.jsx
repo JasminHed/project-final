@@ -1,4 +1,30 @@
 import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+
+const Description = styled.p`
+  text-align: center;
+  margin: 20px auto;
+  padding: 0 20px;
+`;
+
+const MainBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 0 20px;
+`;
+
+const Box = styled.div`
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--color-button-hover);
+  }
+`;
 
 // Importing components for authentication, onboarding, and setup steps
 import Authform from "../components/Authform.jsx";
@@ -66,23 +92,23 @@ const WelcomeScreen = () => {
       <Authform setIsLoggedIn={setIsLoggedIn} />
 
       <img src="" alt="" />
-      <p>
+      <Description>
         The Intention App is a personal growth tool. You'll reflect, set
         intentions, define doable goals and follow through — all supported by
         SMART goals, AI helper, a progress dashboard and a positive community.
-      </p>
+      </Description>
 
-      <nav>
-        <div onClick={() => handleNavigation("onboarding")}>
+      <MainBox>
+        <Box onClick={() => handleNavigation("onboarding")}>
           Read about Intention & SMART goals here
-        </div>
-        <div onClick={() => handleNavigation("setup")}>
+        </Box>
+        <Box onClick={() => handleNavigation("setup")}>
           Create your Intention & SMART goal here
-        </div>
-        <div onClick={() => handleNavigation("dashboard")}>
+        </Box>
+        <Box onClick={() => handleNavigation("dashboard")}>
           Track and stay motivated here
-        </div>
-      </nav>
+        </Box>
+      </MainBox>
 
       {showError && <p>{showError}</p>}
 

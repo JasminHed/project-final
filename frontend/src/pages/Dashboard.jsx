@@ -4,8 +4,66 @@ import { Doughnut } from "react-chartjs-2";
 //external library for in-place editing
 import { EditText } from "react-edit-text";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+
+import "react-edit-text/dist/index.css";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
+
+const Container = styled.div`
+  padding: 80px 20px 100px;
+  max-width: 100%;
+  margin: 0 auto;
+
+  @media (min-width: 669px) {
+    max-width: 800px;
+  }
+`;
+
+const Title = styled.h1`
+  text-align: center;
+  margin-bottom: 30px;
+`;
+
+const UserInfo = styled.div`
+  text-align: center;
+  margin-bottom: 30px;
+
+  p {
+    margin-bottom: 5px;
+  }
+`;
+
+const Section = styled.div`
+  margin-bottom: 40px;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin: 30px 0;
+  flex-wrap: wrap;
+`;
+
+const GoalBox = styled.div`
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 15px;
+`;
+
+const ChartContainer = styled.div`
+  width: 150px;
+  height: 150px;
+  margin: 20px auto;
+
+  @media (min-width: 669px) {
+    width: 200px;
+    height: 200px;
+  }
+`;
 
 //Add useGoalTracker!!
 
@@ -24,7 +82,6 @@ const Dashboard = () => {
   });
 
   const [completed, setCompleted] = useState(false); //goal completion
-  const [isPublic, setIsPublic] = useState(false); //sharing visability
   const [loading, setLoading] = useState(true); //loading state
   const [user, setUser] = useState({ name: "", email: "" }); //user info
 
@@ -69,8 +126,8 @@ const Dashboard = () => {
             relevant: latestGoal.relevant,
             timebound: latestGoal.timebound,
           });
-          setCompleted(latestGoal.completed); //Users can choose to put it as complete or public
-          setIsPublic(latestGoal.isPublic);
+          setCompleted(latestGoal.completed); //Users can choose to put it as complete
+          //setIsPublic(latestGoal.isPublic);
         }
         setLoading(false);
       })
@@ -84,7 +141,7 @@ const Dashboard = () => {
   const onSave = ({ name, value }) => {
     const token = localStorage.getItem("accessToken");
 
-    //update local state of change so it shows directly
+    //Update local state of change so it shows directly
     setGoal((prev) => ({ ...prev, [name]: value }));
 
     // Sync edit change, if any, to backend
@@ -118,24 +175,6 @@ const Dashboard = () => {
     }).catch((error) => console.error("Error updating completion:", error));
   };
 
-  //Toggle visibility of intention+goal (public/private). Not user
-  const togglePublic = () => {
-    const token = localStorage.getItem("accessToken");
-    const newIsPublic = !isPublic;
-
-    setIsPublic(newIsPublic);
-
-    // Update backend
-    fetch(`http://localhost:8080/goals/${goal._id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-      body: JSON.stringify({ isPublic: newIsPublic }),
-    }).catch((error) => console.error("Error updating visibility:", error));
-  };
-
   //Visible trackng of goals, donught chart
   const data = () => {
     return {
@@ -148,16 +187,6 @@ const Dashboard = () => {
       ],
     };
   };
-  //function that returns data for a doughnut chart
-  //const data = () => ({
-  //labels: ["Completed", "In Progress"],
-  //datasets: [
-  //{
-  //data: [completed ? 5 : 0, completed ? 0 : 5],
-  // backgroundColor: ["#4caf50", "#ff9800"],
-  //},
-  //],
-  //});
 
   // Create a community post to community page, using intention + goal + user info
   const shareToCommunity = () => {
@@ -194,17 +223,21 @@ const Dashboard = () => {
   }
 
   return (
-    <div>
-      <button onClick={() => navigate("/setup")}>
-        Add new intention and goals
-      </button>
-      {goal && ( //only shows int+goal card if it is not complete
-        <div>
-          <h1>Your Intention and Goals</h1>
-          <p>Welcome, {user.name}</p>
-          <p>Email: {user.email}</p>
+    <Container>
+      <Title>Welcome to your dashboard</Title>
+      <ButtonContainer>
+        <button onClick={() => navigate("/setup")}>
+          Add new intention and goals
+        </button>
+      </ButtonContainer>
+      <UserInfo>
+        <p>Welcome, {user.name}</p>
+        <p>Email: {user.email}</p>
+      </UserInfo>
 
-          <div>
+      {goal && ( //only shows int+goal card if it is not complete
+        <Section>
+          <GoalBox>
             <h3>Your Intention</h3>
             <div>
               <EditText
@@ -213,6 +246,8 @@ const Dashboard = () => {
                 onSave={onSave}
               />
             </div>
+          </GoalBox>
+          <GoalBox>
             <h3>Your detailed goals</h3>
             {[
               "specific",
@@ -225,18 +260,25 @@ const Dashboard = () => {
                 <strong>
                   {field.charAt(0).toUpperCase() + field.slice(1)}:
                 </strong>
-                <EditText name={field} value={goal[field]} onSave={onSave} />
+
+                <EditText
+                  name={field}
+                  value={goal[field] || ""}
+                  onSave={onSave}
+                />
               </div>
             ))}
-
+          </GoalBox>
+          <ButtonContainer>
             <button onClick={toggleComplete}>Mark as Completed 🏅 </button>
             <button onClick={shareToCommunity}>Share to Community</button>
-          </div>
-        </div>
+          </ButtonContainer>
+        </Section>
       )}
-
-      <Doughnut data={data()} />
-    </div>
+      <ChartContainer>
+        <Doughnut data={data()} />
+      </ChartContainer>
+    </Container>
   );
 };
 

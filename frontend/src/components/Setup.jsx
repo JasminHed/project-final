@@ -1,7 +1,90 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 
 //to add: Disable the save button when inputs are incomplete. Confirmation / feedback on save. Persist data in backend so data does not go away on page reload.
+
+const Container = styled.div`
+  padding: 80px 20px 100px;
+  max-width: 100%;
+  margin: 0 auto;
+
+  @media (min-width: 669px) {
+    max-width: 800px;
+  }
+`;
+
+const Title = styled.h1`
+  text-align: center;
+  margin-bottom: 30px;
+`;
+
+const Section = styled.div`
+  margin-bottom: 40px;
+`;
+
+const SectionTitle = styled.h2`
+  text-align: center;
+  margin-bottom: 20px;
+`;
+
+const QuestionBox = styled.div`
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border: h3 {
+    margin-bottom: 15px;
+    text-align: center;
+  }
+
+  ul {
+    text-align: left;
+    list-style: none;
+
+    li {
+      margin-bottom: 10px;
+    }
+  }
+`;
+
+const TextBox = styled.div`
+  border: 1px solid var(--color-focus);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+
+  p {
+    margin-bottom: 15px;
+    text-align: left;
+  }
+`;
+
+const TextArea = styled.textarea`
+  width: 100%;
+  min-height: 100px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  resize: none;
+  box-sizing: border-box;
+
+  &:focus {
+    outline: 2px solid var(--color-focus);
+  }
+`;
+
+const SmartGoalBox = styled.div`
+  background: white;
+  border: 1px solid var(--color-focus);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 15px;
+
+  p {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+`;
 
 // Setup component for setting intention and SMART goals
 const Setup = () => {
@@ -60,13 +143,13 @@ const Setup = () => {
 
   //dot forget to put resize none on the styling so the textarea does not move!
   return (
-    <div>
-      <h1>Set your intention + SMART goal</h1>
+    <Container>
+      <Title>Set your intention + SMART goal</Title>
 
-      <div>
-        <h2>Your Intention & Vision</h2>
-        <div>
-          <h3>Reflect on these questions:</h3>
+      <Section>
+        <SectionTitle>Your Intention</SectionTitle>
+        <QuestionBox>
+          <h3>Reflect on these questions</h3>
           <ul>
             <li>
               What are my top priorities in life, and how can my goals help me
@@ -78,71 +161,73 @@ const Setup = () => {
               would it be, and why?
             </li>
           </ul>
-        </div>
+        </QuestionBox>
 
-        <p>
-          Write your intention. Based on your reflections above, write your main
-          intention/goal. It can be broad, you will specify how to get there in
-          your SMART goals."
-        </p>
-        <textarea
-          placeholder="Write your intention here"
-          value={values.intention}
-          onChange={(e) => handleChange("intention", e.target.value)}
-          maxLength="150"
-        />
-        <p>{values.intention.length}/150</p>
+        <TextBox>
+          <p>
+            Write your intention. Based on your reflections above, write your
+            main intention/goal. It can be broad, you will specify how to get
+            there in your SMART goals."
+          </p>
+          <TextArea
+            placeholder="Write your intention here"
+            value={values.intention}
+            onChange={(e) => handleChange("intention", e.target.value)}
+            maxLength="150"
+          />
+          <p>{values.intention.length}/150</p>
 
-        {showError && <p>Please fill in your intention</p>}
-      </div>
+          {showError && <p>Please fill in your intention</p>}
+        </TextBox>
+      </Section>
 
-      <div>
-        <h3>Now Create Your SMART Goals</h3>
+      <Section>
+        <SectionTitle>Now Create Your SMART Goals</SectionTitle>
         <p>Specific</p>
-        <textarea
+        <TextArea
           placeholder="Enter your specific goal"
           value={values.specific}
           onChange={(e) => handleChange("specific", e.target.value)}
-        ></textarea>
+        ></TextArea>
         <p>{values.specific.length}/150</p>
 
         <p>Measurable</p>
-        <textarea
+        <TextArea
           placeholder="Enter your measurable goal"
           value={values.measurable}
           onChange={(e) => handleChange("measurable", e.target.value)}
-        ></textarea>
+        ></TextArea>
         <p>{values.measurable.length}/150</p>
 
         <p>Achievable</p>
-        <textarea
+        <TextArea
           placeholder="Enter your achievable goal"
           value={values.achievable}
           onChange={(e) => handleChange("achievable", e.target.value)}
-        ></textarea>
+        ></TextArea>
         <p>{values.achievable.length}/150</p>
 
         <p>Relevant</p>
-        <textarea
+        <TextArea
           placeholder="Enter your relevant goal"
           value={values.relevant}
           onChange={(e) => handleChange("relevant", e.target.value)}
-        ></textarea>
+        ></TextArea>
         <p>{values.relevant.length}/150</p>
 
         <p>Timebound</p>
-        <textarea
+        <TextArea
           placeholder="Enter your timebound goal"
           value={values.timebound}
           onChange={(e) => handleChange("timebound", e.target.value)}
-        ></textarea>
+        ></TextArea>
         <p>{values.timebound.length}/150</p>
-      </div>
+      </Section>
 
       {showError && <p>Please fill in all fields before moving forward</p>}
 
       <button onClick={handleSave}>Save. To dashboard.</button>
-    </div>
+    </Container>
   );
 };
 

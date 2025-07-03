@@ -1,5 +1,43 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+
+const Container = styled.div`
+  padding: 80px 20px 100px;
+  max-width: 100%;
+  margin: 0 auto;
+
+  @media (min-width: 669px) {
+    max-width: 800px;
+  }
+`;
+
+const Title = styled.h1`
+  text-align: center;
+  margin-bottom: 30px;
+`;
+
+const PostContainer = styled.div`
+  border: 2px solid var(--color-focus);
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+`;
+
+const PostTitle = styled.h3`
+  margin-bottom: 15px;
+`;
+
+const PostDetail = styled.p`
+  margin-bottom: 8px;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+`;
 
 //Display a single community post and manages local like count state
 const CommunityPost = ({ post, onLike, onCommentClick }) => {
@@ -12,35 +50,36 @@ const CommunityPost = ({ post, onLike, onCommentClick }) => {
   };
 
   return (
-    <div key={post._id}>
-      <h3>My intention is: {post.intention}</h3>
-      <p>
+    <PostContainer key={post._id}>
+      <PostTitle>My intention is: {post.intention}</PostTitle>
+      <PostDetail>
         <strong>User:</strong> {post.userName}
-      </p>
-      <p>
+      </PostDetail>
+      <PostDetail>
         <strong>Specific:</strong> {post.specific}
-      </p>
-      <p>
+      </PostDetail>
+      <PostDetail>
         <strong>Measurable:</strong> {post.measurable}
-      </p>
-      <p>
+      </PostDetail>
+      <PostDetail>
         <strong>Achievable:</strong> {post.achievable}
-      </p>
-      <p>
+      </PostDetail>
+      <PostDetail>
         <strong>Relevant:</strong> {post.relevant}
-      </p>
-      <p>
+      </PostDetail>
+      <PostDetail>
         <strong>Time-bound:</strong> {post.timebound}
-      </p>
-
-      <button onClick={handleLike}>❤️ Like {likes}</button>
-      <button
-        onClick={() => onCommentClick(post._id)}
-        aria-label="Comment on post"
-      >
-        💬 Comment
-      </button>
-    </div>
+      </PostDetail>
+      <ButtonContainer>
+        <button onClick={handleLike}>❤️ Like {likes}</button>
+        <button
+          onClick={() => onCommentClick(post._id)}
+          aria-label="Comment on post"
+        >
+          💬 Comment
+        </button>
+      </ButtonContainer>
+    </PostContainer>
   );
 };
 
@@ -76,9 +115,8 @@ const Community = () => {
   };
 
   return (
-    <div>
-      <h1>Community</h1>
-      <button onClick={() => navigate("/dashboard")}>Back to dashboard</button>
+    <Container>
+      <Title>Community</Title>
       {posts.map((post) => (
         <CommunityPost
           key={post._id}
@@ -87,7 +125,7 @@ const Community = () => {
           onCommentClick={handleCommentClick}
         />
       ))}
-    </div>
+    </Container>
   );
 };
 

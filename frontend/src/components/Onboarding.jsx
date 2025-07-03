@@ -1,4 +1,49 @@
 import React, { useState } from "react";
+import styled from "styled-components";
+
+const Container = styled.div`
+  padding: 80px 20px 100px;
+  max-width: 100%;
+  margin: 0 auto;
+
+  @media (min-width: 669px) {
+    max-width: 800px;
+  }
+`;
+
+const ModuleContainer = styled.div`
+  margin-bottom: 40px;
+`;
+
+const Image = styled.img`
+  width: 100%;
+  max-width: 300px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  display: block;
+  margin: 0 auto 20px;
+`;
+
+const Content = styled.div`
+  text-align: left;
+  line-height: 1.6;
+
+  p {
+    margin-bottom: 15px;
+  }
+
+  strong {
+    font-weight: bold;
+  }
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 30px;
+`;
 
 //Track module to know where user is, to show next slide
 const Onboarding = ({ onDone }) => {
@@ -115,31 +160,33 @@ const Onboarding = ({ onDone }) => {
   };
 
   return (
-    <div>
+    <Container>
       <h1>Onboarding</h1>
 
-      <div>
-        <img src={currentModule.image} alt={currentModule.title} />
+      <ModuleContainer>
+        <Image src={currentModule.image} alt={currentModule.title} />
         <h3>{currentModule.title}</h3>
-        {currentModule.content}
-      </div>
+        <Content>{currentModule.content}</Content>
+      </ModuleContainer>
 
-      {currentSlide > 0 && <button onClick={handlePrevious}>Previous</button>}
+      <ButtonContainer>
+        {currentSlide > 0 && <button onClick={handlePrevious}>Previous</button>}
 
-      <button
-        onClick={() => {
-          if (currentSlide < modules.length - 1) {
-            handleNext();
-          } else {
-            if (onDone) onDone();
-          }
-        }}
-      >
-        {currentSlide < modules.length - 1
-          ? `Next (${currentSlide + 1} of ${modules.length})`
-          : "Next - Set up"}
-      </button>
-    </div>
+        <button
+          onClick={() => {
+            if (currentSlide < modules.length - 1) {
+              handleNext();
+            } else {
+              if (onDone) onDone();
+            }
+          }}
+        >
+          {currentSlide < modules.length - 1
+            ? `Next (${currentSlide + 1} of ${modules.length})`
+            : "Next - Set up"}
+        </button>
+      </ButtonContainer>
+    </Container>
   );
 };
 

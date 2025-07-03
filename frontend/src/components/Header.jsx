@@ -1,5 +1,85 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+
+const HeaderContainer = styled.header`
+  position: relative;
+  top: 10;
+  left: 0;
+  right: 0;
+  padding: 10px;
+  background: var(--color-background);
+  z-index: 100;
+
+  @media (min-width: 669px) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    background: var(--color-background);
+    z-index: 100;
+  }
+`;
+
+const Title = styled.h1`
+  text-align: center;
+  margin: 0;
+`;
+
+const Subtitle = styled.h4`
+  margin: 0;
+  text-align: center;
+`;
+
+const HamburgerButton = styled.button`
+  display: block;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 80px;
+
+  @media (min-width: 669px) {
+    display: none;
+  }
+`;
+
+const DesktopNav = styled.nav`
+  display: none;
+  gap: 20px;
+
+  @media (min-width: 669px) {
+    display: flex;
+    gap: 10px;
+  }
+`;
+
+const MobileNav = styled.nav`
+  position: relative;
+  top: ${(props) => (props.$isOpen ? "40px" : "-300px")};
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  background: var(--color-background);
+  padding: 20px;
+  transition: top 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+  button {
+    margin-top: 20px;
+  }
+
+  @media (min-width: 669px) {
+    display: none;
+  }
+`;
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false); //Track if mobile menu is open or closed
@@ -24,46 +104,51 @@ const Header = () => {
     setIsLoggedIn(false); //update state to logged out
     navigate("/"); //Redirect user to homepage after logout
   };
+
+  const [darkMode, setDarkMode] = useState(false);
+
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [darkMode]);
+
+  const toggleDarkMode = () => setDarkMode((prev) => !prev);
   return (
     <>
       <a href="#main-content" className="skip-link">
         Skip to main content
       </a>
+      <HeaderContainer>
+        <Title>TheIntentionApp</Title>
+        <Subtitle>Clarity.Consistency.Community.</Subtitle>
 
-      <header>
-        {/* Show logout button only if logged in */}
-        {isLoggedIn && <button onClick={handleLogout}>Logout</button>}
-        <div>
-          <h4>Clarity.Consistency.Community.</h4>
-          <h1>TheIntentionApp</h1>
-        </div>
-
-        <button onClick={toggleMenu} aria-label="Toggle the menu">
+        <HamburgerButton onClick={toggleMenu} aria-label="Toggle the menu">
           ☰
-        </button>
+        </HamburgerButton>
 
         {/*Desktop- change links*/}
-        <nav>
-          <a to="/">About</a>
-          <a to="/dashboard">Dashboard</a>
-          <a to="/community">Community</a>
-        </nav>
+        <DesktopNav>
+          <Link to="/">Home</Link>
+          <Link to="/dashboard">Dashboard</Link>
+          <Link to="/community">Community</Link>
+          <button onClick={toggleDarkMode} aria-label="Toggle dark mode">
+            {darkMode ? "Light" : "Dark"}
+          </button>
+        </DesktopNav>
+      </HeaderContainer>
 
-        {/* Mobile -change links*/}
-        {menuOpen && (
-          <nav>
-            <a to="/" onClick={closeMenu}>
-              About
-            </a>
-            <a to="/dashboard" onClick={closeMenu}>
-              Dashboard
-            </a>
-            <a to="/community" onClick={closeMenu}>
-              Community
-            </a>
-          </nav>
-        )}
-      </header>
+      {/* Mobile -change links*/}
+      <MobileNav $isOpen={menuOpen}>
+        <Link to="/">Home</Link>
+        <Link to="/dashboard">Dashboard</Link>
+        <Link to="/community">Community</Link>
+        <button onClick={toggleDarkMode} aria-label="Toggle dark mode">
+          {darkMode ? "☀️" : "🌙"}
+        </button>
+      </MobileNav>
     </>
   );
 };

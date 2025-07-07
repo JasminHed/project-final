@@ -1,12 +1,10 @@
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from "chart.js";
 import React, { useEffect, useState } from "react";
 import { Doughnut } from "react-chartjs-2";
-//external library for in-place editing
-import { EditText } from "react-edit-text";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-import "react-edit-text/dist/index.css";
+import { useUserStore } from "../store/UserStore";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -17,20 +15,6 @@ const Container = styled.div`
 
   @media (min-width: 669px) {
     max-width: 800px;
-  }
-`;
-
-const Title = styled.h1`
-  text-align: center;
-  margin-bottom: 30px;
-`;
-
-const UserInfo = styled.div`
-  text-align: center;
-  margin-bottom: 30px;
-
-  p {
-    margin-bottom: 5px;
   }
 `;
 
@@ -46,14 +30,6 @@ const ButtonContainer = styled.div`
   flex-wrap: wrap;
 `;
 
-const GoalBox = styled.div`
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 20px;
-  margin-bottom: 15px;
-`;
-
 const ChartContainer = styled.div`
   width: 150px;
   height: 150px;
@@ -65,12 +41,12 @@ const ChartContainer = styled.div`
   }
 `;
 
-//Add useGoalTracker!!
-
 // Dashboard shows the user's intention and SMART goals, plus allows interaction with the goal (edit, complete, share)
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const { user, setUser } = useUserStore();
+
   // Local state to store goal details (intention + SMART fields)
   const [goal, setGoal] = useState({
     intention: "",
@@ -83,23 +59,7 @@ const Dashboard = () => {
 
   const [completed, setCompleted] = useState(false); //goal completion
   const [loading, setLoading] = useState(true); //loading state
-  const [user, setUser] = useState({ name: "", email: "" }); //user info
-
-  // Fetch users info
-  useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    const userId = localStorage.getItem("userId");
-
-    if (userId && token) {
-      fetch(`http://localhost:8080/users/${userId}`, {
-        headers: { Authorization: token },
-      })
-        .then((res) => res.json())
-        .then((userData) => {
-          setUser({ name: userData.name, email: userData.email });
-        });
-    }
-  }, []);
+  const [successMessage, setSuccessMessage] = useState(""); //sucessmessage
 
   // Fetch users latest goal
   useEffect(() => {
@@ -127,7 +87,6 @@ const Dashboard = () => {
             timebound: latestGoal.timebound,
           });
           setCompleted(latestGoal.completed); //Users can choose to put it as complete
-          //setIsPublic(latestGoal.isPublic);
         }
         setLoading(false);
       })
@@ -136,24 +95,6 @@ const Dashboard = () => {
         setLoading(false);
       });
   }, []);
-
-  //Inline editing of goals (edittext)
-  const onSave = ({ name, value }) => {
-    const token = localStorage.getItem("accessToken");
-
-    //Update local state of change so it shows directly
-    setGoal((prev) => ({ ...prev, [name]: value }));
-
-    // Sync edit change, if any, to backend
-    fetch(`http://localhost:8080/goals/${goal._id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-      body: JSON.stringify({ [name]: value }),
-    }).catch((error) => console.error("Error updating goal:", error));
-  };
 
   //Toggles intention + ALL goal completion + updates front and backend
   const toggleComplete = () => {
@@ -216,6 +157,24 @@ const Dashboard = () => {
         console.error("Error sharing to community:", error);
       });
   };
+  //save all edits funtion
+  const saveAll = () => {
+    const token = localStorage.getItem("accessToken");
+
+    fetch(`http://localhost:8080/goals/${goal._id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+      body: JSON.stringify(goal),
+    })
+      .then(() => {
+        setSuccessMessage("Savings have been made!");
+        setTimeout(() => setSuccessMessage(""), 3000);
+      })
+      .catch(() => {});
+  };
 
   //Loading state
   if (loading) {
@@ -224,30 +183,30 @@ const Dashboard = () => {
 
   return (
     <Container>
-      <Title>Welcome to your dashboard</Title>
+      <h1>Welcome to your dashboard</h1>
       <ButtonContainer>
         <button onClick={() => navigate("/setup")}>
           Add new intention and goals
         </button>
       </ButtonContainer>
-      <UserInfo>
-        <p>Welcome, {user.name}</p>
-        <p>Email: {user.email}</p>
-      </UserInfo>
 
       {goal && ( //only shows int+goal card if it is not complete
         <Section>
-          <GoalBox>
+          <box>
             <h3>Your Intention</h3>
             <div>
-              <EditText
-                name="intention"
-                value={goal.intention || "No intention set"}
-                onSave={onSave}
+              <textarea
+                rows={2}
+                maxLength={150}
+                value={goal.intention}
+                onChange={(e) =>
+                  setGoal((prev) => ({ ...prev, intention: e.target.value }))
+                }
               />
+              <p>{goal.intention.length}/150</p>
             </div>
-          </GoalBox>
-          <GoalBox>
+          </box>
+          <box>
             <h3>Your detailed goals</h3>
             {[
               "specific",
@@ -260,16 +219,21 @@ const Dashboard = () => {
                 <strong>
                   {field.charAt(0).toUpperCase() + field.slice(1)}:
                 </strong>
-
-                <EditText
-                  name={field}
-                  value={goal[field] || ""}
-                  onSave={onSave}
+                <textarea
+                  rows={2}
+                  maxLength={150}
+                  value={goal[field]}
+                  onChange={(e) =>
+                    setGoal((prev) => ({ ...prev, [field]: e.target.value }))
+                  }
                 />
+                <p>{goal[field]?.length || 0}/150</p>
               </div>
             ))}
-          </GoalBox>
+          </box>
+          {successMessage && <p>{successMessage}</p>}
           <ButtonContainer>
+            <button onClick={saveAll}>Save all edits</button>
             <button onClick={toggleComplete}>Mark as Completed 🏅 </button>
             <button onClick={shareToCommunity}>Share to Community</button>
           </ButtonContainer>

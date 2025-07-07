@@ -12,25 +12,12 @@ const Container = styled.div`
   }
 `;
 
-const Title = styled.h1`
-  text-align: center;
-  margin-bottom: 30px;
-`;
-
 const PostContainer = styled.div`
   border: 2px solid var(--color-focus);
   border-radius: 15px;
   padding: 20px;
   margin-bottom: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-`;
-
-const PostTitle = styled.h3`
-  margin-bottom: 15px;
-`;
-
-const PostDetail = styled.p`
-  margin-bottom: 8px;
 `;
 
 const ButtonContainer = styled.div`
@@ -51,25 +38,12 @@ const CommunityPost = ({ post, onLike, onCommentClick }) => {
 
   return (
     <PostContainer key={post._id}>
-      <PostTitle>My intention is: {post.intention}</PostTitle>
-      <PostDetail>
-        <strong>User:</strong> {post.userName}
-      </PostDetail>
-      <PostDetail>
-        <strong>Specific:</strong> {post.specific}
-      </PostDetail>
-      <PostDetail>
-        <strong>Measurable:</strong> {post.measurable}
-      </PostDetail>
-      <PostDetail>
-        <strong>Achievable:</strong> {post.achievable}
-      </PostDetail>
-      <PostDetail>
-        <strong>Relevant:</strong> {post.relevant}
-      </PostDetail>
-      <PostDetail>
-        <strong>Time-bound:</strong> {post.timebound}
-      </PostDetail>
+      <h4>My intention is: {post.intention}</h4>
+      <p>Specific: {post.specific}</p>
+      <p>Measurable: {post.measurable}</p>
+      <p>Achievable: {post.achievable}</p>
+      <p>Relevant: {post.relevant}</p>
+      <p>Time-bound: {post.timebound}</p>
       <ButtonContainer>
         <button onClick={handleLike}>❤️ Like {likes}</button>
         <button
@@ -116,7 +90,7 @@ const Community = () => {
 
   return (
     <Container>
-      <Title>Community</Title>
+      <h1>Community</h1>
       {posts.map((post) => (
         <CommunityPost
           key={post._id}

@@ -1,6 +1,9 @@
-import { useState } from "react";
+import useClickOutside from "./useClickOutside";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+
+import { useUserStore } from "../store/UserStore";
 
 const ButtonContainer = styled.div`
   position: fixed;
@@ -76,8 +79,8 @@ const Register = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
     email: "",
     password: "",
   });
-
   const [error, setError] = useState("");
+  const { login } = useUserStore();
 
   const handleSubmit = () => {
     if (!formData.name || !formData.email || !formData.password) {
@@ -99,7 +102,11 @@ const Register = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
         if (data.success) {
           localStorage.setItem("userId", data.userId);
           localStorage.setItem("accessToken", data.accessToken);
-          setIsLoggedIn(true);
+          login(
+            { name: formData.name, email: formData.email },
+            data.accessToken,
+            data.userId
+          );
 
           setFormData({ name: "", email: "", password: "" });
           setError("Registration successful! You are now logged in.");
@@ -159,6 +166,7 @@ const LoginForm = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
   });
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { login } = useUserStore();
 
   const handleSubmit = () => {
     if (!formData.email || !formData.password) {
@@ -181,6 +189,7 @@ const LoginForm = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
         } else {
           localStorage.setItem("userId", data.userId);
           localStorage.setItem("accessToken", data.accessToken);
+          login(data.user, data.accessToken, data.userId);
           setError("Login successful!");
           setTimeout(() => {
             setError("");
@@ -229,11 +238,17 @@ const Login = ({ setIsLoggedIn }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [logoutMessage, setLogoutMessage] = useState("");
+  const { logout } = useUserStore();
+
+  const ref = useRef(null);
+  useClickOutside(ref, () => {
+    setIsOpen(false);
+  });
 
   const handleLogout = () => {
     localStorage.removeItem("userId");
     localStorage.removeItem("accessToken");
-    setIsLoggedIn(false);
+    logout();
     setLogoutMessage("You are now logged out.");
     setTimeout(() => setLogoutMessage(""), 2000);
   };
@@ -248,12 +263,8 @@ const Login = ({ setIsLoggedIn }) => {
       </ButtonContainer>
       {logoutMessage && <LogoutMessage>{logoutMessage}</LogoutMessage>}
       {isOpen && (
-        <PopUp onClick={() => setIsOpen(false)}>
-          {" "}
-          {/*Click outside of pop up, it closes*/}
-          <Form onClick={(e) => e.stopPropagation()}>
-            {" "}
-            {/*Hinders  closing of form, when clicks are made inside inside*/}
+        <PopUp>
+          <Form ref={ref} onClick={(e) => e.stopPropagation()}>
             {!showLogin ? (
               <Register
                 setShowLogin={setShowLogin}

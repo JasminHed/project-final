@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
+import { useUserStore } from "../store/UserStore"
+
 const HeaderContainer = styled.header`
   position: relative;
   top: 10;
@@ -87,7 +89,7 @@ const Header = () => {
   const toggleMenu = () => setMenuOpen((prev) => !prev); //Open and close menu toogle
   const closeMenu = () => setMenuOpen(false); //Close menu
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false); //Track if user is logged in
+  const { isLoggedIn, setIsLoggedIn, logout } = useUserStore(); //Track if user is logged in
 
   const navigate = useNavigate(); // React-router hook to change pages
 
@@ -100,8 +102,8 @@ const Header = () => {
   // When user clicks logout button
   const handleLogout = () => {
     localStorage.removeItem("userId");
-    localStorage.removeItem("accesstoken");
-    setIsLoggedIn(false); //update state to logged out
+    localStorage.removeItem("accessToken");
+    logout();
     navigate("/"); //Redirect user to homepage after logout
   };
 

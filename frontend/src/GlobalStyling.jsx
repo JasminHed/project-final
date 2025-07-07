@@ -41,6 +41,58 @@ const GlobalStyles = createGlobalStyle`
     transition: background-color 0.3s ease, color 0.3s ease;
   }
 
+  h1, h2, h3, h4 {
+  color: var(--color-text-primary);
+  margin-top: 24px;
+  margin-bottom: 8px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+}
+
+h1 {
+  font-size: 28px; 
+}
+
+h2 {
+  font-size: 24px;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+
+p {
+  font-size: 16px;
+  margin-top: 0;
+  margin-bottom: 16px;
+  color: var(--color-text-primary);
+  line-height: 1.6;
+  text-align: left;
+}
+
+
+@media (min-width: 669px) {
+  h1 {
+    font-size: 40px;
+  }
+  h2 {
+    font-size: 32px;
+  }
+  h3 {
+    font-size: 24px;
+  }
+  h4 {
+    font-size: 20px;
+  }
+  
+}
+
   a {
     color: var(--color-text-link);
     text-decoration: none;
@@ -89,6 +141,36 @@ const GlobalStyles = createGlobalStyle`
   outline-offset: 2px;
   border-radius: 2px;
 }
+
+/* Box styling */
+.box {
+    background: var(--color-box-bg);
+    border: 1px solid var(--color-box-border);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 8px var(--color-box-shadow);
+  }
+
+  /* Textarea styling */
+  textarea {
+    width: 100%;
+    border: 2px solid var(--color-focus);
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    resize: none;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: 1rem;
+    box-shadow: 0 4px 8px var(--color-box-shadow);
+    transition: outline 0.3s ease;
+  }
+
+  textarea:focus {
+    outline: 2px solid var(--color-focus);
+  }
 
 
 

@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
+//We need to make the comments work so that a user can write a comment on a post.
+//Add journal section?
+//Add vision board-using another library snce edit-text did not work.
 const Container = styled.div`
   padding: 80px 20px 100px;
   max-width: 100%;

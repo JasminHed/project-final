@@ -1,9 +1,18 @@
-import useClickOutside from "./useClickOutside";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import { useUserStore } from "../store/UserStore";
+import {
+  ErrorDiv,
+  Input,
+  Label,
+  LinkSpan,
+  RegisterLink,
+} from "../styling/FormStyling.jsx";
+import LogIn from "./LogIn.jsx";
+import SignUp from "./SignUp.jsx";
+import useClickOutside from "./useClickOutside";
 
 const ButtonContainer = styled.div`
   position: fixed;
@@ -42,198 +51,6 @@ const Form = styled.form`
   max-width: 320px;
 `;
 
-const Label = styled.label`
-  display: block;
-  margin-bottom: 5px;
-  margin-top: 25px;
-  font-size: 14px;
-`;
-
-const Input = styled.input`
-  width: 280px;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-`;
-
-const ErrorDiv = styled.div`
-  color: white;
-`;
-
-const RegisterLink = styled.p`
-  font-size: 12px;
-  margin-top: 10px;
-`;
-
-const LinkSpan = styled.span`
-  color: #4a9eff;
-  cursor: pointer;
-`;
-
-// Register Component
-const Register = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
-  const [error, setError] = useState("");
-  const { login } = useUserStore();
-
-  const handleSubmit = () => {
-    if (!formData.name || !formData.email || !formData.password) {
-      setError("Please fill in all fields");
-      return;
-    }
-    if (formData.password.length < 5) {
-      setError("Password must be at least 5 characters");
-      return;
-    }
-
-    fetch("http://localhost:8080/users", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          localStorage.setItem("userId", data.userId);
-          localStorage.setItem("accessToken", data.accessToken);
-          login(
-            { name: formData.name, email: formData.email },
-            data.accessToken,
-            data.userId
-          );
-
-          setFormData({ name: "", email: "", password: "" });
-          setError("Registration successful! You are now logged in.");
-          setTimeout(() => {
-            setError("");
-            setIsOpen(false);
-          }, 2000);
-        } else {
-          setError(data.message);
-        }
-      })
-      .catch(() => {
-        setError("Network error. Please try again.");
-      });
-  };
-
-  return (
-    <>
-      <Label htmlFor="name">Name</Label>
-      <Input
-        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-        type="text"
-        name="name"
-        value={formData.name}
-      />
-      <Label htmlFor="email">Email</Label>
-      <Input
-        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-        type="email"
-        name="email"
-        value={formData.email}
-      />
-      <Label htmlFor="password">Password</Label>
-      <Input
-        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-        type="password"
-        name="password"
-        value={formData.password}
-      />
-      {error && <ErrorDiv>{error}</ErrorDiv>}
-      <button type="button" onClick={handleSubmit}>
-        Sign up
-      </button>
-
-      <RegisterLink>
-        <LinkSpan>Already a user? </LinkSpan>
-        <LinkSpan onClick={() => setShowLogin(true)}>Log in here</LinkSpan>
-      </RegisterLink>
-    </>
-  );
-};
-
-const LoginForm = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
-  const { login } = useUserStore();
-
-  const handleSubmit = () => {
-    if (!formData.email || !formData.password) {
-      setError("Please fill in both fields");
-      return;
-    }
-
-    setError("");
-    setFormData({ email: "", password: "" });
-
-    fetch("http://localhost:8080/sessions", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.notFound) {
-          setError("Invalid email or password");
-        } else {
-          localStorage.setItem("userId", data.userId);
-          localStorage.setItem("accessToken", data.accessToken);
-          login(data.user, data.accessToken, data.userId);
-          setError("Login successful!");
-          setTimeout(() => {
-            setError("");
-            setIsOpen(false);
-          }, 3000);
-
-          setIsLoggedIn(true);
-
-          if (localStorage.getItem("hasCompletedOnboarding")) {
-            navigate("/dashboard");
-          }
-        }
-      });
-  };
-
-  return (
-    <>
-      <Label htmlFor="email">Email</Label>
-      <Input
-        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-        type="text"
-        name="email"
-        value={formData.email}
-      />
-      <Label htmlFor="password">Password</Label>
-      <Input
-        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-        type="password"
-        name="password"
-        value={formData.password}
-      />
-      {error && <ErrorDiv>{error}</ErrorDiv>}
-      <button type="button" onClick={handleSubmit}>
-        Log In
-      </button>
-
-      <RegisterLink>
-        <LinkSpan>New user? </LinkSpan>
-        <LinkSpan onClick={() => setShowLogin(false)}>Sign up here</LinkSpan>
-      </RegisterLink>
-    </>
-  );
-};
-
 const Login = ({ setIsLoggedIn }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
@@ -266,13 +83,13 @@ const Login = ({ setIsLoggedIn }) => {
         <PopUp>
           <Form ref={ref} onClick={(e) => e.stopPropagation()}>
             {!showLogin ? (
-              <Register
+              <SignUp
                 setShowLogin={setShowLogin}
                 setIsLoggedIn={setIsLoggedIn}
                 setIsOpen={setIsOpen}
               />
             ) : (
-              <LoginForm
+              <LogIn
                 setShowLogin={setShowLogin}
                 setIsLoggedIn={setIsLoggedIn}
                 setIsOpen={setIsOpen}

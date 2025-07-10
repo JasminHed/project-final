@@ -2,7 +2,8 @@
   "name": "project-final-parent",
   "version": "1.0.0",
   "scripts": {
-    "postinstall": "npm install --prefix backend"
+    "postinstall": "npm install --prefix backend",
+    "start": "node backend/server.js"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.21",
@@ -13,3 +14,4 @@
     "zustand": "^5.0.6"
   }
 }
+

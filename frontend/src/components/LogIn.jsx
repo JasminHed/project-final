@@ -2,7 +2,13 @@ import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useUserStore } from "../store/UserStore";
-import { ErrorDiv, Input, Label, LinkSpan, RegisterLink } from "../styling/FormStyling.jsx";
+import {
+  ErrorDiv,
+  Input,
+  Label,
+  LinkSpan,
+  RegisterLink,
+} from "../styling/FormStyling.jsx";
 
 const LogIn = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
   const [formData, setFormData] = useState({
@@ -22,7 +28,7 @@ const LogIn = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
     setError("");
     setFormData({ email: "", password: "" });
 
-    fetch("http://localhost:8080/sessions", {
+    fetch("https://project-final-ualo.onrender.com/sessions", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),

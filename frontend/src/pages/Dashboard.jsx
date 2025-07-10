@@ -65,7 +65,7 @@ const Dashboard = () => {
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
 
-    fetch("http://localhost:8080/goals", {
+    fetch("https://project-final-ualo.onrender.com/goals", {
       headers: {
         Authorization: token,
       },
@@ -106,7 +106,7 @@ const Dashboard = () => {
       setGoal(null); //If completed remove
     }
 
-    fetch(`http://localhost:8080/goals/${goal._id}`, {
+    fetch(`https://project-final-ualo.onrender.com/goals/${goal._id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -133,7 +133,7 @@ const Dashboard = () => {
   const shareToCommunity = () => {
     const token = localStorage.getItem("accessToken");
 
-    fetch("http://localhost:8080/community-posts", {
+    fetch("https://project-final-ualo.onrender.com/community-posts", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -161,7 +161,7 @@ const Dashboard = () => {
   const saveAll = () => {
     const token = localStorage.getItem("accessToken");
 
-    fetch(`http://localhost:8080/goals/${goal._id}`, {
+    fetch(`https://project-final-ualo.onrender.com/goals/${goal._id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",

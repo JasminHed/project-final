@@ -30,7 +30,7 @@ const SignUp = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
       return;
     }
 
-    fetch("http://localhost:8080/users", {
+    fetch("https://project-final-ualo.onrender.com/users", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),

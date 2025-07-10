@@ -49,7 +49,7 @@ const Setup = () => {
     } else {
       const token = localStorage.getItem("accessToken");
       //Send POST request to save goal data
-      fetch("http://localhost:8080/goals", {
+      fetch("https://project-final-ualo.onrender.com/goals", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

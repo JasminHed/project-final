@@ -67,16 +67,19 @@ const Community = () => {
 
   //Fetches the list of community posts from the backend API
   useEffect(() => {
-    fetch("http://localhost:8080/community-posts")
+    fetch("https://project-final-ualo.onrender.com/community-posts")
       .then((res) => res.json())
       .then(setPosts);
   }, []);
 
   const handleLike = (postId) => {
     // Fetch post to like the post
-    fetch(`http://localhost:8080/community-posts/${postId}/like`, {
-      method: "POST",
-    }).then(() => {
+    fetch(
+      `https://project-final-ualo.onrender.com/community-posts/${postId}/like`,
+      {
+        method: "POST",
+      }
+    ).then(() => {
       // Update local likes count after successful like
       setPosts((posts) =>
         posts.map((post) =>

@@ -19,10 +19,10 @@ mongoose.Promise = Promise;
 
 //Authenitcation middleware
 const authenticateUser = async (req, res, next) => {
-  console.log("Authorization received:", req.header("Authorization"));
+  
 
   const user = await User.findOne({ accessToken: req.header("Authorization") });
-  console.log("User found:", user ? "YES" : "NO");
+ 
 
   if (user) {
     req.user = user;
@@ -118,7 +118,12 @@ app.get("/users/:id", authenticateUser, async (req, res) => {
 
 //Setup
 
-//Checks for exisiting intention+goal. No duplicates aload
+// POST - Create intention+smart goal as a logged in user
+app.post("/goals", authenticateUser, async (req, res) => {
+  const { intention, specific, measurable, achievable, relevant, timebound } = req.body;
+  
+  try {
+    //Checks for exisiting intention+goal. No duplicates aload
 const existingGoal = await Goal.findOne({ userId: req.user._id, intention });
 if (existingGoal) {
   return res.status(400).json({
@@ -127,11 +132,6 @@ if (existingGoal) {
   });
 }
 
-// POST - Create intention+smart goal as a logged in user
-app.post("/goals", authenticateUser, async (req, res) => {
-  const { intention, specific, measurable, achievable, relevant, timebound } = req.body;
-  
-  try {
     const newGoal = new Goal({
       userId: req.user._id, //associate each user with each goal they create
       intention,
@@ -221,7 +221,7 @@ app.get('/community-posts', async (req, res) => {
 app.post('/community-posts', authenticateUser, async (req, res) => {
   const post = new CommunityPost({
     ...req.body,
-    userId: req.user_id
+    userId: req.user._id
   });
   await post.save();
   res.json(post);

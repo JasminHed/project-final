@@ -8,7 +8,7 @@ const GlobalStyles = createGlobalStyle`
   --color-text-link: #70658d;             
   --color-button-bg: #004d40;            
   --color-button-text: #FFFFFF;           
-  --color-button-hover: #b44650;          
+  --color-button-hover: #aa6670;       
   --color-focus: #e47885;                 
   --color-background: #FFFFFF;            
 }

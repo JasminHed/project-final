@@ -91,7 +91,6 @@ const WelcomeScreen = () => {
     <main>
       <Authform setIsLoggedIn={setIsLoggedIn} />
 
-      <img src="" alt="" />
       <Description>
         The Intention App is a personal growth tool. You'll reflect, set
         intentions, define doable goals and follow through — all supported by
@@ -100,13 +99,22 @@ const WelcomeScreen = () => {
 
       <MainBox>
         <Box onClick={() => handleNavigation("onboarding")}>
-          Read about Intention & SMART goals here
+          <img src="/assets/9.png" alt="An image of a brain in graphics" />
+          Read about Intention & SMART goals
         </Box>
         <Box onClick={() => handleNavigation("setup")}>
-          Create your Intention & SMART goal here
+          <img
+            src="/assets/10.png"
+            alt="An image of a brain where flowers are growing"
+          />
+          Create your Intention & SMART goals
         </Box>
         <Box onClick={() => handleNavigation("dashboard")}>
-          Track and stay motivated here
+          <img
+            src="/assets/12.png"
+            alt="An image of a head with starts, flowers in graphic"
+          />
+          Track and stay motivated
         </Box>
       </MainBox>
 

@@ -97,6 +97,7 @@ const Community = () => {
   return (
     <Container>
       <h1>Community</h1>
+      <img src="/assets/13.png" alt="An image of two hearts hugging" />
       {posts.map((post) => (
         <CommunityPost
           key={post._id}

@@ -184,6 +184,7 @@ const Dashboard = () => {
   return (
     <Container>
       <h1>Welcome to your dashboard</h1>
+      <img src="/assets/12.png" alt="An image of a brain made of flowers" />
       <ButtonContainer>
         <button onClick={() => navigate("/setup")}>
           Add new intention and goals

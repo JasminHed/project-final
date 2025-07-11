@@ -76,8 +76,11 @@ const Setup = () => {
   //dot forget to put resize none on the styling so the textarea does not move!
   return (
     <Container>
-      <h1>Set your intention + SMART goal</h1>
-
+      <h1>Set your intention and goals</h1>
+      <img
+        src="/assets/10.png"
+        alt="An image of a brain where flowers are growing"
+      />
       <Section>
         <h2>Your Intention</h2>
         <box>

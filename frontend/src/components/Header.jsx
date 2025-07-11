@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-import { useUserStore } from "../store/UserStore"
+import { useUserStore } from "../store/UserStore";
 
 const HeaderContainer = styled.header`
   position: relative;
@@ -30,11 +30,6 @@ const HeaderContainer = styled.header`
 const Title = styled.h1`
   text-align: center;
   margin: 0;
-`;
-
-const Subtitle = styled.h4`
-  margin: 0;
-  text-align: center;
 `;
 
 const HamburgerButton = styled.button`
@@ -125,7 +120,6 @@ const Header = () => {
       </a>
       <HeaderContainer>
         <Title>TheIntentionApp</Title>
-        <Subtitle>Clarity.Consistency.Community.</Subtitle>
 
         <HamburgerButton onClick={toggleMenu} aria-label="Toggle the menu">
           ☰
@@ -148,7 +142,7 @@ const Header = () => {
         <Link to="/dashboard">Dashboard</Link>
         <Link to="/community">Community</Link>
         <button onClick={toggleDarkMode} aria-label="Toggle dark mode">
-          {darkMode ? "☀️" : "🌙"}
+          {darkMode ? "Light" : "Dark"}
         </button>
       </MobileNav>
     </>

@@ -6,7 +6,7 @@ const GlobalStyles = createGlobalStyle`
   :root {
   --color-text-primary: #000000;          
   --color-text-link: #70658d;             
-  --color-button-bg: #0f9b8f;             
+  --color-button-bg: #004d40;            
   --color-button-text: #FFFFFF;           
   --color-button-hover: #b44650;          
   --color-focus: #e47885;                 
@@ -18,7 +18,7 @@ const GlobalStyles = createGlobalStyle`
 .dark {
   --color-text-primary: #FFFFFF;          
   --color-text-link: #fac04b;            
-  --color-button-bg: #0f9b8f;            
+  --color-button-bg: #004d40;           
   --color-button-text: #FFFFFF;           
   --color-button-hover: #e47885;        
   --color-focus: #fac04b;                 

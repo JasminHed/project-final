@@ -8,7 +8,8 @@ import { useUserStore } from "../store/UserStore";
 import { Box, Textarea } from "../styling/BoxStyling.jsx";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
-
+//User should be able to see all intention + goal they put up, max 3
+//
 const Container = styled.div`
   padding: 80px 20px 100px;
   max-width: 100%;

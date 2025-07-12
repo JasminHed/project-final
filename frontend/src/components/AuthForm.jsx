@@ -3,17 +3,30 @@ import { useRef, useState } from "react";
 import styled from "styled-components";
 
 import { useUserStore } from "../store/UserStore";
-import { ErrorDiv, Input, Label, LinkSpan, RegisterLink } from "../styling/FormStyling.jsx";
+import {
+  ErrorDiv,
+  Input,
+  Label,
+  LinkSpan,
+  RegisterLink,
+} from "../styling/FormStyling.jsx";
 import LogIn from "./LogIn";
 import SignUp from "./SignUp";
 import useClickOutside from "./useClickOutside";
 
+//Once user is logged in, the button sign up should go away and there should be a icon avatar instead. Log out should always be present, user is not logged out until you click log out?
 const ButtonContainer = styled.div`
   position: fixed;
   bottom: 20px;
   left: 20px;
   display: flex;
   gap: 10px;
+`;
+
+const AvatarIcon = styled.div`
+  font-size: 1.8rem;
+  cursor: default;
+  user-select: none;
 `;
 
 const LogoutMessage = styled.p`
@@ -28,7 +41,6 @@ const PopUp = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  bottom: 0;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
@@ -45,7 +57,7 @@ const Form = styled.form`
   max-width: 320px;
 `;
 
-const AuthForm = ({ setIsLoggedIn }) => {
+const AuthForm = ({ isLoggedIn, setIsLoggedIn }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [logoutMessage, setLogoutMessage] = useState("");
@@ -62,17 +74,23 @@ const AuthForm = ({ setIsLoggedIn }) => {
     logout();
     setLogoutMessage("You are now logged out.");
     setTimeout(() => setLogoutMessage(""), 2000);
+    setIsLoggedIn(false);
   };
 
   return (
     <>
       <ButtonContainer>
-        <button onClick={() => setIsOpen(true)}>Sign Up</button>
-        {
-          <button type="button" onClick={handleLogout}>
-            Logout
-          </button>
-        }
+        {isLoggedIn ? (
+          <AvatarIcon role="img" aria-label="User logged in">
+            🤖
+          </AvatarIcon>
+        ) : (
+          <button onClick={() => setIsOpen(true)}>Sign Up</button>
+        )}
+
+        <button type="button" onClick={handleLogout}>
+          Logout
+        </button>
       </ButtonContainer>
       {logoutMessage && <LogoutMessage>{logoutMessage}</LogoutMessage>}
       {isOpen && (

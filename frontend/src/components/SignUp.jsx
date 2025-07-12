@@ -2,13 +2,9 @@ import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useUserStore } from "../store/UserStore";
-import {
-  ErrorDiv,
-  Input,
-  Label,
-  LinkSpan,
-  RegisterLink,
-} from "../styling/FormStyling.jsx";
+import { ErrorDiv, Input, Label, LinkSpan, RegisterLink } from "../styling/FormStyling.jsx";
+
+//Once user is logged in, the button sign up should go away and there should be a icon avatar instead. Log out should always be present, user is not logged out until you click log out?
 
 // Sign Up Component
 const SignUp = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {

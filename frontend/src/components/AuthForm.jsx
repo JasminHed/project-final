@@ -2,21 +2,14 @@ import { useRef, useState } from "react";
 //import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
+import { useUserStore } from "../store/UserStore";
+import { ErrorDiv, Input, Label, LinkSpan, RegisterLink } from "../styling/FormStyling.jsx";
 import LogIn from "./LogIn";
-import SignUp from "./SignUp";
-import useClickOutside from "./useClickOutside";
-
-///*import { useUserStore } from "../store/UserStore";
-/*import {
-  ErrorDiv,
-  Input,
-  Label,
-  LinkSpan,
-  RegisterLink,
-} from "../styling/FormStyling.jsx";
 import LogIn from "./LogIn.jsx";
+import SignUp from "./SignUp";
 import SignUp from "./SignUp.jsx";
-import useClickOutside from "./useClickOutside";*/
+import useClickOutside from "./useClickOutside";
+import useClickOutside from "./useClickOutside";
 
 const ButtonContainer = styled.div`
   position: fixed;
@@ -26,12 +19,12 @@ const ButtonContainer = styled.div`
   gap: 10px;
 `;
 
-/*const LogoutMessage = styled.p`
+const LogoutMessage = styled.p`
   position: absolute;
   color: var(--color-text-primary);
   bottom: 60px;
   left: 110px;
-`;*/
+`;
 
 const PopUp = styled.div`
   position: fixed;
@@ -58,31 +51,31 @@ const Form = styled.form`
 const AuthForm = ({ setIsLoggedIn }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
-  //const [logoutMessage, setLogoutMessage] = useState("");
-  //const { logout } = useUserStore();
+  const [logoutMessage, setLogoutMessage] = useState("");
+  const { logout } = useUserStore();
 
   const ref = useRef(null);
   useClickOutside(ref, () => {
     setIsOpen(false);
   });
 
-  /*const handleLogout = () => {
+  const handleLogout = () => {
     localStorage.removeItem("userId");
     localStorage.removeItem("accessToken");
     logout();
     setLogoutMessage("You are now logged out.");
     setTimeout(() => setLogoutMessage(""), 2000);
-  };*/
+  };
 
   return (
     <>
       <ButtonContainer>
         <button onClick={() => setIsOpen(true)}>Sign Up</button>
-        {/*<button type="button" onClick={handleLogout}>
+        {<button type="button" onClick={handleLogout}>
           Logout
-        </button>*/}
+        </button>}
       </ButtonContainer>
-      {/*logoutMessage && <LogoutMessage>{logoutMessage}</LogoutMessage>*/}
+      {logoutMessage && <LogoutMessage>{logoutMessage}</LogoutMessage>}
       {isOpen && (
         <PopUp>
           <Form ref={ref} onClick={(e) => e.stopPropagation()}>

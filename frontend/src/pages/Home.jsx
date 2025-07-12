@@ -27,7 +27,7 @@ const Box = styled.div`
 `;
 
 // Importing components for authentication, onboarding, and setup steps
-import AuthForm from "../components/AuthForm.jsx";
+import AuthForm from "../components/AuthForm";
 import Onboarding from "../components/Onboarding.jsx";
 import Setup from "../components/Setup.jsx";
 

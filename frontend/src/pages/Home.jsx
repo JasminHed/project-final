@@ -27,7 +27,7 @@ const Box = styled.div`
 `;
 
 // Importing components for authentication, onboarding, and setup steps
-import Authform from "../components/Authform.jsx";
+import AuthForm from "../components/AuthForm.jsx";
 import Onboarding from "../components/Onboarding.jsx";
 import Setup from "../components/Setup.jsx";
 
@@ -89,7 +89,7 @@ const WelcomeScreen = () => {
 
   return (
     <main>
-      <Authform setIsLoggedIn={setIsLoggedIn} />
+      <AuthForm setIsLoggedIn={setIsLoggedIn} />
 
       <Description>
         The Intention App is a personal growth tool. You'll reflect, set

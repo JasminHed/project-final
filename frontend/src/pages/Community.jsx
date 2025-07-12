@@ -5,6 +5,21 @@ import styled from "styled-components";
 //We need to make the comments work so that a user can write a comment on a post.
 //Add journal section?
 //Add vision board-using another library snce edit-text did not work.
+
+const Img = styled.img`
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+  object-fit: contain;
+
+  @media (min-width: 668px) {
+    img {
+      max-width: 500px;
+    }
+  }
+`;
 const Container = styled.div`
   padding: 80px 20px 100px;
   max-width: 100%;
@@ -97,7 +112,7 @@ const Community = () => {
   return (
     <Container>
       <h1>Community</h1>
-      <img src="/assets/13.png" alt="An image of two hearts hugging" />
+      <Img src="/assets/13.png" alt="An image of two hearts hugging" />
       {posts.map((post) => (
         <CommunityPost
           key={post._id}

@@ -15,14 +15,19 @@ const ModuleContainer = styled.div`
   margin-bottom: 40px;
 `;
 
-const Image = styled.img`
+const Img = styled.img`
   width: 100%;
   max-width: 300px;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 8px;
+  height: auto;
+  margin: 0 auto;
   display: block;
-  margin: 0 auto 20px;
+  object-fit: contain;
+
+  @media (min-width: 668px) {
+    img {
+      max-width: 500px;
+    }
+  }
 `;
 
 const Content = styled.div`
@@ -164,7 +169,7 @@ const Onboarding = ({ onDone }) => {
       <h1>Onboarding</h1>
 
       <ModuleContainer>
-        <Image src={currentModule.image} alt={currentModule.title} />
+        <Img src="/assets/9.png" alt="An image of a brain in graphics" />
         <h3>{currentModule.title}</h3>
         <Content>{currentModule.content}</Content>
       </ModuleContainer>

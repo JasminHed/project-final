@@ -68,9 +68,11 @@ const AuthForm = ({ setIsLoggedIn }) => {
     <>
       <ButtonContainer>
         <button onClick={() => setIsOpen(true)}>Sign Up</button>
-        {<button type="button" onClick={handleLogout}>
-          Logout
-        </button>}
+        {
+          <button type="button" onClick={handleLogout}>
+            Logout
+          </button>
+        }
       </ButtonContainer>
       {logoutMessage && <LogoutMessage>{logoutMessage}</LogoutMessage>}
       {isOpen && (

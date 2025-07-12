@@ -46,7 +46,6 @@ const GlobalStyles = createGlobalStyle`
   margin-top: 24px;
   margin-bottom: 8px;
   font-weight: 700;
-  line-height: 1.2;
   text-align: center;
 }
 
@@ -141,37 +140,6 @@ p {
   outline-offset: 2px;
   border-radius: 2px;
 }
-
-/* Box styling */
-.box {
-    background: var(--color-box-bg);
-    border: 1px solid var(--color-box-border);
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 15px;
-    box-shadow: 0 4px 8px var(--color-box-shadow);
-  }
-
-  /* Textarea styling */
-  textarea {
-    width: 100%;
-    border: 2px solid var(--color-focus);
-    border-radius: 15px;
-    padding: 20px;
-    margin-top: 15px;
-    margin-bottom: 15px;
-    resize: none;
-    box-sizing: border-box;
-    font-family: inherit;
-    font-size: 1rem;
-    box-shadow: 0 4px 8px var(--color-box-shadow);
-    transition: outline 0.3s ease;
-  }
-
-  textarea:focus {
-    outline: 2px solid var(--color-focus);
-  }
-
 
 
 `;

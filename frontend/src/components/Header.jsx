@@ -7,9 +7,9 @@ import { useUserStore } from "../store/UserStore";
 
 const HeaderContainer = styled.header`
   position: relative;
-  top: 10;
-  left: 0;
-  right: 0;
+  //top: 10;
+  //left: 0;
+  //right: 0;
   padding: 10px;
   background: var(--color-background);
   z-index: 100;
@@ -18,18 +18,12 @@ const HeaderContainer = styled.header`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    top: 0;
-    left: 0;
-    right: 0;
-    padding: 20px;
-    background: var(--color-background);
-    z-index: 100;
   }
 `;
 
 const Title = styled.h1`
   text-align: center;
-  margin: 0;
+  //margin: 0;
 `;
 
 const HamburgerButton = styled.button`
@@ -50,6 +44,7 @@ const DesktopNav = styled.nav`
 
   @media (min-width: 669px) {
     display: flex;
+
     gap: 10px;
   }
 `;

@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
+import { Box, Textarea } from "../styling/BoxStyling.jsx";
+
 //to add: Disable the save button when inputs are incomplete. Confirmation / feedback on save. Persist data in backend so data does not go away on page reload.
 
 const Container = styled.div`
@@ -16,6 +18,21 @@ const Container = styled.div`
 
 const Section = styled.div`
   margin-bottom: 40px;
+`;
+
+const Img = styled.img`
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+  object-fit: contain;
+
+  @media (min-width: 668px) {
+    img {
+      max-width: 500px;
+    }
+  }
 `;
 
 // Setup component for setting intention and SMART goals
@@ -77,13 +94,13 @@ const Setup = () => {
   return (
     <Container>
       <h1>Set your intention and goals</h1>
-      <img
+      <Img
         src="/assets/10.png"
         alt="An image of a brain where flowers are growing"
       />
       <Section>
         <h2>Your Intention</h2>
-        <box>
+        <Box>
           <h3>Reflect on these questions</h3>
           <ul>
             <li>
@@ -96,15 +113,15 @@ const Setup = () => {
               would it be, and why?
             </li>
           </ul>
-        </box>
+        </Box>
 
-        <box>
+        <Box>
           <p>
             Write your intention. Based on your reflections above, write your
             main intention/goal. It can be broad, you will specify how to get
             there in your SMART goals."
           </p>
-          <textarea
+          <Textarea
             placeholder="Write your intention here"
             value={values.intention}
             onChange={(e) => handleChange("intention", e.target.value)}
@@ -113,49 +130,49 @@ const Setup = () => {
           <p>{values.intention.length}/150</p>
 
           {showError && <p>Please fill in your intention</p>}
-        </box>
+        </Box>
       </Section>
 
       <Section>
         <h2>Now Create Your SMART Goals</h2>
         <h3>Specific</h3>
-        <textarea
+        <Textarea
           placeholder="Enter your specific goal"
           value={values.specific}
           onChange={(e) => handleChange("specific", e.target.value)}
-        ></textarea>
+        ></Textarea>
         <p>{values.specific.length}/150</p>
 
         <h3>Measurable</h3>
-        <textarea
+        <Textarea
           placeholder="Enter your measurable goal"
           value={values.measurable}
           onChange={(e) => handleChange("measurable", e.target.value)}
-        ></textarea>
+        ></Textarea>
         <p>{values.measurable.length}/150</p>
 
         <h3>Achievable</h3>
-        <textarea
+        <Textarea
           placeholder="Enter your achievable goal"
           value={values.achievable}
           onChange={(e) => handleChange("achievable", e.target.value)}
-        ></textarea>
+        ></Textarea>
         <p>{values.achievable.length}/150</p>
 
         <h3>Relevant</h3>
-        <textarea
+        <Textarea
           placeholder="Enter your relevant goal"
           value={values.relevant}
           onChange={(e) => handleChange("relevant", e.target.value)}
-        ></textarea>
+        ></Textarea>
         <p>{values.relevant.length}/150</p>
 
         <h3>Timebound</h3>
-        <textarea
+        <Textarea
           placeholder="Enter your timebound goal"
           value={values.timebound}
           onChange={(e) => handleChange("timebound", e.target.value)}
-        ></textarea>
+        ></Textarea>
         <p>{values.timebound.length}/150</p>
       </Section>
 

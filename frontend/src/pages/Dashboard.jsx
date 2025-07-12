@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import { useUserStore } from "../store/UserStore";
+import { Box, Textarea } from "../styling/BoxStyling.jsx";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -20,6 +21,21 @@ const Container = styled.div`
 
 const Section = styled.div`
   margin-bottom: 40px;
+`;
+
+const Img = styled.img`
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+  object-fit: contain;
+
+  @media (min-width: 668px) {
+    img {
+      max-width: 500px;
+    }
+  }
 `;
 
 const ButtonContainer = styled.div`
@@ -184,7 +200,7 @@ const Dashboard = () => {
   return (
     <Container>
       <h1>Welcome to your dashboard</h1>
-      <img src="/assets/12.png" alt="An image of a brain made of flowers" />
+      <Img src="/assets/12.png" alt="An image of a brain made of flowers" />
       <ButtonContainer>
         <button onClick={() => navigate("/setup")}>
           Add new intention and goals
@@ -193,10 +209,10 @@ const Dashboard = () => {
 
       {goal && ( //only shows int+goal card if it is not complete
         <Section>
-          <box>
+          <Box>
             <h3>Your Intention</h3>
             <div>
-              <textarea
+              <Textarea
                 rows={2}
                 maxLength={150}
                 value={goal.intention}
@@ -206,8 +222,8 @@ const Dashboard = () => {
               />
               <p>{goal.intention.length}/150</p>
             </div>
-          </box>
-          <box>
+          </Box>
+          <Box>
             <h3>Your detailed goals</h3>
             {[
               "specific",
@@ -220,7 +236,7 @@ const Dashboard = () => {
                 <strong>
                   {field.charAt(0).toUpperCase() + field.slice(1)}:
                 </strong>
-                <textarea
+                <Textarea
                   rows={2}
                   maxLength={150}
                   value={goal[field]}
@@ -231,7 +247,7 @@ const Dashboard = () => {
                 <p>{goal[field]?.length || 0}/150</p>
               </div>
             ))}
-          </box>
+          </Box>
           {successMessage && <p>{successMessage}</p>}
           <ButtonContainer>
             <button onClick={saveAll}>Save all edits</button>

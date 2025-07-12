@@ -2,9 +2,22 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const Description = styled.p`
-  text-align: center;
+  text-align: left;
   margin: 20px auto;
   padding: 0 20px;
+  max-width: 90%;
+
+  @media (min-width: 668px) {
+    max-width: 700px;
+    margin-bottom: 50px;
+    margin-top: 50px;
+  }
+
+  @media (min-width: 1024px) {
+    max-width: 900px;
+    margin-bottom: 80px;
+    margin-top: 80px;
+  }
 `;
 
 const MainBox = styled.div`
@@ -20,6 +33,21 @@ const Box = styled.div`
   border-radius: 8px;
   text-align: center;
   cursor: pointer;
+
+  img {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    margin: 0 auto;
+    display: block;
+    object-fit: contain;
+  }
+
+  @media (min-width: 668px) {
+    img {
+      max-width: 500px;
+    }
+  }
 
   &:hover {
     background: var(--color-button-hover);

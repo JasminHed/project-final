@@ -5,10 +5,7 @@ import styled from "styled-components";
 import { useUserStore } from "../store/UserStore";
 import { ErrorDiv, Input, Label, LinkSpan, RegisterLink } from "../styling/FormStyling.jsx";
 import LogIn from "./LogIn";
-import LogIn from "./LogIn.jsx";
 import SignUp from "./SignUp";
-import SignUp from "./SignUp.jsx";
-import useClickOutside from "./useClickOutside";
 import useClickOutside from "./useClickOutside";
 
 const ButtonContainer = styled.div`

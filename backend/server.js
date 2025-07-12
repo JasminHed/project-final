@@ -39,7 +39,12 @@ const authenticateUser = async (req, res, next) => {
 const port = process.env.PORT || 8080;
 const app = express();
 
-app.use(cors());
+//app.use(cors());
+app.use(cors({
+  origin: "https://finalprojectjasmin.netlify.app",
+  credentials: true 
+}));
+
 app.use(express.json());
 
 app.get("/", (req, res) => {

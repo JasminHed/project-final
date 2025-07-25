@@ -7,6 +7,8 @@ import styled from "styled-components";
 import { useUserStore } from "../store/UserStore";
 import { Box, Textarea } from "../styling/BoxStyling.jsx";
 
+//we need to be able to get to community when we click share to community.
+
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const Container = styled.div`
@@ -161,7 +163,7 @@ const Dashboard = () => {
         achievable: goal.achievable,
         relevant: goal.relevant,
         timebound: goal.timebound,
-        userName: user.name,
+        userName: user?.name,
       }),
     })
       .then(() => {
@@ -256,13 +258,13 @@ const Dashboard = () => {
 
               <ButtonContainer>
                 <button onClick={() => saveGoal(goal._id)}>
-                  Save this goal to keep track
+                  Save this goal
                 </button>
                 <button onClick={() => toggleComplete(goal._id)}>
                   Mark as completed
                 </button>
                 <button onClick={() => shareToCommunity(goal)}>
-                  Share to community for help and support
+                  Share to community
                 </button>
               </ButtonContainer>
             </Section>

@@ -229,10 +229,7 @@ const Community = () => {
     });
   };
 
-  //this needs to be built further. How do we show the comments, thread or a textbox?
-  const handleCommentClick = (postId) => {
-    console.log("Show comments for post", postId);
-  };
+  const handleCommentClick = (postId) => {};
 
   // Navigate to dahsboard
   const handleBackToDashboard = () => {

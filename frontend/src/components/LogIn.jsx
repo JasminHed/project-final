@@ -2,13 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useUserStore } from "../store/UserStore";
-import {
-  ErrorDiv,
-  Input,
-  Label,
-  LinkSpan,
-  RegisterLink,
-} from "../styling/FormStyling.jsx";
+import { ErrorDiv, Input, Label, LinkSpan, RegisterLink } from "../styling/FormStyling.jsx";
 
 const LogIn = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
   const [formData, setFormData] = useState({
@@ -38,12 +32,13 @@ const LogIn = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
     })
       .then((res) => res.json())
       .then((data) => {
+        
         if (data.notFound || data.error) {
           setError("Invalid email or password");
         } else {
           localStorage.setItem("userId", data.userId);
           localStorage.setItem("accessToken", data.accessToken);
-          login(data.user, data.accessToken, data.userId);
+          login({ name: data.name, email: formData.email }, data.accessToken, data.userId);
 
           setFormData({ email: "", password: "" });
 

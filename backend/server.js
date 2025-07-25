@@ -41,7 +41,7 @@ const app = express();
 
 //app.use(cors());
 app.use(cors({
-  origin: "https://finalprojectjasmin.netlify.app",
+  origin: ["https://finalprojectjasmin.netlify.app", "http://localhost:5173"],
   credentials: true 
 }));
 

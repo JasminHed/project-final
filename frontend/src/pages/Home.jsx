@@ -117,7 +117,10 @@ const WelcomeScreen = () => {
 
   return (
     <main>
-      <AuthForm setIsLoggedIn={setIsLoggedIn} />
+      <AuthForm
+        setIsLoggedIn={setIsLoggedIn}
+        onSignUpSuccess={() => setCurrentStep("onboarding")}
+      />
 
       <Description>
         The Intention App is a personal growth tool. You'll reflect, set

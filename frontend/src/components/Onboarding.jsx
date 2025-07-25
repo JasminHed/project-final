@@ -169,7 +169,7 @@ const Onboarding = ({ onDone }) => {
       <h1>Onboarding</h1>
 
       <ModuleContainer>
-        <Img src="/assets/9.png" alt="An image of a brain in graphics" />
+        <Img src="/assets/9.png" alt="Graphic image of thinking mind" />
         <h3>{currentModule.title}</h3>
         <Content>{currentModule.content}</Content>
       </ModuleContainer>

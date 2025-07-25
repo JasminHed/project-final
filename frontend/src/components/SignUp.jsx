@@ -1,19 +1,25 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useUserStore } from "../store/UserStore";
 import { ErrorDiv, Input, Label, LinkSpan, RegisterLink } from "../styling/FormStyling.jsx";
 
-//Once user is logged in, the button sign up should go away and there should be a icon avatar instead. Log out should always be present, user is not logged out until you click log out?
-
-// Sign Up Component
-const SignUp = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
+const SignUp = ({
+  setShowLogin,
+  setIsLoggedIn,
+  setIsOpen,
+  onSignUpSuccess,
+}) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
   });
   const [error, setError] = useState("");
+
+  const [successMessage, setSuccessMessage] = useState("");
+  // Navigate hook for routing
+  const navigate = useNavigate();
   const { login } = useUserStore();
 
   const handleSubmit = () => {
@@ -25,6 +31,9 @@ const SignUp = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
       setError("Password must be at least 5 characters");
       return;
     }
+
+    setError("");
+    setSuccessMessage("");
 
     fetch("https://project-final-ualo.onrender.com/users", {
       method: "POST",
@@ -43,16 +52,25 @@ const SignUp = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
           );
 
           setFormData({ name: "", email: "", password: "" });
-          setError("Registration successful! You are now logged in.");
+
+          setSuccessMessage(
+            "Registration successful! You are now logged in. Redirecting to onboarding..."
+          );
+          setIsLoggedIn(true);
+
           setTimeout(() => {
-            setError("");
             setIsOpen(false);
+            if (onSignUpSuccess) {
+              onSignUpSuccess();
+            }
           }, 2000);
         } else {
-          setError(data.message);
+          setError(data.message || "Registration failed. Please try again.");
         }
       })
-      .catch(() => {
+
+      .catch((err) => {
+        console.error("Registration error:", err);
         setError("Network error. Please try again.");
       });
   };
@@ -81,6 +99,8 @@ const SignUp = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
         value={formData.password}
       />
       {error && <ErrorDiv>{error}</ErrorDiv>}
+
+      {successMessage && <ErrorDiv>{successMessage}</ErrorDiv>}
       <button type="button" onClick={handleSubmit}>
         Sign up
       </button>
@@ -94,3 +114,4 @@ const SignUp = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
 };
 
 export default SignUp;
+

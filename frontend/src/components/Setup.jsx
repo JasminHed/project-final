@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import { Box, Textarea } from "../styling/BoxStyling.jsx";
 
-//to add: Disable the save button when inputs are incomplete. Confirmation / feedback on save. Persist data in backend so data does not go away on page reload.
+//Persist data in backend so data does not go away on page reload.
 
 const Container = styled.div`
   padding: 80px 20px 100px;

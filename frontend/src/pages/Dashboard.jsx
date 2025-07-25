@@ -8,8 +8,7 @@ import { useUserStore } from "../store/UserStore";
 import { Box, Textarea } from "../styling/BoxStyling.jsx";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
-//User should be able to see all intention + goal they put up, max 3
-//
+
 const Container = styled.div`
   padding: 80px 20px 100px;
   max-width: 100%;
@@ -58,27 +57,25 @@ const ChartContainer = styled.div`
   }
 `;
 
-// Dashboard shows the user's intention and SMART goals, plus allows interaction with the goal (edit, complete, share)
+// New! Check colors!
+const GoalCard = styled.div`
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 30px;
+  background: #f9f9f9;
+`;
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const { user, setUser } = useUserStore();
 
-  // Local state to store goal details (intention + SMART fields)
-  const [goal, setGoal] = useState({
-    intention: "",
-    specific: "",
-    measurable: "",
-    achievable: "",
-    relevant: "",
-    timebound: "", //should this be a calendar?
-  });
+  // Array of goals, new! Instead of object with 1 goal, array gives us a list!
+  const [goals, setGoals] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [successMessage, setSuccessMessage] = useState("");
 
-  const [completed, setCompleted] = useState(false); //goal completion
-  const [loading, setLoading] = useState(true); //loading state
-  const [successMessage, setSuccessMessage] = useState(""); //sucessmessage
-
-  // Fetch users latest goal
+  // Fetch 3 latest goals
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
 
@@ -89,22 +86,13 @@ const Dashboard = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data.length > 0) {
-          // only most recent goal
-          const latestGoal = data.sort(
-            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-          )[0];
-          setGoal({
-            _id: latestGoal._id,
-            intention: latestGoal.intention || "",
-            specific: latestGoal.specific,
-            measurable: latestGoal.measurable,
-            achievable: latestGoal.achievable,
-            relevant: latestGoal.relevant,
-            timebound: latestGoal.timebound,
-          });
-          setCompleted(latestGoal.completed); //Users can choose to put it as complete
-        }
+        // Filter away completed goals, show latest 3
+        const incompleteGoals = data
+          .filter((goal) => !goal.completed)
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+          .slice(0, 3);
+
+        setGoals(incompleteGoals);
         setLoading(false);
       })
       .catch((error) => {
@@ -113,41 +101,51 @@ const Dashboard = () => {
       });
   }, []);
 
-  //Toggles intention + ALL goal completion + updates front and backend
-  const toggleComplete = () => {
+  // Array, update list
+  const updateGoal = (goalId, field, value) => {
+    setGoals((prevGoals) =>
+      prevGoals.map((goal) =>
+        goal._id === goalId ? { ...goal, [field]: value } : goal
+      )
+    );
+  };
+
+  // Mark complete and remove from list
+  const toggleComplete = (goalId) => {
     const token = localStorage.getItem("accessToken");
-    const newCompleted = !completed;
 
-    setCompleted(newCompleted);
-    if (newCompleted) {
-      setGoal(null); //If completed remove
-    }
+    // Remove from frontend
+    setGoals((prevGoals) => prevGoals.filter((goal) => goal._id !== goalId));
 
-    fetch(`https://project-final-ualo.onrender.com/goals/${goal._id}`, {
+    // Update backend
+    fetch(`https://project-final-ualo.onrender.com/goals/${goalId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
         Authorization: token,
       },
-      body: JSON.stringify({ completed: newCompleted }),
+      body: JSON.stringify({ completed: true }),
     }).catch((error) => console.error("Error updating completion:", error));
   };
 
-  //Visible trackng of goals, donught chart
+  // Based on, completed and not completed
   const data = () => {
+    const incompleteCount = goals.length;
+    const totalGoals = incompleteCount > 0 ? incompleteCount : 1;
+
     return {
-      labels: ["Completed", "Not Completed"],
+      labels: ["Active Goals", "Completed"],
       datasets: [
         {
-          data: [completed ? 1 : 0, completed ? 0 : 1],
+          data: [incompleteCount, 0],
           backgroundColor: ["#4caf50", "#e0e0e0"],
         },
       ],
     };
   };
 
-  // Create a community post to community page, using intention + goal + user info
-  const shareToCommunity = () => {
+  // Share specific goal to community
+  const shareToCommunity = (goal) => {
     const token = localStorage.getItem("accessToken");
 
     fetch("https://project-final-ualo.onrender.com/community-posts", {
@@ -169,31 +167,33 @@ const Dashboard = () => {
       .then(() => {
         navigate("/community");
       })
-      // Navigate user to community page after sharing
       .catch((error) => {
         console.error("Error sharing to community:", error);
       });
   };
-  //save all edits funtion
-  const saveAll = () => {
-    const token = localStorage.getItem("accessToken");
 
-    fetch(`https://project-final-ualo.onrender.com/goals/${goal._id}`, {
+  // Save specific goal
+  const saveGoal = (goalId) => {
+    const token = localStorage.getItem("accessToken");
+    const goalToSave = goals.find((goal) => goal._id === goalId);
+
+    fetch(`https://project-final-ualo.onrender.com/goals/${goalId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
         Authorization: token,
       },
-      body: JSON.stringify(goal),
+      body: JSON.stringify(goalToSave),
     })
       .then(() => {
-        setSuccessMessage("Savings have been made!");
+        setSuccessMessage("Goal saved successfully!");
         setTimeout(() => setSuccessMessage(""), 3000);
       })
-      .catch(() => {});
+      .catch((error) => {
+        console.error("Error saving goal:", error);
+      });
   };
 
-  //Loading state
   if (loading) {
     return <p>Loading your goals...</p>;
   }
@@ -201,62 +201,79 @@ const Dashboard = () => {
   return (
     <Container>
       <h1>Welcome to your dashboard</h1>
-      <Img src="/assets/12.png" alt="An image of a brain made of flowers" />
+      <Img src="/assets/12.png" alt="A graphic image of mind made of flowers" />
       <ButtonContainer>
         <button onClick={() => navigate("/setup")}>
           Add new intention and goals
         </button>
       </ButtonContainer>
 
-      {goal && ( //only shows int+goal card if it is not complete
-        <Section>
-          <Box>
-            <h3>Your Intention</h3>
-            <div>
-              <Textarea
-                rows={2}
-                maxLength={150}
-                value={goal.intention}
-                onChange={(e) =>
-                  setGoal((prev) => ({ ...prev, intention: e.target.value }))
-                }
-              />
-              <p>{goal.intention.length}/150</p>
-            </div>
-          </Box>
-          <Box>
-            <h3>Your detailed goals</h3>
-            {[
-              "specific",
-              "measurable",
-              "achievable",
-              "relevant",
-              "timebound",
-            ].map((field) => (
-              <div key={field}>
-                <strong>
-                  {field.charAt(0).toUpperCase() + field.slice(1)}:
-                </strong>
-                <Textarea
-                  rows={2}
-                  maxLength={150}
-                  value={goal[field]}
-                  onChange={(e) =>
-                    setGoal((prev) => ({ ...prev, [field]: e.target.value }))
-                  }
-                />
-                <p>{goal[field]?.length || 0}/150</p>
-              </div>
-            ))}
-          </Box>
-          {successMessage && <p>{successMessage}</p>}
-          <ButtonContainer>
-            <button onClick={saveAll}>Save all edits</button>
-            <button onClick={toggleComplete}>Mark as Completed 🏅 </button>
-            <button onClick={shareToCommunity}>Share to Community</button>
-          </ButtonContainer>
-        </Section>
+      {/*/Loop throug goals */}
+      {goals.length > 0 ? (
+        goals.map((goal, index) => (
+          <GoalCard key={goal._id}>
+            <h2>Goal {index + 1}</h2>
+            <Section>
+              <Box>
+                <h3>Your Intention</h3>
+                <div>
+                  <Textarea
+                    rows={2}
+                    maxLength={150}
+                    value={goal.intention || ""}
+                    onChange={(e) =>
+                      updateGoal(goal._id, "intention", e.target.value)
+                    }
+                  />
+                  <p>{(goal.intention || "").length}/150</p>
+                </div>
+              </Box>
+              <Box>
+                <h3>Your detailed goals</h3>
+                {[
+                  "specific",
+                  "measurable",
+                  "achievable",
+                  "relevant",
+                  "timebound",
+                ].map((field) => (
+                  <div key={field}>
+                    <strong>
+                      {field.charAt(0).toUpperCase() + field.slice(1)}:
+                    </strong>
+                    <Textarea
+                      rows={2}
+                      maxLength={150}
+                      value={goal[field] || ""}
+                      onChange={(e) =>
+                        updateGoal(goal._id, field, e.target.value)
+                      }
+                    />
+                    <p>{(goal[field] || "").length}/150</p>
+                  </div>
+                ))}
+              </Box>
+
+              <ButtonContainer>
+                <button onClick={() => saveGoal(goal._id)}>
+                  Save this goal to keep track
+                </button>
+                <button onClick={() => toggleComplete(goal._id)}>
+                  Mark as completed
+                </button>
+                <button onClick={() => shareToCommunity(goal)}>
+                  Share to community for help and support
+                </button>
+              </ButtonContainer>
+            </Section>
+          </GoalCard>
+        ))
+      ) : (
+        <p>No active goals. Create your first goal!</p>
       )}
+
+      {successMessage && <p>{successMessage}</p>}
+
       <ChartContainer>
         <Doughnut data={data()} />
       </ChartContainer>

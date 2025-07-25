@@ -2,9 +2,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useUserStore } from "../store/UserStore";
-import { ErrorDiv, Input, Label, LinkSpan, RegisterLink } from "../styling/FormStyling.jsx";
-
-//Once user is logged in, the button sign up should go away and there should be a icon avatar instead. Log out should always be present, user is not logged out until you click log out?
+import {
+  ErrorDiv,
+  Input,
+  Label,
+  LinkSpan,
+  RegisterLink,
+} from "../styling/FormStyling.jsx";
 
 const LogIn = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
   const [formData, setFormData] = useState({
@@ -12,6 +16,8 @@ const LogIn = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
     password: "",
   });
   const [error, setError] = useState("");
+  // New state for success messages
+  const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
   const { login } = useUserStore();
 
@@ -22,7 +28,8 @@ const LogIn = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
     }
 
     setError("");
-    setFormData({ email: "", password: "" });
+    // Clear any previous success messages
+    setSuccessMessage("");
 
     fetch("https://project-final-ualo.onrender.com/sessions", {
       method: "POST",
@@ -31,24 +38,28 @@ const LogIn = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.notFound) {
+        if (data.notFound || data.error) {
           setError("Invalid email or password");
         } else {
           localStorage.setItem("userId", data.userId);
           localStorage.setItem("accessToken", data.accessToken);
           login(data.user, data.accessToken, data.userId);
-          setError("Login successful!");
-          setTimeout(() => {
-            setError("");
-            setIsOpen(false);
-          }, 3000);
 
+          setFormData({ email: "", password: "" });
+
+          setSuccessMessage("Login successful! Redirecting to dashboard");
           setIsLoggedIn(true);
 
-          if (localStorage.getItem("hasCompletedOnboarding")) {
+          setTimeout(() => {
+            setIsOpen(false);
             navigate("/dashboard");
-          }
+          }, 1500);
         }
+      })
+
+      .catch((err) => {
+        console.error("Login error:", err);
+        setError("Network error. Please try again.");
       });
   };
 
@@ -69,6 +80,8 @@ const LogIn = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
         value={formData.password}
       />
       {error && <ErrorDiv>{error}</ErrorDiv>}
+
+      {successMessage && <ErrorDiv>{successMessage}</ErrorDiv>}
       <button type="button" onClick={handleSubmit}>
         Log In
       </button>

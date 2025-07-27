@@ -75,25 +75,42 @@ const SignUp = ({
       });
   };
 
+  // Event handler functions
+  const handleName = (e) => {
+    setFormData({ ...formData, name: e.target.value });
+  };
+
+  const handleEmail = (e) => {
+    setFormData({ ...formData, email: e.target.value });
+  };
+
+  const handlePassword = (e) => {
+    setFormData({ ...formData, password: e.target.value });
+  };
+
+  const handleShowLogin = () => {
+    setShowLogin(true);
+  };
+
   return (
     <>
       <Label htmlFor="name">Name</Label>
       <Input
-        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+        onChange={handleName}
         type="text"
         name="name"
         value={formData.name}
       />
       <Label htmlFor="email">Email</Label>
       <Input
-        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+        onChange={handleEmail}
         type="email"
         name="email"
         value={formData.email}
       />
       <Label htmlFor="password">Password</Label>
       <Input
-        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+        onChange={handlePassword}
         type="password"
         name="password"
         value={formData.password}
@@ -107,11 +124,10 @@ const SignUp = ({
 
       <RegisterLink>
         <LinkSpan>Already a user? </LinkSpan>
-        <LinkSpan onClick={() => setShowLogin(true)}>Log in here</LinkSpan>
+        <LinkSpan onClick={handleShowLogin}>Log in here</LinkSpan>
       </RegisterLink>
     </>
   );
 };
 
 export default SignUp;
-

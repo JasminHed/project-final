@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -50,15 +51,23 @@ const ButtonContainer = styled.div`
   margin-top: 30px;
 `;
 
+const ErrorMessage = styled.p`
+  color: var(--color-error);
+  margin-bottom: 4px;
+  margin-top: 4px;
+  margin-right: 5px;
+`;
+
 //Track module to know where user is, to show next slide
-const Onboarding = ({ onDone }) => {
+const Onboarding = ({ goBack }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [showError, setShowError] = useState("");
+  const navigate = useNavigate();
+
   //List of onboarding modules
   const modules = [
     {
-      key: "intention", //key makes it unique, helps track where we are
       title: "Intention",
-      image: "notebook.jpg",
       content: (
         <>
           <p>
@@ -84,9 +93,7 @@ const Onboarding = ({ onDone }) => {
       ),
     },
     {
-      key: "smartGoals",
       title: "SMART goals",
-      image: "tablet.jpg",
       content: (
         <>
           <p>
@@ -106,9 +113,7 @@ const Onboarding = ({ onDone }) => {
       ),
     },
     {
-      key: "smartDetails",
       title: "SMART goals details",
-      image: "tablet.jpg",
       content: (
         <div>
           <p>
@@ -148,19 +153,39 @@ const Onboarding = ({ onDone }) => {
   ];
 
   const currentModule = modules[currentSlide];
-  //When next button is clicked, show next slide. If last slide - onboarding complete
-  const handleNext = () => {
-    if (currentSlide < modules.length - 1) {
-      //arrays count from 0
-      setCurrentSlide(currentSlide + 1); //move 1 forward
-    } else {
-      if (onDone) onDone(); //onboarding done(button says done)
-    }
-  };
+
+  const buttonText =
+    currentSlide < modules.length - 1
+      ? `Next (${currentSlide + 1} of ${modules.length})`
+      : "Next - Set up";
+
+  const showPreviousButton = currentSlide > 0;
 
   const handlePrevious = () => {
     if (currentSlide > 0) {
       setCurrentSlide(currentSlide - 1);
+    }
+  };
+
+  const handleNext = () => {
+    if (currentSlide < modules.length - 1) {
+      setCurrentSlide(currentSlide + 1);
+    } else {
+      handleOnboardingComplete();
+    }
+  };
+
+  const handleOnboardingComplete = () => {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      navigate("/setup");
+    } else {
+      setShowError(
+        "You need to be logged in to continue. Redirecting to homepage."
+      );
+      setTimeout(() => {
+        goBack();
+      }, 2000);
     }
   };
 
@@ -169,28 +194,19 @@ const Onboarding = ({ onDone }) => {
       <h1>Onboarding</h1>
 
       <ModuleContainer>
-        <Img src="/assets/9.png" alt="Graphic image of thinking mind" />
-        <h3>{currentModule.title}</h3>
+        <Img src="/assets/9.png" alt="Graphic image showing a thinking mind" />
+        <h2>{currentModule.title}</h2>
         <Content>{currentModule.content}</Content>
       </ModuleContainer>
 
       <ButtonContainer>
-        {currentSlide > 0 && <button onClick={handlePrevious}>Previous</button>}
-
-        <button
-          onClick={() => {
-            if (currentSlide < modules.length - 1) {
-              handleNext();
-            } else {
-              if (onDone) onDone();
-            }
-          }}
-        >
-          {currentSlide < modules.length - 1
-            ? `Next (${currentSlide + 1} of ${modules.length})`
-            : "Next - Set up"}
-        </button>
+        {showPreviousButton && (
+          <button onClick={handlePrevious}>Previous</button>
+        )}
+        <button onClick={handleNext}>{buttonText}</button>
       </ButtonContainer>
+
+      {showError && <ErrorMessage>{showError}</ErrorMessage>}
     </Container>
   );
 };

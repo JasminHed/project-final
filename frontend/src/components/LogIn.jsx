@@ -2,7 +2,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useUserStore } from "../store/UserStore";
-import { ErrorDiv, Input, Label, LinkSpan, RegisterLink } from "../styling/FormStyling.jsx";
+import {
+  ErrorDiv,
+  Input,
+  Label,
+  LinkSpan,
+  RegisterLink,
+} from "../styling/FormStyling.jsx";
 
 const LogIn = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
   const [formData, setFormData] = useState({
@@ -10,7 +16,7 @@ const LogIn = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
     password: "",
   });
   const [error, setError] = useState("");
-  // New state for success messages
+  //states
   const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
   const { login } = useUserStore();
@@ -32,13 +38,16 @@ const LogIn = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        
         if (data.notFound || data.error) {
           setError("Invalid email or password");
         } else {
           localStorage.setItem("userId", data.userId);
           localStorage.setItem("accessToken", data.accessToken);
-          login({ name: data.name, email: formData.email }, data.accessToken, data.userId);
+          login(
+            { name: data.name, email: formData.email },
+            data.accessToken,
+            data.userId
+          );
 
           setFormData({ email: "", password: "" });
 
@@ -58,18 +67,31 @@ const LogIn = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
       });
   };
 
+  // Event handler functions
+  const handleEmail = (e) => {
+    setFormData({ ...formData, email: e.target.value });
+  };
+
+  const handlePassword = (e) => {
+    setFormData({ ...formData, password: e.target.value });
+  };
+
+  const handleShowSignUp = () => {
+    setShowLogin(false);
+  };
+
   return (
     <>
       <Label htmlFor="email">Email</Label>
       <Input
-        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+        onChange={handleEmail}
         type="text"
         name="email"
         value={formData.email}
       />
       <Label htmlFor="password">Password</Label>
       <Input
-        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+        onChange={handlePassword}
         type="password"
         name="password"
         value={formData.password}
@@ -83,7 +105,7 @@ const LogIn = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
 
       <RegisterLink>
         <LinkSpan>New user? </LinkSpan>
-        <LinkSpan onClick={() => setShowLogin(false)}>Sign up here</LinkSpan>
+        <LinkSpan onClick={handleShowSignUp}>Sign up here</LinkSpan>
       </RegisterLink>
     </>
   );

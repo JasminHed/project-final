@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
+import AuthForm from "../components/AuthForm";
+import Onboarding from "../sections/Onboarding.jsx";
+import Setup from "../sections/Setup.jsx";
+
+//i need to add another external library
 const Description = styled.p`
   text-align: left;
   margin: 20px auto;
@@ -54,22 +59,18 @@ const Box = styled.div`
   }
 `;
 
-// Importing components for authentication, onboarding, and setup steps
-import AuthForm from "../components/AuthForm";
-import Onboarding from "../components/Onboarding.jsx";
-import Setup from "../components/Setup.jsx";
+const ErrorMessage = styled.p`
+  color: var(--color-error);
+  margin-bottom: 4px;
+  margin-top: 4px;
+  margin-left: 18px;
+`;
 
 // Local state to track if user is logged in (why not global, because only affects this components behavior)
 const WelcomeScreen = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  //// Track completion status of onboarding and setup steps
-  const [completed, setCompleted] = useState({
-    onboarding: false,
-    setup: false,
-  });
-
-  //Checks if token i saved, then consider user logged in
+  //Checks if token is saved, then consider user logged in
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     if (token) {
@@ -79,47 +80,42 @@ const WelcomeScreen = () => {
 
   //State to hold error messages
   const [showError, setShowError] = useState("");
-  //State to track which step/page is currently shown
+  //State to track which step is currently shown
   const [currentStep, setCurrentStep] = useState("welcome");
 
-  //Function to handle navigation between different steps.
-  const handleNavigation = (step) => {
-    if (step === "onboarding") {
-      setCurrentStep("onboarding");
-      setShowError("");
-    } else if (step === "setup") {
-      if (!isLoggedIn) {
-        setShowError("You must be logged in to access this section");
-        return;
-      }
-      if (!completed.onboarding) {
-        setShowError("Please complete onboarding first");
-        return;
-      }
-      setCurrentStep("setup");
-      setShowError("");
-    } else if (step === "dashboard") {
-      if (!isLoggedIn) {
-        setShowError("You must be logged in to access this section");
-        return;
-      }
-      if (!completed.setup) {
-        setShowError("Please complete your setup first");
-        return;
-      }
-      setCurrentStep("dashboard");
-      setShowError("");
-    } else {
-      setShowError("");
-      setCurrentStep("welcome");
-    }
+  const handleOnboardingClick = () => {
+    setCurrentStep("onboarding");
+    setShowError("");
   };
+
+  const handleSetupClick = () => {
+    if (!isLoggedIn) {
+      setShowError("You must be logged in and finish the onboarding section");
+      return;
+    }
+    setShowError("");
+  };
+
+  const handleDashboardClick = () => {
+    if (!isLoggedIn) {
+      setShowError("You must be logged in and finish the setup section");
+      return;
+    }
+    setShowError("");
+  };
+
+  const handleGoBack = () => {
+    setCurrentStep("welcome");
+    setShowError("");
+  };
+
+  const handleSignUpSuccess = () => setCurrentStep("onboarding");
 
   return (
     <main>
       <AuthForm
         setIsLoggedIn={setIsLoggedIn}
-        onSignUpSuccess={() => setCurrentStep("onboarding")}
+        onSignUpSuccess={handleSignUpSuccess}
       />
 
       <Description>
@@ -129,52 +125,32 @@ const WelcomeScreen = () => {
       </Description>
 
       <MainBox>
-        <Box onClick={() => handleNavigation("onboarding")}>
-          <img src="/assets/9.png" alt="An image of a brain in graphics" />
+        <Box onClick={handleOnboardingClick}>
+          <img
+            src="/assets/9.png"
+            alt="An graphic image showing a thinking mind"
+          />
           Read about Intention & SMART goals
         </Box>
-        <Box onClick={() => handleNavigation("setup")}>
+        <Box onClick={handleSetupClick}>
           <img
             src="/assets/10.png"
-            alt="An image of a brain where flowers are growing"
+            alt="A graphic image showing a a thinking mind in creativity mode"
           />
           Create your Intention & SMART goals
         </Box>
-        <Box onClick={() => handleNavigation("dashboard")}>
+        <Box onClick={handleDashboardClick}>
           <img
             src="/assets/12.png"
-            alt="An image of a head with starts, flowers in graphic"
+            alt="A graphic image showing a thinking mind working"
           />
           Track and stay motivated
         </Box>
       </MainBox>
 
-      {showError && <p>{showError}</p>}
+      {showError && <ErrorMessage>{showError}</ErrorMessage>}
 
-      {currentStep === "onboarding" && (
-        <Onboarding
-          onDone={() => {
-            if (isLoggedIn) {
-              setCompleted((prev) => ({ ...prev, onboarding: true }));
-              setCurrentStep("setup");
-            } else {
-              setShowError("Please log in to continue");
-              setCurrentStep("welcome");
-            }
-          }}
-          goBack={() => setCurrentStep("welcome")}
-        />
-      )}
-      {/*Setup only if user is loggedin and done with onboarding*/}
-      {currentStep === "setup" && isLoggedIn && (
-        <Setup
-          onDone={() => {
-            setCompleted((prev) => ({ ...prev, setup: true }));
-            setCurrentStep("welcome");
-          }}
-          goBack={() => setCurrentStep("welcome")}
-        />
-      )}
+      {currentStep === "onboarding" && <Onboarding goBack={handleGoBack} />}
     </main>
   );
 };

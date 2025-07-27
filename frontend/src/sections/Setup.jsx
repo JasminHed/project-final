@@ -4,7 +4,8 @@ import styled from "styled-components";
 
 import { Box, Textarea } from "../styling/BoxStyling.jsx";
 
-//Persist data in backend so data does not go away on page reload.
+// API base
+const API_BASE_URL = "https://project-final-ualo.onrender.com";
 
 const Container = styled.div`
   padding: 80px 20px 100px;
@@ -35,8 +36,27 @@ const Img = styled.img`
   }
 `;
 
+const ErrorMessage = styled.p`
+  color: var(--color-error);
+  margin-bottom: 4px;
+  margin-top: 4px;
+  margin-right: 5px;
+`;
+
+// Functions
+const saveGoalToAPI = (values, token) => {
+  return fetch(`${API_BASE_URL}/goals`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify(values),
+  });
+};
+
 // Setup component for setting intention and SMART goals
-const Setup = () => {
+const Setup = ({ goBack }) => {
   // Local state to store all goal fields
   const [values, setValues] = useState({
     intention: "",
@@ -51,12 +71,6 @@ const Setup = () => {
   // Hook to navigate to another page
   const navigate = useNavigate();
 
-  // Update goal fields when user types
-  const handleChange = (field, value) => {
-    setValues((prev) => ({ ...prev, [field]: value }));
-    setShowError(false);
-  };
-
   // Save goals to backend when user clicks save button
   const handleSave = () => {
     //Check if field is empty
@@ -66,14 +80,7 @@ const Setup = () => {
     } else {
       const token = localStorage.getItem("accessToken");
       //Send POST request to save goal data
-      fetch("https://project-final-ualo.onrender.com/goals", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token,
-        },
-        body: JSON.stringify(values),
-      })
+      saveGoalToAPI(values, token)
         .then((response) => {
           if (response.ok) {
             // Mark onboarding complete in local storage
@@ -90,7 +97,37 @@ const Setup = () => {
     }
   };
 
-  //dot forget to put resize none on the styling so the textarea does not move!
+  // Event handler functions
+  const handleIntentionChange = (e) => {
+    setValues((prev) => ({ ...prev, intention: e.target.value }));
+    setShowError(false);
+  };
+
+  const handleSpecificChange = (e) => {
+    setValues((prev) => ({ ...prev, specific: e.target.value }));
+    setShowError(false);
+  };
+
+  const handleMeasurableChange = (e) => {
+    setValues((prev) => ({ ...prev, measurable: e.target.value }));
+    setShowError(false);
+  };
+
+  const handleAchievableChange = (e) => {
+    setValues((prev) => ({ ...prev, achievable: e.target.value }));
+    setShowError(false);
+  };
+
+  const handleRelevantChange = (e) => {
+    setValues((prev) => ({ ...prev, relevant: e.target.value }));
+    setShowError(false);
+  };
+
+  const handleTimeboundChange = (e) => {
+    setValues((prev) => ({ ...prev, timebound: e.target.value }));
+    setShowError(false);
+  };
+
   return (
     <Container>
       <h1>Set your intention and goals</h1>
@@ -124,7 +161,7 @@ const Setup = () => {
           <Textarea
             placeholder="Write your intention here"
             value={values.intention}
-            onChange={(e) => handleChange("intention", e.target.value)}
+            onChange={handleIntentionChange}
             maxLength="150"
           />
           <p>{values.intention.length}/150</p>
@@ -137,48 +174,52 @@ const Setup = () => {
         <h2>Now Create Your SMART Goals</h2>
         <h3>Specific</h3>
         <Textarea
-          placeholder="Enter your specific goal"
+          placeholder="E.g., I will run 3 times a week."
           value={values.specific}
-          onChange={(e) => handleChange("specific", e.target.value)}
+          onChange={handleSpecificChange}
         ></Textarea>
         <p>{values.specific.length}/150</p>
 
         <h3>Measurable</h3>
         <Textarea
-          placeholder="Enter your measurable goal"
+          placeholder="E.g., Track progress using a running app."
           value={values.measurable}
-          onChange={(e) => handleChange("measurable", e.target.value)}
+          onChange={handleMeasurableChange}
         ></Textarea>
         <p>{values.measurable.length}/150</p>
 
         <h3>Achievable</h3>
         <Textarea
-          placeholder="Enter your achievable goal"
+          placeholder="E.g., Start with 1 mile and build up gradually."
           value={values.achievable}
-          onChange={(e) => handleChange("achievable", e.target.value)}
+          onChange={handleAchievableChange}
         ></Textarea>
         <p>{values.achievable.length}/150</p>
 
         <h3>Relevant</h3>
         <Textarea
-          placeholder="Enter your relevant goal"
+          placeholder="E.g., Running improves my health and energy."
           value={values.relevant}
-          onChange={(e) => handleChange("relevant", e.target.value)}
+          onChange={handleRelevantChange}
         ></Textarea>
         <p>{values.relevant.length}/150</p>
 
         <h3>Timebound</h3>
         <Textarea
-          placeholder="Enter your timebound goal"
+          placeholder="E.g., Achieve this within 3 months."
           value={values.timebound}
-          onChange={(e) => handleChange("timebound", e.target.value)}
+          onChange={handleTimeboundChange}
         ></Textarea>
         <p>{values.timebound.length}/150</p>
       </Section>
 
-      {showError && <p>Please fill in all fields before moving forward</p>}
+      {showError && (
+        <ErrorMessage>
+          Please fill in all fields before moving forward
+        </ErrorMessage>
+      )}
 
-      <button onClick={handleSave}>Save. To dashboard.</button>
+      <button onClick={handleSave}> Save - Redirect to dashboard.</button>
     </Container>
   );
 };

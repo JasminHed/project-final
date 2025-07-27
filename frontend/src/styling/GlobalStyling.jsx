@@ -10,7 +10,9 @@ const GlobalStyles = createGlobalStyle`
   --color-button-text: #FFFFFF;           
   --color-button-hover: #aa6670;       
   --color-focus: #e47885;                 
-  --color-background: #FFFFFF;            
+  --color-background: #FFFFFF;  
+  --color-error: #003f7d;    
+  --color-success: #00509e;      
 }
 
 
@@ -22,7 +24,9 @@ const GlobalStyles = createGlobalStyle`
   --color-button-text: #FFFFFF;           
   --color-button-hover: #e47885;        
   --color-focus: #fac04b;                 
-  --color-background: #000000;            
+  --color-background: #000000;  
+  --color-error: #74b3ff;   
+  --color-success: #4da6ff;          
 }
 
 
@@ -65,6 +69,16 @@ h4 {
   font-size: 16px;
 }
 
+h5 {
+  font-size: 14px;
+  
+}
+
+h6 {
+  font-size: 12px;
+  
+}
+
 
 p {
   font-size: 16px;
@@ -88,6 +102,12 @@ p {
   }
   h4 {
     font-size: 20px;
+  }
+  h5 {
+    font-size: 18px;
+  }
+  h6 {
+    font-size: 14px;
   }
   
 }

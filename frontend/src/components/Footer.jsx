@@ -5,7 +5,7 @@ const FooterContainer = styled.footer`
   bottom: 0;
   left: 0;
   right: 0;
-  //background: var(--color-background);
+
   padding: 40px;
   text-align: center;
 `;
@@ -29,8 +29,6 @@ const Footer = () => {
   return (
     <FooterContainer>
       <FooterList>
-        <li>Terms of Service</li>
-        <li>Privacy Policy</li>
         <li>Contact Us</li>
       </FooterList>
     </FooterContainer>

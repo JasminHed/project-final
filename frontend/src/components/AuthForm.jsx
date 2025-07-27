@@ -1,8 +1,6 @@
 import { useRef, useState } from "react";
 import styled from "styled-components";
 
-import { useUserStore } from "../store/UserStore";
-import { ErrorDiv, Input, Label, LinkSpan, RegisterLink } from "../styling/FormStyling.jsx";
 import LogIn from "./LogIn";
 import SignUp from "./SignUp";
 import useClickOutside from "./useClickOutside";
@@ -37,22 +35,11 @@ const AuthForm = ({
   onSignUpSuccess,
 }) => {
   const [showLogin, setShowLogin] = useState(false);
-  const [logoutMessage, setLogoutMessage] = useState("");
-  const { logout } = useUserStore();
 
   const ref = useRef(null);
   useClickOutside(ref, () => {
     setIsOpen(false); // Close popup when clicking outside
   });
-
-  const handleLogout = () => {
-    localStorage.removeItem("userId");
-    localStorage.removeItem("accessToken");
-    logout();
-    setLogoutMessage("You are now logged out.");
-    setTimeout(() => setLogoutMessage(""), 2000);
-    setIsLoggedIn(false);
-  };
 
   return (
     <>
@@ -60,12 +47,12 @@ const AuthForm = ({
         <PopUp>
           <Form ref={ref} onClick={(e) => e.stopPropagation()}>
             {!showLogin ? (
-             <SignUp
-             setShowLogin={setShowLogin}
-             setIsLoggedIn={setIsLoggedIn}
-             setIsOpen={setIsOpen}
-             onSignUpSuccess={onSignUpSuccess}
-           />
+              <SignUp
+                setShowLogin={setShowLogin}
+                setIsLoggedIn={setIsLoggedIn}
+                setIsOpen={setIsOpen}
+                onSignUpSuccess={onSignUpSuccess}
+              />
             ) : (
               <LogIn
                 setShowLogin={setShowLogin}

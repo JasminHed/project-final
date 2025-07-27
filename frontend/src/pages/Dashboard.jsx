@@ -4,12 +4,21 @@ import { Doughnut } from "react-chartjs-2";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-import { useUserStore } from "../store/UserStore";
+import { useUserStore } from "../store/UserStore.jsx";
 import { Box, Textarea } from "../styling/BoxStyling.jsx";
 
-//we need to be able to get to community when we click share to community.
-
 ChartJS.register(ArcElement, Tooltip, Legend);
+
+//Maybe remove commnity post action all together into seperate component?
+
+const API_BASE_URL = "https://project-final-ualo.onrender.com";
+const SMART_FIELDS = [
+  "specific",
+  "measurable",
+  "achievable",
+  "relevant",
+  "timebound",
+];
 
 const Container = styled.div`
   padding: 80px 20px 100px;
@@ -59,7 +68,6 @@ const ChartContainer = styled.div`
   }
 `;
 
-// New! Check colors!
 const GoalCard = styled.div`
   border: 2px solid #ddd;
   border-radius: 10px;
@@ -68,33 +76,77 @@ const GoalCard = styled.div`
   background: #f9f9f9;
 `;
 
+const SuccessMessage = styled.p`
+  color: var(--color-success);
+  margin-top: 8px;
+  font-size: 14px;
+`;
+
+// API Functions
+const fetchGoals = (token) => {
+  return fetch(`${API_BASE_URL}/goals`, {
+    headers: {
+      Authorization: token,
+    },
+  });
+};
+
+const updateGoalAPI = (goalId, goalData, token) => {
+  return fetch(`${API_BASE_URL}/goals/${goalId}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify(goalData),
+  });
+};
+
+const createCommunityPost = (postData, token) => {
+  return fetch(`${API_BASE_URL}/community-posts`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify(postData),
+  });
+};
+
 const Dashboard = () => {
   const navigate = useNavigate();
   const { user, setUser } = useUserStore();
 
-  // Array of goals, new! Instead of object with 1 goal, array gives us a list!
+  // State
   const [goals, setGoals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [successMessage, setSuccessMessage] = useState("");
 
-  // Fetch 3 latest goals
+  // Values for chart.js
+  const incompleteGoals = goals.filter((goal) => !goal.completed);
+  const chartData = {
+    labels: ["Active Goals", "Completed"],
+    datasets: [
+      {
+        data: [incompleteGoals.length, 0],
+        backgroundColor: ["#659767", "#e0e0e0"],
+      },
+    ],
+  };
+
+  // Fetch goals
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
 
-    fetch("https://project-final-ualo.onrender.com/goals", {
-      headers: {
-        Authorization: token,
-      },
-    })
+    fetchGoals(token)
       .then((response) => response.json())
       .then((data) => {
-        // Filter away completed goals, show latest 3
-        const incompleteGoals = data
+        // Filter and sort goals
+        const filteredGoals = data
           .filter((goal) => !goal.completed)
           .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
           .slice(0, 3);
-
-        setGoals(incompleteGoals);
+        setGoals(filteredGoals);
         setLoading(false);
       })
       .catch((error) => {
@@ -103,96 +155,74 @@ const Dashboard = () => {
       });
   }, []);
 
-  // Array, update list
-  const updateGoal = (goalId, field, value) => {
+  const handleNavigateToSetup = () => {
+    navigate("/setup");
+  };
+
+  const handleIntentionChange = (goalId) => (e) => {
     setGoals((prevGoals) =>
       prevGoals.map((goal) =>
-        goal._id === goalId ? { ...goal, [field]: value } : goal
+        goal._id === goalId ? { ...goal, intention: e.target.value } : goal
       )
     );
   };
 
-  // Mark complete and remove from list
-  const toggleComplete = (goalId) => {
-    const token = localStorage.getItem("accessToken");
-
-    // Remove from frontend
-    setGoals((prevGoals) => prevGoals.filter((goal) => goal._id !== goalId));
-
-    // Update backend
-    fetch(`https://project-final-ualo.onrender.com/goals/${goalId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-      body: JSON.stringify({ completed: true }),
-    }).catch((error) => console.error("Error updating completion:", error));
+  // SMART fields handling
+  const handleFieldChange = (goalId, field) => (e) => {
+    setGoals((prevGoals) =>
+      prevGoals.map((goal) =>
+        goal._id === goalId ? { ...goal, [field]: e.target.value } : goal
+      )
+    );
   };
 
-  // Based on, completed and not completed
-  const data = () => {
-    const incompleteCount = goals.length;
-    const totalGoals = incompleteCount > 0 ? incompleteCount : 1;
-
-    return {
-      labels: ["Active Goals", "Completed"],
-      datasets: [
-        {
-          data: [incompleteCount, 0],
-          backgroundColor: ["#4caf50", "#e0e0e0"],
-        },
-      ],
-    };
-  };
-
-  // Share specific goal to community
-  const shareToCommunity = (goal) => {
-    const token = localStorage.getItem("accessToken");
-
-    fetch("https://project-final-ualo.onrender.com/community-posts", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-      body: JSON.stringify({
-        intention: goal.intention,
-        specific: goal.specific,
-        measurable: goal.measurable,
-        achievable: goal.achievable,
-        relevant: goal.relevant,
-        timebound: goal.timebound,
-        userName: user?.name,
-      }),
-    })
-      .then(() => {
-        navigate("/community");
-      })
-      .catch((error) => {
-        console.error("Error sharing to community:", error);
-      });
-  };
-
-  // Save specific goal
-  const saveGoal = (goalId) => {
+  const handleSaveGoal = (goalId) => () => {
     const token = localStorage.getItem("accessToken");
     const goalToSave = goals.find((goal) => goal._id === goalId);
 
-    fetch(`https://project-final-ualo.onrender.com/goals/${goalId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-      body: JSON.stringify(goalToSave),
-    })
+    updateGoalAPI(goalId, goalToSave, token)
       .then(() => {
         setSuccessMessage("Goal saved successfully!");
         setTimeout(() => setSuccessMessage(""), 3000);
       })
       .catch((error) => {
         console.error("Error saving goal:", error);
+      });
+  };
+
+  const handleCompleteGoal = (goalId) => () => {
+    const token = localStorage.getItem("accessToken");
+
+    // Remove from frontend
+    setGoals((prevGoals) => prevGoals.filter((goal) => goal._id !== goalId));
+
+    // Update backend
+    updateGoalAPI(goalId, { completed: true }, token).catch((error) =>
+      console.error("Error updating completion:", error)
+    );
+  };
+
+  //Function sharing to community
+  const handleShareToCommunity = (goal) => () => {
+    const token = localStorage.getItem("accessToken");
+
+    // Create post data
+    const postData = {
+      intention: goal.intention,
+      specific: goal.specific,
+      measurable: goal.measurable,
+      achievable: goal.achievable,
+      relevant: goal.relevant,
+      timebound: goal.timebound,
+      userName: user?.name,
+    };
+
+    createCommunityPost(postData, token)
+      .then(() => {
+        navigate("/community");
+      })
+      .catch((error) => {
+        console.error("Error sharing to community:", error);
       });
   };
 
@@ -203,14 +233,17 @@ const Dashboard = () => {
   return (
     <Container>
       <h1>Welcome to your dashboard</h1>
-      <Img src="/assets/12.png" alt="A graphic image of mind made of flowers" />
+      <Img
+        src="/assets/12.png"
+        alt="A graphic image showing a thinking mind with flowers around it for decoration"
+      />
       <ButtonContainer>
-        <button onClick={() => navigate("/setup")}>
+        <button onClick={handleNavigateToSetup}>
           Add new intention and goals
         </button>
       </ButtonContainer>
 
-      {/*/Loop throug goals */}
+      {/* Loop through goals */}
       {goals.length > 0 ? (
         goals.map((goal, index) => (
           <GoalCard key={goal._id}>
@@ -223,22 +256,14 @@ const Dashboard = () => {
                     rows={2}
                     maxLength={150}
                     value={goal.intention || ""}
-                    onChange={(e) =>
-                      updateGoal(goal._id, "intention", e.target.value)
-                    }
+                    onChange={handleIntentionChange(goal._id)}
                   />
                   <p>{(goal.intention || "").length}/150</p>
                 </div>
               </Box>
               <Box>
                 <h3>Your detailed goals</h3>
-                {[
-                  "specific",
-                  "measurable",
-                  "achievable",
-                  "relevant",
-                  "timebound",
-                ].map((field) => (
+                {SMART_FIELDS.map((field) => (
                   <div key={field}>
                     <strong>
                       {field.charAt(0).toUpperCase() + field.slice(1)}:
@@ -247,9 +272,7 @@ const Dashboard = () => {
                       rows={2}
                       maxLength={150}
                       value={goal[field] || ""}
-                      onChange={(e) =>
-                        updateGoal(goal._id, field, e.target.value)
-                      }
+                      onChange={handleFieldChange(goal._id, field)}
                     />
                     <p>{(goal[field] || "").length}/150</p>
                   </div>
@@ -257,13 +280,13 @@ const Dashboard = () => {
               </Box>
 
               <ButtonContainer>
-                <button onClick={() => saveGoal(goal._id)}>
+                <button onClick={handleSaveGoal(goal._id)}>
                   Save this goal
                 </button>
-                <button onClick={() => toggleComplete(goal._id)}>
+                <button onClick={handleCompleteGoal(goal._id)}>
                   Mark as completed
                 </button>
-                <button onClick={() => shareToCommunity(goal)}>
+                <button onClick={handleShareToCommunity(goal)}>
                   Share to community
                 </button>
               </ButtonContainer>
@@ -274,10 +297,10 @@ const Dashboard = () => {
         <p>No active goals. Create your first goal!</p>
       )}
 
-      {successMessage && <p>{successMessage}</p>}
+      {successMessage && <SuccessMessage>{successMessage}</SuccessMessage>}
 
       <ChartContainer>
-        <Doughnut data={data()} />
+        <Doughnut data={chartData} />
       </ChartContainer>
     </Container>
   );

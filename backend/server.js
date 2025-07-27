@@ -226,7 +226,8 @@ app.get('/community-posts', async (req, res) => {
 app.post('/community-posts', authenticateUser, async (req, res) => {
   const post = new CommunityPost({
     ...req.body,
-    userId: req.user._id
+    userId: req.user._id,
+    userName: req.user.name 
   });
   await post.save();
   res.json(post);

@@ -108,6 +108,20 @@ app.post("/sessions", async (req, res) => {
   }
 });
 
+// Endpoint for private/public
+app.patch("/users/public-status", authenticateUser, async (req, res) => {
+  const { isPublic } = req.body;
+
+  try {
+    req.user.isPublic = isPublic;
+    await req.user.save();
+    res.status(200).json({ success: true, message: "Public status updated" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Could not update status" });
+  }
+});
+
+
 //Authorization
 
 //Dashboard
@@ -122,7 +136,6 @@ app.get("/users/:id", authenticateUser, async (req, res) => {
 });
 
 //Setup
-
 // POST - Create intention+smart goal as a logged in user
 app.post("/goals", authenticateUser, async (req, res) => {
   const { intention, specific, measurable, achievable, relevant, timebound } = req.body;
@@ -148,7 +161,19 @@ if (existingGoal) {
     });
     
     const savedGoal = await newGoal.save();
-    
+    if (req.user.isPublic) {
+      const communityPost = new CommunityPost({
+        userId: req.user._id,
+        userName: req.user.name,
+        intention,
+        specific,
+        measurable,
+        achievable,
+        relevant,
+        timebound
+      });
+      await communityPost.save();
+    }    
 
     res.status(201).json({
       success: true,
@@ -187,6 +212,12 @@ app.patch("/goals/:id", authenticateUser, async (req, res) => {
       { new: true, runValidators: true }
     );
     
+    if (updates.completed === true) {
+      await CommunityPost.deleteOne({
+        userId: req.user._id,
+        intention: updatedGoal.intention
+      });
+    }
     if (!updatedGoal) {
       return res.status(404).json({
         success: false,

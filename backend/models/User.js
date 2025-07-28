@@ -26,6 +26,10 @@ const userSchema = new mongoose.Schema({
   accessToken: {
     type: String,
     default: () => crypto.randomBytes(128).toString("hex")
+  },
+  isPublic: {
+    type: Boolean,
+    default: false
   }
 });
 

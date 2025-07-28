@@ -4,12 +4,11 @@ import { Doughnut } from "react-chartjs-2";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
+import ShareCommunity from "../components/ShareCommunity.jsx";
 import { useUserStore } from "../store/UserStore.jsx";
 import { Box, Textarea } from "../styling/BoxStyling.jsx";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
-
-//Maybe remove commnity post action all together into seperate component?
 
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
 const SMART_FIELDS = [
@@ -102,17 +101,6 @@ const updateGoalAPI = (goalId, goalData, token) => {
   });
 };
 
-const createCommunityPost = (postData, token) => {
-  return fetch(`${API_BASE_URL}/community-posts`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: token,
-    },
-    body: JSON.stringify(postData),
-  });
-};
-
 const Dashboard = () => {
   const navigate = useNavigate();
   const { user, setUser } = useUserStore();
@@ -202,30 +190,6 @@ const Dashboard = () => {
     );
   };
 
-  //Function sharing to community
-  const handleShareToCommunity = (goal) => () => {
-    const token = localStorage.getItem("accessToken");
-
-    // Create post data
-    const postData = {
-      intention: goal.intention,
-      specific: goal.specific,
-      measurable: goal.measurable,
-      achievable: goal.achievable,
-      relevant: goal.relevant,
-      timebound: goal.timebound,
-      userName: user?.name,
-    };
-
-    createCommunityPost(postData, token)
-      .then(() => {
-        navigate("/community");
-      })
-      .catch((error) => {
-        console.error("Error sharing to community:", error);
-      });
-  };
-
   if (loading) {
     return <p>Loading your goals...</p>;
   }
@@ -247,10 +211,9 @@ const Dashboard = () => {
       {goals.length > 0 ? (
         goals.map((goal, index) => (
           <GoalCard key={goal._id}>
-            <h2>Goal {index + 1}</h2>
             <Section>
               <Box>
-                <h3>Your Intention</h3>
+                <h2>Your Intention</h2>
                 <div>
                   <Textarea
                     rows={2}
@@ -262,7 +225,7 @@ const Dashboard = () => {
                 </div>
               </Box>
               <Box>
-                <h3>Your detailed goals</h3>
+                <h2>Your detailed goals</h2>
                 {SMART_FIELDS.map((field) => (
                   <div key={field}>
                     <strong>
@@ -286,9 +249,7 @@ const Dashboard = () => {
                 <button onClick={handleCompleteGoal(goal._id)}>
                   Mark as completed
                 </button>
-                <button onClick={handleShareToCommunity(goal)}>
-                  Share to community
-                </button>
+                <ShareCommunity goal={goal} />
               </ButtonContainer>
             </Section>
           </GoalCard>

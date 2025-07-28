@@ -29,7 +29,7 @@ const Footer = () => {
   return (
     <FooterContainer>
       <FooterList>
-        <li>Contact Us</li>
+        <li>Copyright @ Jasmin Hedlund 2025</li>
       </FooterList>
     </FooterContainer>
   );

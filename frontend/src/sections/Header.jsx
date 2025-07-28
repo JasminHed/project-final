@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
+import AuthForm from "../components/AuthForm";
 import { useUserStore } from "../store/UserStore";
-import AuthForm from "./AuthForm";
 
 const HeaderContainer = styled.header`
   position: relative;
@@ -169,7 +169,7 @@ const Header = () => {
         Skip to main content
       </a>
       <HeaderContainer>
-        <Title>TheIntentionApp</Title>
+        <Title>Intention Hub</Title>
 
         <HamburgerButton onClick={toggleMenu} aria-label="Toggle the menu">
           ☰

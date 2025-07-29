@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 
+import AIbot from "./components/AIbot.jsx";
 import Community from "./pages/Community.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import Home from "./pages/Home.jsx";
@@ -14,7 +15,7 @@ export const App = () => {
     <>
       <GlobalStyles />
       <Header />
-
+      <AIbot />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/setup" element={<Setup />} />

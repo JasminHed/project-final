@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
+// comments and likes must go to backend and fecth from there. right now they go away.
 // API base
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
 

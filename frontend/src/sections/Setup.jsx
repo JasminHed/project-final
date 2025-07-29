@@ -133,7 +133,7 @@ const Setup = ({ goBack }) => {
       <h1>Set your intention and goals</h1>
       <Img
         src="/assets/10.png"
-        alt="An image of a brain where flowers are growing"
+        alt="A graphic image showing a thinking mind, a place where flowers are growing"
       />
       <Section>
         <h2>Your Intention</h2>

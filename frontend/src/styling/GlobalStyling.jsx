@@ -11,8 +11,8 @@ const GlobalStyles = createGlobalStyle`
   --color-button-hover: #aa6670;       
   --color-focus: #e47885;                 
   --color-background: #FFFFFF;  
-  --color-error: #003f7d;    
-  --color-success: #00509e;      
+  --color-error: #74b3ff;    
+  --color-success: #4da6ff;       
 }
 
 

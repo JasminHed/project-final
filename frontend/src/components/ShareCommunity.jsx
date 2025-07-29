@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+/*import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useUserStore } from "../store/UserStore.jsx";
@@ -63,4 +63,4 @@ const ShareCommunity = ({ goal }) => {
   );
 };
 
-export default ShareCommunity;
+export default ShareCommunity;*/

@@ -80,6 +80,11 @@ const SuccessMessage = styled.p`
   font-size: 14px;
 `;
 
+const Message = styled.p`
+  color: var(--color-success);
+  margin-bottom: 10px;
+`;
+
 // API Functions
 const fetchGoals = (token) => {
   return fetch(`${API_BASE_URL}/goals`, {
@@ -104,6 +109,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const { user, setUser } = useUserStore();
 
+  //Public profile
   const [isPublic, setIsPublic] = useState(user?.isPublic || false);
 
   const updatePublicStatus = (newStatus) => {
@@ -120,6 +126,10 @@ const Dashboard = () => {
       .then((res) => res.json())
       .then(() => {
         setIsPublic(newStatus);
+        setSuccessMessage(
+          "Your profile is now public. This means all users can see your name, intention and goals in the Community. They disappear when marked as complete."
+        );
+        setTimeout(() => setSuccessMessage(""), 5000);
       })
       .catch((err) => console.error("Failed to update public status", err));
   };
@@ -187,10 +197,23 @@ const Dashboard = () => {
     const token = localStorage.getItem("accessToken");
     const goalToSave = goals.find((goal) => goal._id === goalId);
 
-    updateGoalAPI(goalId, goalToSave, token)
+    const updatedGoal = {
+      ...goalToSave,
+      isPublic: isPublic,
+    };
+
+    updateGoalAPI(goalId, updatedGoal, token)
       .then(() => {
-        setSuccessMessage("Goal saved successfully!");
-        setTimeout(() => setSuccessMessage(""), 3000);
+        if (isPublic) {
+          setSuccessMessage(
+            "Goal saved and shared publicly! Other users can now see your name, intention, and goal in the community."
+          );
+        } else {
+          setSuccessMessage("Goal saved successfully!");
+        }
+        setTimeout(() => {
+          setSuccessMessage("");
+        }, 4000);
       })
       .catch((error) => {
         console.error("Error saving goal:", error);
@@ -224,6 +247,7 @@ const Dashboard = () => {
         />
         Make my profile public
       </label>
+
       <Img
         src="/assets/12.png"
         alt="A graphic image showing a thinking mind with flowers around it for decoration"

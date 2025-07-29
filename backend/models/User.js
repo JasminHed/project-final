@@ -31,8 +31,8 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  lastCheckinDate: { type: String, default: null },  
-lastMotivationDate: { type: String, default: null }, 
+  lastMotivationDate: 
+  { type: String, default: null }, 
 
 });
 

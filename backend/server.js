@@ -398,7 +398,7 @@ app.get("/api/weekly-motivation", authenticateUser, async (req, res) => {
     const lastMotivation = new Date(user.lastMotivationDate || 0);
     const diffDays = (today - lastMotivation) / (1000 * 60 * 60 * 24);
 
-    if (diffDays < 7) {
+    if (diffDays < 1) {
       return res.json({ message: "Motivation already sent this week." });
     }
 

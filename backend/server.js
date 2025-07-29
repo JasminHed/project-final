@@ -390,33 +390,7 @@ app.post("/community-posts/:id/comments", authenticateUser, async (req, res) => 
   }
 });
 
-//AI bot
-// DAILY CHECK-IN (1/day)
-app.get("/api/daily-checkin", authenticateUser, async (req, res) => {
-  try {
-    const user = req.user;
-    const today = new Date().toISOString().slice(0, 10); // format YYYY-MM-DD
-
-    if (user.lastCheckinDate === today) {
-      return res.json({ message: "You already checked in today." });
-    }
-
-    const checkinQuestions = [
-      "How has your progress been towards your goal this week?",
-      "What felt easy?",
-      "What was challenging?"
-    ];
-
-    user.lastCheckinDate = today;
-    await user.save();
-
-    res.json({ checkinQuestions });
-  } catch (error) {
-    res.status(500).json({ success: false, message: "Failed to get daily check-in." });
-  }
-});
-
-// WEEKLY MOTIVATION (1/week)
+// AI get - motivation (1/week)
 app.get("/api/weekly-motivation", authenticateUser, async (req, res) => {
   try {
     const user = req.user;
@@ -445,8 +419,6 @@ app.get("/api/weekly-motivation", authenticateUser, async (req, res) => {
     res.status(500).json({ success: false, message: "Failed to get weekly motivation." });
   }
 });
-
-
 
 // Start the server
 app.listen(port, () => {

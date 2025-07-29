@@ -218,6 +218,25 @@ app.patch("/goals/:id", authenticateUser, async (req, res) => {
         intention: updatedGoal.intention
       });
     }
+
+    if (req.user.isPublic && !updatedGoal.completed) {
+      await CommunityPost.findOneAndUpdate(
+        { userId: req.user._id, goalId: updatedGoal._id },
+        {
+          userId: req.user._id,
+          goalId: updatedGoal._id,
+          intention: updatedGoal.intention,
+          specific: updatedGoal.specific,
+          measurable: updatedGoal.measurable,
+          achievable: updatedGoal.achievable,
+          relevant: updatedGoal.relevant,
+          timebound: updatedGoal.timebound,
+          createdAt: new Date(),
+        },
+        { upsert: true, new: true }
+      );
+    }
+    
     if (!updatedGoal) {
       return res.status(404).json({
         success: false,

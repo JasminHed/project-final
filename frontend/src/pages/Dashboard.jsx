@@ -4,7 +4,6 @@ import { Doughnut } from "react-chartjs-2";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-import ShareCommunity from "../components/ShareCommunity.jsx";
 import { useUserStore } from "../store/UserStore.jsx";
 import { Box, Textarea } from "../styling/BoxStyling.jsx";
 
@@ -105,6 +104,26 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const { user, setUser } = useUserStore();
 
+  const [isPublic, setIsPublic] = useState(user?.isPublic || false);
+
+  const updatePublicStatus = (newStatus) => {
+    const token = localStorage.getItem("accessToken");
+
+    fetch(`${API_BASE_URL}/users/public-status`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+      body: JSON.stringify({ isPublic: newStatus }),
+    })
+      .then((res) => res.json())
+      .then(() => {
+        setIsPublic(newStatus);
+      })
+      .catch((err) => console.error("Failed to update public status", err));
+  };
+
   // State
   const [goals, setGoals] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -197,6 +216,14 @@ const Dashboard = () => {
   return (
     <Container>
       <h1>Welcome to your dashboard</h1>
+      <label>
+        <input
+          type="checkbox"
+          checked={isPublic}
+          onChange={(e) => updatePublicStatus(e.target.checked)}
+        />
+        Make my profile public
+      </label>
       <Img
         src="/assets/12.png"
         alt="A graphic image showing a thinking mind with flowers around it for decoration"
@@ -249,7 +276,6 @@ const Dashboard = () => {
                 <button onClick={handleCompleteGoal(goal._id)}>
                   Mark as completed
                 </button>
-                <ShareCommunity goal={goal} />
               </ButtonContainer>
             </Section>
           </GoalCard>

@@ -67,85 +67,78 @@ const Onboarding = ({ goBack }) => {
   //List of onboarding modules
   const modules = [
     {
-      title: "Intention",
+      title: "Setting your intention",
       content: (
         <>
           <p>
-            Visualising your dream life isn't just a pleasant daydream - it's
-            essential for making effective decisions. Ask yourself: What matters
-            most in your life? Your answers - whether it's family, career, or
-            travel—will reveal your core values.
+            Visualizing your dream life isn’t just a pleasant daydream — it’s a
+            powerful tool for making clear, meaningful decisions. Ask yourself:
+            What matters most in your life? Whether it’s family, career, travel,
+            or something else, your answers reveal your core values.
           </p>
           <p>
-            Visualise this dream life in detail – where you live, work, and the
-            relationships you value. From this, determine short-term goals like
-            specialised courses or travels and long-term goals like early
-            retirement or starting a meaningful project. Note these visions, as
-            they will guide your journey.
+            Picture this dream life in detail — where you live, what you do, and
+            who you share it with. From there, set short-term goals like taking
+            a course or planning a trip, and long-term goals like early
+            retirement or launching a passion project. Keep these visions close
+            — they’ll guide your journey.
           </p>
           <p>
-            The idea is that visions and goals can apply to all areas of your
-            life—whether it's a career change, creating your dream lifestyle,
-            improving your physical health, or anything else that matters to
-            you.
+            Remember, these visions and goals can touch every part of your life
+            — career changes, healthier habits, lifestyle upgrades, or anything
+            else that matters to you.
           </p>
         </>
       ),
     },
     {
-      title: "SMART goals",
+      title: "Making goals SMART",
       content: (
         <>
           <p>
-            A well-crafted action plan is what stands between you and your
-            dreams and it all starts with setting clear goals.
+            A clear, well-crafted action plan is what bridges the gap between
+            dreaming and doing and it all starts with setting focused goals.
           </p>
           <p>
-            Hitting a goal will ignite a blaze of possibilities, fuelling your
-            ambitions. You're in control of your dreams, and there's no "wrong
-            time" to set new goals. As long as you're determined and
-            disciplined, you're set for success. Goals turn aspirations into
-            focused targets, guiding your actions with purpose. By setting
-            goals, you can track your progress. Ticking off achieved goals
-            boosts excitement and motivates you to accomplish more.
+            Achieving a goal opens up new opportunities and increases your
+            motivation. There is never a “wrong time” to set new goals. With
+            determination and discipline, success is possible. Goals help turn
+            big ideas into clear, focused steps that guide your actions.
+            Tracking progress and ticking off completed goals builds momentum
+            and keeps your motivation alive.
           </p>
         </>
       ),
     },
     {
-      title: "SMART goals details",
+      title: "Breaking down SMART goals",
       content: (
         <div>
           <p>
-            <strong>Specific</strong> - Instead of vague goals like "be
-            healthier," be specific. Break improvement into concrete, actionable
-            steps like "exercise 3 times a week." For even more precision,
-            specify "walk 10,000 steps daily".
+            <strong>Specific</strong> - Avoid vague goals like “be healthier.”
+            Instead, break them into concrete, actionable steps. For example,
+            “exercise 3 times a week” or “walk 10,000 steps daily” offers clear
+            direction.
           </p>
           <p>
             <strong>Measurable</strong> - To track progress clearly, make your
-            goal measurable. For example, if you want to find your first role in
-            a new career, set a goal like "apply to 5 positions each month."
-            Measure your progress by counting applications sent.
+            goal measurable. If you’re aiming for a new career, try “apply to 5
+            positions each month.” Measuring progress helps you stay on course.
           </p>
           <p>
-            <strong>Achievable</strong> - Achieve breakthroughs by taking
-            realistic steps. Avoid setting unrealistic expectations that can
-            demotivate you. If you want to start meditating, aim for 5 minutes a
-            day at first instead of an hour immediately.
+            <strong>Achievable</strong> - Set realistic, manageable steps to
+            keep motivated. For example, start meditating for 5 minutes a day
+            rather than an hour right away.
           </p>
           <p>
-            <strong>Realistic</strong> - Challenge yourself, but don't set
-            impossible missions. For instance, if you want to run a marathon,
-            don't expect to do it next month if you're just starting. If you
-            want to find your first job, don't expect to land your dream role
-            immediately. Instead set attainable steps toward it.
+            <strong>Realistic</strong> - Challenge yourself but keep goals
+            attainable. Don’t expect to run a marathon next month if you’re just
+            starting out — instead, build toward it step by step.
           </p>
           <p>
-            <strong>Time-bound</strong> Set deadlines to encourage focus and
-            urgency. For example, decide to finish an online coding course
-            within three months. Time-sensitive goals help keep you on track and
-            motivated.
+            <strong>Time-bound</strong> - Deadlines encourage focus and urgency.
+            Decide to complete that coding course in three months to stay
+            motivated and on track.
           </p>
         </div>
       ),
@@ -191,7 +184,7 @@ const Onboarding = ({ goBack }) => {
 
   return (
     <Container>
-      <h1>Onboarding</h1>
+      <h1>Start your journey</h1>
 
       <ModuleContainer>
         <Img src="/assets/9.png" alt="Graphic image showing a thinking mind" />

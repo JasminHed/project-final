@@ -130,13 +130,23 @@ const Setup = ({ goBack }) => {
 
   return (
     <Container>
-      <h1>Set your intention and goals</h1>
+      <h1>Ready to set your intentions and goals? Let’s make it happen!</h1>
+      <p>
+        This is your space to pause and get clear. Start by reflecting on what
+        truly matters to you — your priorities, dreams, and the milestones you
+        want to reach. Then, craft your main intention based on those
+        reflections. After that, break it down into SMART goals — Specific,
+        Measurable, Achievable, Relevant and Timebound, to create a clear path
+        forward. When you’re ready, save your work and watch your journey unfold
+        in your dashboard. Take your time, and remember: every step counts.
+      </p>
+
       <Img
         src="/assets/10.png"
         alt="A graphic image showing a thinking mind, a place where flowers are growing"
       />
       <Section>
-        <h2>Your Intention</h2>
+        <h2>Your Intention: What lights you up?</h2>
         <Box>
           <h3>Reflect on these questions</h3>
           <ul>
@@ -171,7 +181,7 @@ const Setup = ({ goBack }) => {
       </Section>
 
       <Section>
-        <h2>Now Create Your SMART Goals</h2>
+        <h2>Let’s shape your SMART goals — clear, doable, and yours</h2>
         <h3>Specific</h3>
         <Textarea
           placeholder="E.g., I will run 3 times a week."
@@ -219,7 +229,7 @@ const Setup = ({ goBack }) => {
         </ErrorMessage>
       )}
 
-      <button onClick={handleSave}> Save - Redirect to dashboard.</button>
+      <button onClick={handleSave}> Save and head to your dashboard</button>
     </Container>
   );
 };

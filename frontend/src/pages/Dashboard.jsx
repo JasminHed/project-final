@@ -239,6 +239,22 @@ const Dashboard = () => {
   return (
     <Container>
       <h1>Welcome to your dashboard</h1>
+      <p>
+        Here you’ll see your active goals, up to three at a time — designed to
+        keep you focused and purposeful. You can add, edit, and save your goals
+        whenever you like.{" "}
+      </p>
+
+      <p>
+        Choose to make your profile public and your goals will be shared
+        automatically with the community — so others can cheer you on, offer
+        support, and celebrate your progress. Motivation grows when we grow
+        together. When a goal is complete, simply check it off — it disappears,
+        clearing the way for your next achievement.{" "}
+      </p>
+
+      <p>You’ve got this! One clear step at a time.</p>
+
       <label>
         <input
           type="checkbox"
@@ -247,7 +263,7 @@ const Dashboard = () => {
         />
         Make my profile public
       </label>
-
+      <hr />
       <Img
         src="/assets/12.png"
         alt="A graphic image showing a thinking mind with flowers around it for decoration"
@@ -264,7 +280,7 @@ const Dashboard = () => {
           <GoalCard key={goal._id}>
             <Section>
               <Box>
-                <h2>Your Intention</h2>
+                <h3>Your Intention</h3>
                 <div>
                   <Textarea
                     rows={2}
@@ -276,7 +292,7 @@ const Dashboard = () => {
                 </div>
               </Box>
               <Box>
-                <h2>Your detailed goals</h2>
+                <h3>Your detailed goals</h3>
                 {SMART_FIELDS.map((field) => (
                   <div key={field}>
                     <strong>

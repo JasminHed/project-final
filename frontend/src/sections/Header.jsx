@@ -12,44 +12,66 @@ const HeaderContainer = styled.header`
   background: var(--color-background);
   z-index: 100;
 
-  @media (min-width: 669px) {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Title centered on mobile */
+
+  @media (min-width: 668px) {
+    justify-content: center;
+  }
+
+  @media (min-width: 1024px) {
+    justify-content: center;
   }
 `;
 
 const Title = styled.h1`
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
   text-align: center;
+  width: 100%;
+  max-width: 600px;
+  z-index: 101;
+`;
+
+const DesktopNav = styled.nav`
+  display: none;
+
+  @media (min-width: 668px) {
+    display: flex;
+    gap: 10px;
+    position: absolute;
+    right: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 102;
+  }
+
+  @media (min-width: 1024px) {
+    right: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
 `;
 
 const HamburgerButton = styled.button`
   display: block;
   position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  top: 80px;
+  top: 40px;
+  right: 40px;
+  transform: none;
 
-  @media (min-width: 669px) {
+  @media (min-width: 668px) {
     display: none;
   }
 `;
 
-const DesktopNav = styled.nav`
-  display: none;
-  gap: 20px;
-
-  @media (min-width: 669px) {
-    display: flex;
-    gap: 10px;
-  }
-`;
-
 const MobileNav = styled.nav`
-  position: relative;
-  top: ${(props) => (props.$isOpen ? "40px" : "-300px")};
-  left: 50%;
-  transform: translateX(-50%);
+  position: absolute;
+  top: ${(props) => (props.$isOpen ? "80px" : "-300px")};
+  right: 40px;
   width: 200px;
   background: var(--color-background);
   padding: 20px;
@@ -59,27 +81,21 @@ const MobileNav = styled.nav`
   gap: 15px;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 102;
 
   button {
     margin-top: 20px;
   }
 
-  @media (min-width: 669px) {
+  @media (min-width: 668px) {
     display: none;
   }
 `;
 
-const ButtonContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-left: auto;
-`;
-
 const LogoutMessage = styled.p`
   position: absolute;
-  color: var(--color-text-primary);
-  bottom: 60px;
+  color: var(--color-success);
+  top: 60px;
   left: 110px;
 `;
 
@@ -123,10 +139,10 @@ const Header = () => {
 
   const toggleDarkMode = () => setDarkMode((prev) => !prev);
 
-  const handleSignUpClick = () => setIsOpen(true);
+  //const handleSignUpClick = () => setIsOpen(true);
 
   // Links in navbar (conditional)
-  const renderNavLinks = () => {
+  const NavLinks = () => {
     if (isLoggedIn) {
       return (
         <>
@@ -139,28 +155,26 @@ const Header = () => {
     }
   };
 
-  const renderAuthButtons = () => {
+  //Only for logout button when user s logged in has signed up
+  const AuthButtons = () => {
+    if (!isLoggedIn) return null;
+
     return (
-      <>
-        {!isLoggedIn && <button onClick={handleSignUpClick}>Sign Up</button>}
-        {isLoggedIn && (
-          <button type="button" onClick={handleLogout}>
-            Logout
-          </button>
-        )}
-      </>
+      <button type="button" onClick={handleLogout}>
+        Logout
+      </button>
     );
   };
 
-  const renderLogoutMessage = () => {
+  const LogoutText = () => {
     if (logoutMessage) {
       return <LogoutMessage>{logoutMessage}</LogoutMessage>;
     }
     return null;
   };
 
-  const getDarkModeButtonText = () => {
-    return darkMode ? "Light" : "Dark";
+  const DarkModeButton = () => {
+    return darkMode ? "Switch to light mode" : "Switch to dark mode";
   };
 
   return (
@@ -175,36 +189,40 @@ const Header = () => {
           ☰
         </HamburgerButton>
 
-        {/* Desktop */}
         <DesktopNav>
-          {renderNavLinks()}
-          <ButtonContainer>{renderAuthButtons()}</ButtonContainer>
-          {renderLogoutMessage()}
-          <button onClick={toggleDarkMode} aria-label="Toggle dark mode">
-            {getDarkModeButtonText()}
-          </button>
+          {NavLinks()}
+          {AuthButtons()}
+          {LogoutText()}
+
+          <Link
+            href="#!"
+            onClick={(e) => {
+              e.preventDefault();
+              toggleDarkMode();
+            }}
+            aria-label="Toggle dark mode"
+          >
+            {DarkModeButton()}
+          </Link>
         </DesktopNav>
       </HeaderContainer>
 
-      {/* Mobile */}
       <MobileNav $isOpen={menuOpen}>
-        {renderNavLinks()}
-        <ButtonContainer>{renderAuthButtons()}</ButtonContainer>
-        {renderLogoutMessage()}
-        <button onClick={toggleDarkMode} aria-label="Toggle dark mode">
-          {getDarkModeButtonText()}
-        </button>
+        {NavLinks()}
+        {AuthButtons()}
+        {LogoutText()}
+        <Link
+          href="#!"
+          onClick={(e) => {
+            e.preventDefault();
+            toggleDarkMode();
+          }}
+          aria-label="Toggle dark mode"
+        >
+          {DarkModeButton()}
+        </Link>
       </MobileNav>
-
-      {/* AuthForm popup */}
-      <AuthForm
-        isLoggedIn={isLoggedIn}
-        setIsLoggedIn={setIsLoggedIn}
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-      />
     </>
   );
 };
-
 export default Header;

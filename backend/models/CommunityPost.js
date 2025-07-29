@@ -9,6 +9,7 @@ const communityPostSchema = new mongoose.Schema({
   timebound: String,
   userName: String,
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  goalId: { type: mongoose.Schema.Types.ObjectId, ref: 'Goal' },
   createdAt: { type: Date, default: Date.now },
   likes: { type: Number, default: 0 },
   comments: [{ text: String, userName: String, createdAt: Date }]

@@ -1,6 +1,5 @@
 import bcrypt from "bcrypt";
 import cors from "cors";
-import crypto from "crypto";
 import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
@@ -14,7 +13,7 @@ dotenv.config();
 //Connects to mongoDB database
 const mongoUrl = process.env.MONGO_URL || "mongodb://localhost/final-project";
 mongoose.connect(mongoUrl);
-mongoose.Promise = Promise;
+
 
 
 //Authenitcation middleware
@@ -126,14 +125,14 @@ app.patch("/users/public-status", authenticateUser, async (req, res) => {
 
 //Dashboard
 //GET - Get user data (name and email) of a user by their user ID
-app.get("/users/:id", authenticateUser, async (req, res) => {
+/*app.get("/users/:id", authenticateUser, async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     res.json({ name: user.name, email: user.email });
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch user data" });
   }
-});
+});*/
 
 //Setup
 // POST - Create intention+smart goal as a logged in user
@@ -200,18 +199,27 @@ app.get("/goals", authenticateUser, async (req, res) => {
   }
 });
 
-// PATCH - Update goal by id, so only user can update their own intention+goals
+// PATCH - Update goal by id, only user can edit int+goal and keeps it sync with edits, updates 
 app.patch("/goals/:id", authenticateUser, async (req, res) => {
   const { id } = req.params;
   const updates = req.body;
-  
+
   try {
+    // Update goal
     const updatedGoal = await Goal.findOneAndUpdate(
       { _id: id, userId: req.user._id },
       updates,
       { new: true, runValidators: true }
     );
-    
+
+    if (!updatedGoal) {
+      return res.status(404).json({
+        success: false,
+        message: "Goal not found. Try again."
+      });
+    }
+
+    // remove community post if goal is complete
     if (updates.completed === true) {
       await CommunityPost.deleteOne({
         userId: req.user._id,
@@ -219,7 +227,35 @@ app.patch("/goals/:id", authenticateUser, async (req, res) => {
       });
     }
 
-    if (req.user.isPublic && !updatedGoal.completed) {
+    // ispublic
+    if (updates.hasOwnProperty("isPublic")) {
+      if (updates.isPublic) {
+        // create or update community post to community
+        await CommunityPost.findOneAndUpdate(
+          { userId: req.user._id, goalId: updatedGoal._id },
+          {
+            userId: req.user._id,
+            goalId: updatedGoal._id,
+            intention: updatedGoal.intention,
+            specific: updatedGoal.specific,
+            measurable: updatedGoal.measurable,
+            achievable: updatedGoal.achievable,
+            relevant: updatedGoal.relevant,
+            timebound: updatedGoal.timebound,
+            createdAt: new Date(),
+            userName: req.user.name,
+          },
+          { upsert: true, new: true }
+        );
+      } else {
+        // remove community post if ispublic is false
+        await CommunityPost.deleteOne({
+          userId: req.user._id,
+          goalId: updatedGoal._id
+        });
+      }
+    } else if (req.user.isPublic && !updatedGoal.completed) {
+      // if isPublic true and goals are non complete, update community-post as usual
       await CommunityPost.findOneAndUpdate(
         { userId: req.user._id, goalId: updatedGoal._id },
         {
@@ -232,18 +268,12 @@ app.patch("/goals/:id", authenticateUser, async (req, res) => {
           relevant: updatedGoal.relevant,
           timebound: updatedGoal.timebound,
           createdAt: new Date(),
+          userName: req.user.name,
         },
         { upsert: true, new: true }
       );
     }
-    
-    if (!updatedGoal) {
-      return res.status(404).json({
-        success: false,
-        message: "Goal not found. Try again."
-      });
-    }
-    
+
     res.status(200).json({
       success: true,
       response: updatedGoal,
@@ -273,7 +303,7 @@ app.get('/community-posts', async (req, res) => {
 
 
 //POST in community
-app.post('/community-posts', authenticateUser, async (req, res) => {
+/*app.post('/community-posts', authenticateUser, async (req, res) => {
   const post = new CommunityPost({
     ...req.body,
     userId: req.user._id,
@@ -281,7 +311,7 @@ app.post('/community-posts', authenticateUser, async (req, res) => {
   });
   await post.save();
   res.json(post);
-});
+});*/
 
 
 // POST - Like a community-post

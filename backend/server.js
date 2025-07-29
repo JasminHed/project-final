@@ -390,6 +390,61 @@ app.post("/community-posts/:id/comments", authenticateUser, async (req, res) => 
   }
 });
 
+//AI bot
+// DAILY CHECK-IN (1/day)
+app.get("/api/daily-checkin", authenticateUser, async (req, res) => {
+  try {
+    const user = req.user;
+    const today = new Date().toISOString().slice(0, 10); // format YYYY-MM-DD
+
+    if (user.lastCheckinDate === today) {
+      return res.json({ message: "You already checked in today." });
+    }
+
+    const checkinQuestions = [
+      "How has your progress been towards your goal this week?",
+      "What felt easy?",
+      "What was challenging?"
+    ];
+
+    user.lastCheckinDate = today;
+    await user.save();
+
+    res.json({ checkinQuestions });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Failed to get daily check-in." });
+  }
+});
+
+// WEEKLY MOTIVATION (1/week)
+app.get("/api/weekly-motivation", authenticateUser, async (req, res) => {
+  try {
+    const user = req.user;
+    const today = new Date();
+    const lastMotivation = new Date(user.lastMotivationDate || 0);
+    const diffDays = (today - lastMotivation) / (1000 * 60 * 60 * 24);
+
+    if (diffDays < 7) {
+      return res.json({ message: "Motivation already sent this week." });
+    }
+
+    const motivations = [
+      "Keep going! You're doing great.",
+      "Remember why you set your goal in the first place.",
+      "Small steps every day lead to big changes!",
+      "You’ve got this — stay focused and keep moving forward."
+    ];
+
+    const randomMotivation = motivations[Math.floor(Math.random() * motivations.length)];
+
+    user.lastMotivationDate = today.toISOString().slice(0, 10);
+    await user.save();
+
+    res.json({ motivation: randomMotivation });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Failed to get weekly motivation." });
+  }
+});
 
 
 

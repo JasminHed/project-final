@@ -30,7 +30,10 @@ const userSchema = new mongoose.Schema({
   isPublic: {
     type: Boolean,
     default: false
-  }
+  },
+  lastCheckinDate: { type: String, default: null },  
+lastMotivationDate: { type: String, default: null }, 
+
 });
 
 const User = mongoose.model("User", userSchema);

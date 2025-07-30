@@ -2,8 +2,8 @@ import styled from "styled-components";
 
 //This is styling for setup and dashboard
 
-/* Box styling */
-export const Box = styled.div`
+/* Buttonbox styling */
+export const ButtonBox = styled.button`
   background: var(--color-box-bg);
   border: 1px solid var(--color-box-border);
   border-radius: 8px;

@@ -29,7 +29,8 @@ const Footer = () => {
   return (
     <FooterContainer>
       <FooterList>
-        <li>Copyright @ Jasmin Hedlund 2025</li>
+        <p>Copyright @ Jasmin Hedlund 2025</p>
+        <a href="mailto:jasminhedlund@gmail.com">Contact Us</a>
       </FooterList>
     </FooterContainer>
   );

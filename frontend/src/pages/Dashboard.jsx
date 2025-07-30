@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import { useUserStore } from "../store/UserStore.jsx";
-import { Box, Textarea } from "../styling/BoxStyling.jsx";
+import { ButtonBox, Textarea } from "../styling/BoxStyling.jsx";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 

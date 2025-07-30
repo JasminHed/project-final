@@ -282,9 +282,13 @@ const Dashboard = () => {
           <GoalCard key={goal._id}>
             <Section>
               <Box>
-                <h3>Your Intention</h3>
+                <h1>Your Intention</h1>
                 <div>
+                  <label htmlFor={`intention-${goal._id}`}>
+                    Your Intention
+                  </label>
                   <Textarea
+                    id={`intention-${goal._id}`}
                     rows={2}
                     maxLength={150}
                     value={goal.intention || ""}
@@ -294,13 +298,15 @@ const Dashboard = () => {
                 </div>
               </Box>
               <Box>
-                <h3>Your detailed goals</h3>
+                <h2>Your detailed goals</h2>
                 {SMART_FIELDS.map((field) => (
                   <div key={field}>
                     <strong>
                       {field.charAt(0).toUpperCase() + field.slice(1)}:
                     </strong>
+                    <label htmlFor={`${field}-${goal._id}`}></label>
                     <Textarea
+                      id={`${field}-${goal._id}`}
                       rows={2}
                       maxLength={150}
                       value={goal[field] || ""}

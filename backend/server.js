@@ -390,7 +390,7 @@ app.post("/community-posts/:id/comments", authenticateUser, async (req, res) => 
   }
 });
 
-// AI get - motivation (1/week)
+// AI get - motivation (1/day)
 app.get("/api/weekly-motivation", authenticateUser, async (req, res) => {
   try {
     const user = req.user;

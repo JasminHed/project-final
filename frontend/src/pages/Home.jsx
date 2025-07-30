@@ -183,7 +183,7 @@ const WelcomeScreen = () => {
         setIsOpen={setIsOpen}
       />
       <MainBox>
-        <ButtonBox
+        <Box
           onClick={handleOnboardingClick}
           aria-label="Learn about Intention and SMART goals"
         >
@@ -192,8 +192,8 @@ const WelcomeScreen = () => {
             alt="An graphic image showing a thinking mind"
           />
           Learn about Intention & SMART goals
-        </ButtonBox>
-        <ButtonBox
+        </Box>
+        <Box
           onClick={handleSetupClick}
           aria-label="Set your intention and goals with clarity and purpose"
         >
@@ -202,8 +202,8 @@ const WelcomeScreen = () => {
             alt="A graphic image showing a a thinking mind in creativity mode"
           />
           Set your intention and goals with clarity and purpose
-        </ButtonBox>
-        <ButtonBox
+        </Box>
+        <Box
           onClick={handleDashboardClick}
           aria-label="Track your journey here"
         >
@@ -212,7 +212,7 @@ const WelcomeScreen = () => {
             alt="A graphic image showing a thinking mind working"
           />
           Track your journey
-        </ButtonBox>
+        </Box>
       </MainBox>
       <hr />
       {showError && <ErrorMessage>{showError}</ErrorMessage>}

@@ -237,107 +237,110 @@ const Dashboard = () => {
   }
 
   return (
-    <Container>
-      <h1>Welcome to your dashboard</h1>
-      <p>
-        Here you’ll see your active goals, up to three at a time — designed to
-        keep you focused and purposeful. You can add, edit, and save your goals
-        whenever you like.{" "}
-      </p>
+    <main id="main-content">
+      <Container>
+        <h1>Welcome to your dashboard</h1>
+        <p>
+          Here you’ll see your active goals, up to three at a time — designed to
+          keep you focused and purposeful. You can add, edit, and save your
+          goals whenever you like.{" "}
+        </p>
 
-      <p>
-        Choose to make your profile public and your goals will be shared
-        automatically with the community — so others can cheer you on, offer
-        support, and celebrate your progress. Motivation grows when we grow
-        together. When a goal is complete, simply check it off — it disappears,
-        clearing the way for your next achievement.{" "}
-      </p>
+        <p>
+          Choose to make your profile public and your goals will be shared
+          automatically with the community — so others can cheer you on, offer
+          support, and celebrate your progress. Motivation grows when we grow
+          together. When a goal is complete, simply check it off — it
+          disappears, clearing the way for your next achievement.{" "}
+        </p>
 
-      <p>You’ve got this! One clear step at a time.</p>
+        <p>You’ve got this! One clear step at a time.</p>
 
-      <label>
-        <input
-          type="checkbox"
-          checked={isPublic}
-          onChange={(e) => updatePublicStatus(e.target.checked)}
+        <label>
+          <input
+            type="checkbox"
+            checked={isPublic}
+            onChange={(e) => updatePublicStatus(e.target.checked)}
+          />
+          Make my profile public
+        </label>
+        <hr />
+
+        <Img
+          src="/assets/12.png"
+          alt="A graphic image showing a thinking mind with flowers around it for decoration"
         />
-        Make my profile public
-      </label>
-      <hr />
 
-      <Img
-        src="/assets/12.png"
-        alt="A graphic image showing a thinking mind with flowers around it for decoration"
-      />
+        <ButtonContainer>
+          <button onClick={handleNavigateToSetup}>
+            Add new intention and goals
+          </button>
+        </ButtonContainer>
 
-      <ButtonContainer>
-        <button onClick={handleNavigateToSetup}>
-          Add new intention and goals
-        </button>
-      </ButtonContainer>
+        {/* Loop through goals */}
 
-      {/* Loop through goals */}
-      {goals.length > 0 ? (
-        goals.map((goal, index) => (
-          <GoalCard key={goal._id}>
-            <Section>
-              <Box>
-                <h1>Your Intention</h1>
-                <div>
-                  <label htmlFor={`intention-${goal._id}`}>
-                    Your Intention
-                  </label>
-                  <Textarea
-                    id={`intention-${goal._id}`}
-                    rows={2}
-                    maxLength={150}
-                    value={goal.intention || ""}
-                    onChange={handleIntentionChange(goal._id)}
-                  />
-                  <p>{(goal.intention || "").length}/150</p>
-                </div>
-              </Box>
-              <Box>
-                <h2>Your detailed goals</h2>
-                {SMART_FIELDS.map((field) => (
-                  <div key={field}>
-                    <strong>
-                      {field.charAt(0).toUpperCase() + field.slice(1)}:
-                    </strong>
-                    <label htmlFor={`${field}-${goal._id}`}></label>
+        {goals.length > 0 ? (
+          goals.map((goal, index) => (
+            <GoalCard key={goal._id}>
+              <Section>
+                <Box>
+                  <h1>Your Intention</h1>
+                  <div>
+                    <label htmlFor={`intention-${goal._id}`}>
+                      Your Intention
+                    </label>
                     <Textarea
-                      id={`${field}-${goal._id}`}
+                      id={`intention-${goal._id}`}
                       rows={2}
                       maxLength={150}
-                      value={goal[field] || ""}
-                      onChange={handleFieldChange(goal._id, field)}
+                      value={goal.intention || ""}
+                      onChange={handleIntentionChange(goal._id)}
                     />
-                    <p>{(goal[field] || "").length}/150</p>
+                    <p>{(goal.intention || "").length}/150</p>
                   </div>
-                ))}
-              </Box>
+                </Box>
+                <Box>
+                  <h2>Your detailed goals</h2>
+                  {SMART_FIELDS.map((field) => (
+                    <div key={field}>
+                      <strong>
+                        {field.charAt(0).toUpperCase() + field.slice(1)}:
+                      </strong>
+                      <label htmlFor={`${field}-${goal._id}`}></label>
+                      <Textarea
+                        id={`${field}-${goal._id}`}
+                        rows={2}
+                        maxLength={150}
+                        value={goal[field] || ""}
+                        onChange={handleFieldChange(goal._id, field)}
+                      />
+                      <p>{(goal[field] || "").length}/150</p>
+                    </div>
+                  ))}
+                </Box>
 
-              <ButtonContainer>
-                <button onClick={handleSaveGoal(goal._id)}>
-                  Save this goal
-                </button>
-                <button onClick={handleCompleteGoal(goal._id)}>
-                  Mark as completed
-                </button>
-              </ButtonContainer>
-            </Section>
-          </GoalCard>
-        ))
-      ) : (
-        <p>No active goals. Create your first goal!</p>
-      )}
+                <ButtonContainer>
+                  <button onClick={handleSaveGoal(goal._id)}>
+                    Save this goal
+                  </button>
+                  <button onClick={handleCompleteGoal(goal._id)}>
+                    Mark as completed
+                  </button>
+                </ButtonContainer>
+              </Section>
+            </GoalCard>
+          ))
+        ) : (
+          <p>No active goals. Create your first goal!</p>
+        )}
 
-      {successMessage && <SuccessMessage>{successMessage}</SuccessMessage>}
+        {successMessage && <SuccessMessage>{successMessage}</SuccessMessage>}
 
-      <ChartContainer>
-        <Doughnut data={chartData} />
-      </ChartContainer>
-    </Container>
+        <ChartContainer>
+          <Doughnut data={chartData} />
+        </ChartContainer>
+      </Container>
+    </main>
   );
 };
 

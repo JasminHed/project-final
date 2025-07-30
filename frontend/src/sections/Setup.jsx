@@ -129,108 +129,111 @@ const Setup = ({ goBack }) => {
   };
 
   return (
-    <Container>
-      <h1>Ready to set your intentions and goals? Let’s make it happen!</h1>
-      <p>
-        This is your space to pause and get clear. Start by reflecting on what
-        truly matters to you — your priorities, dreams, and the milestones you
-        want to reach. Then, craft your main intention based on those
-        reflections. After that, break it down into SMART goals — Specific,
-        Measurable, Achievable, Relevant and Timebound, to create a clear path
-        forward. When you’re ready, save your work and watch your journey unfold
-        in your dashboard. Take your time, and remember: every step counts.
-      </p>
+    <main id="main-content">
+      <Container>
+        <h1>Ready to set your intentions and goals? Let’s make it happen!</h1>
+        <p>
+          This is your space to pause and get clear. Start by reflecting on what
+          truly matters to you — your priorities, dreams, and the milestones you
+          want to reach. Then, craft your main intention based on those
+          reflections. After that, break it down into SMART goals — Specific,
+          Measurable, Achievable, Relevant and Timebound, to create a clear path
+          forward. When you’re ready, save your work and watch your journey
+          unfold in your dashboard. Take your time, and remember: every step
+          counts.
+        </p>
 
-      <Img
-        src="/assets/10.png"
-        alt="A graphic image showing a thinking mind, a place where flowers are growing"
-      />
-      <Section>
-        <h2>Your Intention: What lights you up?</h2>
-        <Box>
-          <h3>Reflect on these questions</h3>
-          <ul>
-            <li>
-              What are my top priorities in life, and how can my goals help me
-              get there?
-            </li>
-            <li>Thinking long term, where do I want to be in five years?</li>
-            <li>
-              If I could achieve just one major milestone in the next year, what
-              would it be, and why?
-            </li>
-          </ul>
-        </Box>
+        <Img
+          src="/assets/10.png"
+          alt="A graphic image showing a thinking mind, a place where flowers are growing"
+        />
+        <Section>
+          <h2>Your Intention: What lights you up?</h2>
+          <Box>
+            <h3>Reflect on these questions</h3>
+            <ul>
+              <li>
+                What are my top priorities in life, and how can my goals help me
+                get there?
+              </li>
+              <li>Thinking long term, where do I want to be in five years?</li>
+              <li>
+                If I could achieve just one major milestone in the next year,
+                what would it be, and why?
+              </li>
+            </ul>
+          </Box>
 
-        <Box>
-          <p>
-            Write your intention. Based on your reflections above, write your
-            main intention/goal. It can be broad, you will specify how to get
-            there in your SMART goals."
-          </p>
+          <Box>
+            <p>
+              Write your intention. Based on your reflections above, write your
+              main intention/goal. It can be broad, you will specify how to get
+              there in your SMART goals."
+            </p>
+            <Textarea
+              placeholder="Write your intention here"
+              value={values.intention}
+              onChange={handleIntentionChange}
+              maxLength="150"
+            />
+            <p>{values.intention.length}/150</p>
+
+            {showError && <p>Please fill in your intention</p>}
+          </Box>
+        </Section>
+
+        <Section>
+          <h2>Let’s shape your SMART goals — clear, doable, and yours</h2>
+          <h3>Specific</h3>
           <Textarea
-            placeholder="Write your intention here"
-            value={values.intention}
-            onChange={handleIntentionChange}
-            maxLength="150"
-          />
-          <p>{values.intention.length}/150</p>
+            placeholder="E.g., I will run 3 times a week."
+            value={values.specific}
+            onChange={handleSpecificChange}
+          ></Textarea>
+          <p>{values.specific.length}/150</p>
 
-          {showError && <p>Please fill in your intention</p>}
-        </Box>
-      </Section>
+          <h3>Measurable</h3>
+          <Textarea
+            placeholder="E.g., Track progress using a running app."
+            value={values.measurable}
+            onChange={handleMeasurableChange}
+          ></Textarea>
+          <p>{values.measurable.length}/150</p>
 
-      <Section>
-        <h2>Let’s shape your SMART goals — clear, doable, and yours</h2>
-        <h3>Specific</h3>
-        <Textarea
-          placeholder="E.g., I will run 3 times a week."
-          value={values.specific}
-          onChange={handleSpecificChange}
-        ></Textarea>
-        <p>{values.specific.length}/150</p>
+          <h3>Achievable</h3>
+          <Textarea
+            placeholder="E.g., Start with 1 mile and build up gradually."
+            value={values.achievable}
+            onChange={handleAchievableChange}
+          ></Textarea>
+          <p>{values.achievable.length}/150</p>
 
-        <h3>Measurable</h3>
-        <Textarea
-          placeholder="E.g., Track progress using a running app."
-          value={values.measurable}
-          onChange={handleMeasurableChange}
-        ></Textarea>
-        <p>{values.measurable.length}/150</p>
+          <h3>Relevant</h3>
+          <Textarea
+            placeholder="E.g., Running improves my health and energy."
+            value={values.relevant}
+            onChange={handleRelevantChange}
+          ></Textarea>
+          <p>{values.relevant.length}/150</p>
 
-        <h3>Achievable</h3>
-        <Textarea
-          placeholder="E.g., Start with 1 mile and build up gradually."
-          value={values.achievable}
-          onChange={handleAchievableChange}
-        ></Textarea>
-        <p>{values.achievable.length}/150</p>
+          <h3>Timebound</h3>
+          <Textarea
+            placeholder="E.g., Achieve this within 3 months."
+            value={values.timebound}
+            onChange={handleTimeboundChange}
+          ></Textarea>
+          <p>{values.timebound.length}/150</p>
+        </Section>
 
-        <h3>Relevant</h3>
-        <Textarea
-          placeholder="E.g., Running improves my health and energy."
-          value={values.relevant}
-          onChange={handleRelevantChange}
-        ></Textarea>
-        <p>{values.relevant.length}/150</p>
+        {showError && (
+          <ErrorMessage>
+            Please fill in all fields before moving forward
+          </ErrorMessage>
+        )}
 
-        <h3>Timebound</h3>
-        <Textarea
-          placeholder="E.g., Achieve this within 3 months."
-          value={values.timebound}
-          onChange={handleTimeboundChange}
-        ></Textarea>
-        <p>{values.timebound.length}/150</p>
-      </Section>
-
-      {showError && (
-        <ErrorMessage>
-          Please fill in all fields before moving forward
-        </ErrorMessage>
-      )}
-
-      <button onClick={handleSave}> Save and head to your dashboard</button>
-    </Container>
+        <button onClick={handleSave}> Save and head to your dashboard</button>
+      </Container>
+    </main>
   );
 };
 

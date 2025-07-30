@@ -13,6 +13,10 @@ import GlobalStyles from "./styling/GlobalStyling.jsx";
 export const App = () => {
   return (
     <>
+      <a href="#main-content" className="skip-link">
+        Skip to main content
+      </a>
+
       <GlobalStyles />
       <Header />
       <AIbot />

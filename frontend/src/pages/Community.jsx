@@ -146,61 +146,63 @@ const CommunityPost = ({ post }) => {
   };
 
   return (
-    <PostContainer>
-      <h3>My intention is: {post.intention}</h3>
-      <h4>Posted by: {post.userName || "Anonymous"}</h4>
+    <main id="main-content">
+      <PostContainer>
+        <h3>My intention is: {post.intention}</h3>
+        <h4>Posted by: {post.userName || "Anonymous"}</h4>
 
-      <p>Specific: {post.specific}</p>
-      <p>Measurable: {post.measurable}</p>
-      <p>Achievable: {post.achievable}</p>
-      <p>Relevant: {post.relevant}</p>
-      <p>Time-bound: {post.timebound}</p>
+        <p>Specific: {post.specific}</p>
+        <p>Measurable: {post.measurable}</p>
+        <p>Achievable: {post.achievable}</p>
+        <p>Relevant: {post.relevant}</p>
+        <p>Time-bound: {post.timebound}</p>
 
-      <ButtonContainer>
-        <button onClick={handleLike} aria-label="Like post">
-          ❤️ Like {likes}
-        </button>
-        <button onClick={handleCommentClick} aria-label="Comment on post">
-          💬 Comment ({comments.length})
-        </button>
-      </ButtonContainer>
+        <ButtonContainer>
+          <button onClick={handleLike} aria-label="Like post">
+            ❤️ Like {likes}
+          </button>
+          <button onClick={handleCommentClick} aria-label="Comment on post">
+            💬 Comment ({comments.length})
+          </button>
+        </ButtonContainer>
 
-      {showComments && (
-        <CommentsContainer>
-          <CommentForm>
-            <CommentTextarea
-              aria-label="Write your comment here"
-              value={newComment}
-              onChange={handleTextareaChange}
-              placeholder="Write your comment here"
-            />
-            <div>
-              <CommentButton onClick={handleAddComment}>
-                Send comment
-              </CommentButton>
-              <CommentButton onClick={handleCancelComment}>
-                Cancel comment
-              </CommentButton>
-            </div>
-          </CommentForm>
+        {showComments && (
+          <CommentsContainer>
+            <CommentForm>
+              <CommentTextarea
+                aria-label="Write your comment here"
+                value={newComment}
+                onChange={handleTextareaChange}
+                placeholder="Write your comment here"
+              />
+              <div>
+                <CommentButton onClick={handleAddComment}>
+                  Send comment
+                </CommentButton>
+                <CommentButton onClick={handleCancelComment}>
+                  Cancel comment
+                </CommentButton>
+              </div>
+            </CommentForm>
 
-          {comments.map((comment, index) => (
-            <CommentItem key={index}>
-              <p>{comment.text}</p>
-              <small>
-                {comment.timestamp ||
-                  new Date(comment.createdAt).toLocaleString()}
-              </small>
-              {comment.userName && (
-                <p>
-                  <strong>{comment.userName}</strong>
-                </p>
-              )}
-            </CommentItem>
-          ))}
-        </CommentsContainer>
-      )}
-    </PostContainer>
+            {comments.map((comment, index) => (
+              <CommentItem key={index}>
+                <p>{comment.text}</p>
+                <small>
+                  {comment.timestamp ||
+                    new Date(comment.createdAt).toLocaleString()}
+                </small>
+                {comment.userName && (
+                  <p>
+                    <strong>{comment.userName}</strong>
+                  </p>
+                )}
+              </CommentItem>
+            ))}
+          </CommentsContainer>
+        )}
+      </PostContainer>
+    </main>
   );
 };
 

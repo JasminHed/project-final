@@ -121,7 +121,7 @@ const WelcomeScreen = () => {
   const handleSignUpSuccess = () => setCurrentStep("onboarding");
 
   return (
-    <main>
+    <main id="main-content">
       <AuthForm
         setIsLoggedIn={setIsLoggedIn}
         onSignUpSuccess={handleSignUpSuccess}

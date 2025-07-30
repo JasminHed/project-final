@@ -141,22 +141,22 @@ p {
   }
 
   /* Accessibility Skip Link */
- .skip-link {
-  position: absolute;
-  top: -2.5rem;
+  .skip-link {
+  position: fixed;
+  top: -2.5rem;  
   left: 0;
   padding: 8px;
-  z-index: 100;
-  background-color: var(--color-button-bg); 
-  color: var(--color-button-text);          
+  z-index: 9999;
+  background-color: var(--color-button-bg);
+  color: var(--color-button-text);
   text-decoration: none;
   transition: top 0.3s;
 }
 
 .skip-link:focus,
 .skip-link:focus-visible {
-  top: 0;
-  outline: 2px solid var(--color-focus);  
+  top: 0;   
+  outline: 2px solid var(--color-focus);
   outline-offset: 2px;
   border-radius: 2px;
 }

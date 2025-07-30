@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-import { Box, Textarea } from "../styling/BoxStyling.jsx";
+import { ButtonBox, Textarea } from "../styling/BoxStyling.jsx";
 
 // API base
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
@@ -149,7 +149,7 @@ const Setup = ({ goBack }) => {
         />
         <Section>
           <h2>Your Intention: What lights you up?</h2>
-          <Box>
+          <ButtonBox>
             <h3>Reflect on these questions</h3>
             <ul>
               <li>
@@ -162,9 +162,9 @@ const Setup = ({ goBack }) => {
                 what would it be, and why?
               </li>
             </ul>
-          </Box>
+          </ButtonBox>
 
-          <Box>
+          <ButtonBox>
             <p>
               Write your intention. Based on your reflections above, write your
               main intention/goal. It can be broad, you will specify how to get
@@ -179,7 +179,7 @@ const Setup = ({ goBack }) => {
             <p>{values.intention.length}/150</p>
 
             {showError && <p>Please fill in your intention</p>}
-          </Box>
+          </ButtonBox>
         </Section>
 
         <Section>

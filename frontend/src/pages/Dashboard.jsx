@@ -283,7 +283,7 @@ const Dashboard = () => {
           goals.map((goal, index) => (
             <GoalCard key={goal._id}>
               <Section>
-                <Box>
+                <ButtonBox>
                   <h1>Your Intention</h1>
                   <div>
                     <label htmlFor={`intention-${goal._id}`}>
@@ -298,8 +298,8 @@ const Dashboard = () => {
                     />
                     <p>{(goal.intention || "").length}/150</p>
                   </div>
-                </Box>
-                <Box>
+                </ButtonBox>
+                <ButtonBox>
                   <h2>Your detailed goals</h2>
                   {SMART_FIELDS.map((field) => (
                     <div key={field}>
@@ -317,7 +317,7 @@ const Dashboard = () => {
                       <p>{(goal[field] || "").length}/150</p>
                     </div>
                   ))}
-                </Box>
+                </ButtonBox>
 
                 <ButtonContainer>
                   <button onClick={handleSaveGoal(goal._id)}>

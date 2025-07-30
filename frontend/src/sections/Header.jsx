@@ -139,8 +139,6 @@ const Header = () => {
 
   const toggleDarkMode = () => setDarkMode((prev) => !prev);
 
-  //const handleSignUpClick = () => setIsOpen(true);
-
   // Links in navbar (conditional)
   const NavLinks = () => {
     if (isLoggedIn) {
@@ -154,15 +152,19 @@ const Header = () => {
       return <Link to="/">Home</Link>;
     }
   };
-
-  //Only for logout button when user s logged in has signed up
   const AuthButtons = () => {
     if (!isLoggedIn) return null;
 
     return (
-      <button type="button" onClick={handleLogout}>
+      <a
+        href="#"
+        onClick={(e) => {
+          e.preventDefault();
+          handleLogout();
+        }}
+      >
         Logout
-      </button>
+      </a>
     );
   };
 
@@ -174,7 +176,7 @@ const Header = () => {
   };
 
   const DarkModeButton = () => {
-    return darkMode ? "Switch to light mode" : "Switch to dark mode";
+    return darkMode ? "Light mode" : "Dark mode";
   };
 
   return (

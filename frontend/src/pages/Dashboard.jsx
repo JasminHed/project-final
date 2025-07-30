@@ -34,16 +34,16 @@ const Section = styled.div`
 
 const Img = styled.img`
   width: 100%;
-  max-width: 300px;
-  height: auto;
+  max-width: 500px;
   margin: 0 auto;
   display: block;
-  object-fit: contain;
 
   @media (min-width: 668px) {
-    img {
-      max-width: 500px;
-    }
+    max-width: 700px;
+  }
+
+  @media (min-width: 1024px) {
+    max-width: 900px;
   }
 `;
 
@@ -264,10 +264,12 @@ const Dashboard = () => {
         Make my profile public
       </label>
       <hr />
+
       <Img
         src="/assets/12.png"
         alt="A graphic image showing a thinking mind with flowers around it for decoration"
       />
+
       <ButtonContainer>
         <button onClick={handleNavigateToSetup}>
           Add new intention and goals

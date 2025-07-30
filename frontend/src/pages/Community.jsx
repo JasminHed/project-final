@@ -148,8 +148,10 @@ const CommunityPost = ({ post }) => {
   return (
     <main id="main-content">
       <PostContainer>
-        <h3>My intention is: {post.intention}</h3>
-        <h4>Posted by: {post.userName || "Anonymous"}</h4>
+        <h1>My intention is: {post.intention}</h1>
+        <p>
+          <strong>Posted by: {post.userName || "Anonymous"}</strong>
+        </p>
 
         <p>Specific: {post.specific}</p>
         <p>Measurable: {post.measurable}</p>

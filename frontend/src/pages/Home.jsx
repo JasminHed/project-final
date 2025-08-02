@@ -3,7 +3,11 @@ import styled from "styled-components";
 
 import AuthForm from "../components/AuthForm";
 import Onboarding from "../sections/Onboarding.jsx";
-import Setup from "../sections/Setup.jsx";
+import { Message } from "../styling/LoadingMessage.jsx";
+
+//import Setup from "../sections/Setup.jsx";
+
+//i need to add another external library
 
 const SignUpButton = styled.div`
   display: flex;
@@ -11,11 +15,10 @@ const SignUpButton = styled.div`
   gap: 10px;
   margin-left: auto;
 `;
-//i need to add another external library
+
 const Description = styled.p`
-  text-align: left;
   margin: 20px auto;
-  padding: 0 20px;
+  //padding: 0 20px;
   max-width: 90%;
 
   @media (min-width: 668px) {
@@ -78,6 +81,7 @@ const ErrorMessage = styled.p`
 const WelcomeScreen = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   //Checks if token is saved, then consider user logged in
   useEffect(() => {
@@ -85,6 +89,8 @@ const WelcomeScreen = () => {
     if (token) {
       setIsLoggedIn(true);
     }
+
+    setLoading(false);
   }, []);
 
   //State to hold error messages
@@ -119,6 +125,10 @@ const WelcomeScreen = () => {
   };
 
   const handleSignUpSuccess = () => setCurrentStep("onboarding");
+
+  if (loading) {
+    return <Message>Loading your homepage...</Message>;
+  }
 
   return (
     <main id="main-content">
@@ -175,7 +185,7 @@ const WelcomeScreen = () => {
           <button onClick={() => setIsOpen(true)}>Sign Up</button>
         </SignUpButton>
       </Description>
-      <hr />
+
       <AuthForm
         isLoggedIn={isLoggedIn}
         setIsLoggedIn={setIsLoggedIn}

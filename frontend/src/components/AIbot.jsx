@@ -10,8 +10,6 @@ const ChatbotWindow = styled.div`
   bottom: 80px;
   right: 20px;
   width: 320px;
-  background-color: white;
-  border: 1px solid #ccc;
   border-radius: 8px;
   padding: 15px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);

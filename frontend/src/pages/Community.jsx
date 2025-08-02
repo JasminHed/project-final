@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
+import { Message } from "../styling/LoadingMessage.jsx";
+
 //add delete instead of cancel, more user friendly i think
 
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
@@ -209,6 +211,7 @@ const CommunityPost = ({ post }) => {
 };
 
 const Community = () => {
+  const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
@@ -216,8 +219,13 @@ const Community = () => {
       .then((res) => res.json())
       .then((data) => {
         setPosts(data);
+        setLoading(false);
       });
   }, []);
+
+  if (loading) {
+    return <Message>Loading your community board...</Message>;
+  }
 
   return (
     <Container>
@@ -237,7 +245,7 @@ const Community = () => {
         Jump in, join the energy, and remember — you’re never alone on your
         path.
       </p>
-      <hr />
+
       <Img
         src="/assets/13.png"
         alt="A graphic image showing two hearts hugging"

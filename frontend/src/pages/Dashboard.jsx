@@ -6,6 +6,7 @@ import styled from "styled-components";
 
 import { useUserStore } from "../store/UserStore.jsx";
 import { ButtonBox, Textarea } from "../styling/BoxStyling.jsx";
+import { Message } from "../styling/LoadingMessage.jsx"
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -30,6 +31,34 @@ const Container = styled.div`
 
 const Section = styled.div`
   margin-bottom: 40px;
+`;
+
+const ProfileSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  margin: 30px 0;
+`;
+
+const Avatar = styled.img`
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+`;
+
+const UserInfo = styled.div`
+  text-align: center;
+  margin-bottom: 15px;
+`;
+
+const CheckboxContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 `;
 
 const Img = styled.img`
@@ -80,10 +109,13 @@ const SuccessMessage = styled.p`
   font-size: 14px;
 `;
 
-const Message = styled.p`
-  color: var(--color-success);
-  margin-bottom: 10px;
+const Disclaimer = styled.p`
+  font-style: italic;
+  margin-left: 24px;
+  margin-top: 4px;
 `;
+
+
 
 // API Functions
 const fetchGoals = (token) => {
@@ -112,6 +144,11 @@ const Dashboard = () => {
   //Public profile
   const [isPublic, setIsPublic] = useState(user?.isPublic || false);
 
+  // handlePublicStatusChange
+  const handlePublicStatusChange = (e) => {
+    updatePublicStatus(e.target.checked);
+  };
+
   const updatePublicStatus = (newStatus) => {
     const token = localStorage.getItem("accessToken");
 
@@ -126,10 +163,10 @@ const Dashboard = () => {
       .then((res) => res.json())
       .then(() => {
         setIsPublic(newStatus);
-        setSuccessMessage(
-          "Your profile is now public. This means all users can see your name, intention and goals in the Community. They disappear when marked as complete."
-        );
-        setTimeout(() => setSuccessMessage(""), 5000);
+        //setSuccessMessage(
+        // "Your profile is now public. This means all users can see your name, intention and goals in the Community. They disappear when marked as complete."
+        // );
+        // setTimeout(() => setSuccessMessage(""), 5000);
       })
       .catch((err) => console.error("Failed to update public status", err));
   };
@@ -196,7 +233,7 @@ const Dashboard = () => {
   const handleSaveGoal = (goalId) => () => {
     const token = localStorage.getItem("accessToken");
     const goalToSave = goals.find((goal) => goal._id === goalId);
-
+    console.log("Sending goal data:", goalToSave);
     const updatedGoal = {
       ...goalToSave,
       isPublic: isPublic,
@@ -233,17 +270,44 @@ const Dashboard = () => {
   };
 
   if (loading) {
-    return <p>Loading your goals...</p>;
+    return <Message>Loading your dashboard...</Message>;
   }
 
   return (
     <main id="main-content">
       <Container>
         <h1>Welcome to your dashboard</h1>
+
+        <ProfileSection>
+          <Avatar
+            src={user?.avatar || "/assets/avatar.png"}
+            alt="Profile avatar"
+          />
+          <UserInfo>
+            <h2>{user?.name || "User"}</h2>
+            <p>{user?.email || "user@example.com"}</p>
+          </UserInfo>
+          <CheckboxContainer>
+            <label>
+              <input
+                type="checkbox"
+                checked={isPublic}
+                onChange={handlePublicStatusChange}
+              />
+              Make my profile public
+            </label>
+            <Disclaimer>
+              This means all users can see your name, intention and goals in the
+              Community. They can comment and like your post. The post disappear
+              from Community when you mark it as complete.
+            </Disclaimer>
+          </CheckboxContainer>
+        </ProfileSection>
+
         <p>
-          Here you’ll see your active goals, up to three at a time — designed to
+          Here you'll see your active goals, up to three at a time — designed to
           keep you focused and purposeful. You can add, edit, and save your
-          goals whenever you like.{" "}
+          goals whenever you like.
         </p>
 
         <p>
@@ -251,20 +315,10 @@ const Dashboard = () => {
           automatically with the community — so others can cheer you on, offer
           support, and celebrate your progress. Motivation grows when we grow
           together. When a goal is complete, simply check it off — it
-          disappears, clearing the way for your next achievement.{" "}
+          disappears, clearing the way for your next achievement.
         </p>
 
-        <p>You’ve got this! One clear step at a time.</p>
-
-        <label>
-          <input
-            type="checkbox"
-            checked={isPublic}
-            onChange={(e) => updatePublicStatus(e.target.checked)}
-          />
-          Make my profile public
-        </label>
-        <hr />
+        <p>You've got this! One clear step at a time.</p>
 
         <Img
           src="/assets/12.png"
@@ -324,17 +378,18 @@ const Dashboard = () => {
                     Save this goal
                   </button>
                   <button onClick={handleCompleteGoal(goal._id)}>
-                    Mark as completed
+                    Mark goal as completed
                   </button>
                 </ButtonContainer>
               </Section>
+              {successMessage && (
+                <SuccessMessage>{successMessage}</SuccessMessage>
+              )}
             </GoalCard>
           ))
         ) : (
-          <p>No active goals. Create your first goal!</p>
+          <p>No active intention and goal. Create your first!</p>
         )}
-
-        {successMessage && <SuccessMessage>{successMessage}</SuccessMessage>}
 
         <ChartContainer>
           <Doughnut data={chartData} />

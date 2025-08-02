@@ -8,7 +8,7 @@ import { useUserStore } from "../store/UserStore";
 
 const HeaderContainer = styled.header`
   position: relative;
-  padding: 40px;
+  padding: 80px;
   background: var(--color-background);
   z-index: 100;
 
@@ -96,7 +96,7 @@ const LogoutMessage = styled.p`
   position: absolute;
   color: var(--color-success);
   top: 60px;
-  left: 110px;
+  left: 90px;
 `;
 
 const Header = () => {
@@ -128,7 +128,6 @@ const Header = () => {
   };
 
   const [darkMode, setDarkMode] = useState(false);
-
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add("dark");
@@ -224,6 +223,7 @@ const Header = () => {
           {DarkModeButton()}
         </Link>
       </MobileNav>
+      <hr />
     </>
   );
 };

@@ -12,7 +12,8 @@ const GlobalStyles = createGlobalStyle`
   --color-focus: #e47885;                 
   --color-background: #FFFFFF;  
   --color-error: #1565C0;    
-  --color-success: #0D6EFD;       
+  --color-success: #0D6EFD; 
+   
 }
 
 
@@ -26,7 +27,8 @@ const GlobalStyles = createGlobalStyle`
   --color-focus: #fac04b;                 
   --color-background: #000000;  
   --color-error: #74b3ff;   
-  --color-success: #4da6ff;          
+  --color-success: #4da6ff;  
+       
 }
 
 
@@ -160,7 +162,6 @@ p {
   outline-offset: 2px;
   border-radius: 2px;
 }
-
 
 `;
 

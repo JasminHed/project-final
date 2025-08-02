@@ -15,8 +15,9 @@ const LogIn = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
     email: "",
     password: "",
   });
+
   const [error, setError] = useState("");
-  //states
+
   const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
   const { login } = useUserStore();
@@ -44,7 +45,12 @@ const LogIn = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
           localStorage.setItem("userId", data.userId);
           localStorage.setItem("accessToken", data.accessToken);
           login(
-            { name: data.name, email: formData.email },
+            {
+              name: data.name,
+              email: formData.email,
+              avatar: data.avatar,
+              isPublic: data.isPublic,
+            },
             data.accessToken,
             data.userId
           );

@@ -4,9 +4,10 @@ import { Doughnut } from "react-chartjs-2";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
+import ProfileSetting from "../components/ProfileSetting.jsx";
 import { useUserStore } from "../store/UserStore.jsx";
 import { ButtonBox, Textarea } from "../styling/BoxStyling.jsx";
-import { Message } from "../styling/LoadingMessage.jsx"
+import { Message } from "../styling/LoadingMessage.jsx";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -31,34 +32,6 @@ const Container = styled.div`
 
 const Section = styled.div`
   margin-bottom: 40px;
-`;
-
-const ProfileSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  margin: 30px 0;
-`;
-
-const Avatar = styled.img`
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 15px;
-`;
-
-const UserInfo = styled.div`
-  text-align: center;
-  margin-bottom: 15px;
-`;
-
-const CheckboxContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
 `;
 
 const Img = styled.img`
@@ -109,13 +82,11 @@ const SuccessMessage = styled.p`
   font-size: 14px;
 `;
 
-const Disclaimer = styled.p`
-  font-style: italic;
-  margin-left: 24px;
-  margin-top: 4px;
+const ChartStats = styled.p`
+  text-align: center;
+  margin-top: 13px;
+  color: var(--color-text-primary);
 `;
-
-
 
 // API Functions
 const fetchGoals = (token) => {
@@ -140,58 +111,39 @@ const updateGoalAPI = (goalId, goalData, token) => {
 const Dashboard = () => {
   const navigate = useNavigate();
   const { user, setUser } = useUserStore();
-
-  //Public profile
-  const [isPublic, setIsPublic] = useState(user?.isPublic || false);
-
-  // handlePublicStatusChange
-  const handlePublicStatusChange = (e) => {
-    updatePublicStatus(e.target.checked);
-  };
-
-  const updatePublicStatus = (newStatus) => {
-    const token = localStorage.getItem("accessToken");
-
-    fetch(`${API_BASE_URL}/users/public-status`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-      body: JSON.stringify({ isPublic: newStatus }),
-    })
-      .then((res) => res.json())
-      .then(() => {
-        setIsPublic(newStatus);
-        //setSuccessMessage(
-        // "Your profile is now public. This means all users can see your name, intention and goals in the Community. They disappear when marked as complete."
-        // );
-        // setTimeout(() => setSuccessMessage(""), 5000);
-      })
-      .catch((err) => console.error("Failed to update public status", err));
-  };
-
-  // State
   const [goals, setGoals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [successMessage, setSuccessMessage] = useState("");
 
-  // Values for chart.js
+  //Chart
   const incompleteGoals = goals.filter((goal) => !goal.completed);
+  const completedGoals = goals.filter((goal) => goal.completed);
   const chartData = {
     labels: ["Active Goals", "Completed"],
     datasets: [
       {
-        data: [incompleteGoals.length, 0],
-        backgroundColor: ["#659767", "#e0e0e0"],
+        data: [incompleteGoals.length, completedGoals.length],
+        backgroundColor: ["#004d40", "#e47885"],
       },
     ],
+  };
+
+  const chartOptions = {
+    plugins: {
+      legend: {
+        labels: {
+          color: "#3750be",
+          font: {
+            size: 13,
+          },
+        },
+      },
+    },
   };
 
   // Fetch goals
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
-
     fetchGoals(token)
       .then((response) => response.json())
       .then((data) => {
@@ -207,6 +159,12 @@ const Dashboard = () => {
         console.error("Error fetching goals:", error);
         setLoading(false);
       });
+    // Fetch user data
+    fetch(`${API_BASE_URL}/users/me`, {
+      headers: { Authorization: token },
+    })
+      .then((res) => res.json())
+      .then((userData) => setUser(userData));
   }, []);
 
   const handleNavigateToSetup = () => {
@@ -230,45 +188,54 @@ const Dashboard = () => {
     );
   };
 
+  //Handling saving of goal and update of goals
   const handleSaveGoal = (goalId) => () => {
     const token = localStorage.getItem("accessToken");
     const goalToSave = goals.find((goal) => goal._id === goalId);
-    console.log("Sending goal data:", goalToSave);
-    const updatedGoal = {
-      ...goalToSave,
-      isPublic: isPublic,
-    };
 
-    updateGoalAPI(goalId, updatedGoal, token)
+    updateGoalAPI(goalId, goalToSave, token)
       .then(() => {
-        if (isPublic) {
-          setSuccessMessage(
-            "Goal saved and shared publicly! Other users can now see your name, intention, and goal in the community."
-          );
-        } else {
-          setSuccessMessage("Goal saved successfully!");
-        }
-        setTimeout(() => {
-          setSuccessMessage("");
-        }, 4000);
+        setSuccessMessage("Goal saved successfully!");
+        setTimeout(() => setSuccessMessage(""), 4000);
       })
       .catch((error) => {
         console.error("Error saving goal:", error);
       });
   };
-
+  //handling completed goal
   const handleCompleteGoal = (goalId) => () => {
     const token = localStorage.getItem("accessToken");
-
     // Remove from frontend
     setGoals((prevGoals) => prevGoals.filter((goal) => goal._id !== goalId));
-
     // Update backend
     updateGoalAPI(goalId, { completed: true }, token).catch((error) =>
       console.error("Error updating completion:", error)
     );
   };
 
+  //handles and sends users state to backend, public or private
+  const handleOptionSelect = async (option) => {
+    const token = localStorage.getItem("accessToken");
+    const isPublic = option === "public";
+    try {
+      const response = await fetch(`${API_BASE_URL}/users/public-status`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+        body: JSON.stringify({ isPublic }),
+      });
+
+      if (response.ok) {
+        setUser({ ...user, isPublic });
+      }
+    } catch (error) {
+      console.error("Failed to update profile status:", error);
+    }
+  };
+
+  //loadingstate
   if (loading) {
     return <Message>Loading your dashboard...</Message>;
   }
@@ -278,31 +245,7 @@ const Dashboard = () => {
       <Container>
         <h1>Welcome to your dashboard</h1>
 
-        <ProfileSection>
-          <Avatar
-            src={user?.avatar || "/assets/avatar.png"}
-            alt="Profile avatar"
-          />
-          <UserInfo>
-            <h2>{user?.name || "User"}</h2>
-            <p>{user?.email || "user@example.com"}</p>
-          </UserInfo>
-          <CheckboxContainer>
-            <label>
-              <input
-                type="checkbox"
-                checked={isPublic}
-                onChange={handlePublicStatusChange}
-              />
-              Make my profile public
-            </label>
-            <Disclaimer>
-              This means all users can see your name, intention and goals in the
-              Community. They can comment and like your post. The post disappear
-              from Community when you mark it as complete.
-            </Disclaimer>
-          </CheckboxContainer>
-        </ProfileSection>
+        <ProfileSetting user={user} onOptionSelect={handleOptionSelect} />
 
         <p>
           Here you'll see your active goals, up to three at a time — designed to
@@ -391,9 +334,14 @@ const Dashboard = () => {
           <p>No active intention and goal. Create your first!</p>
         )}
 
-        <ChartContainer>
-          <Doughnut data={chartData} />
+        <ChartContainer
+          aria-label={`Goal progress: ${incompleteGoals.length} active, ${completedGoals.length} completed`}
+        >
+          <Doughnut data={chartData} options={chartOptions} />
         </ChartContainer>
+        <ChartStats>
+          Active: {incompleteGoals.length} | Completed: {completedGoals.length}
+        </ChartStats>
       </Container>
     </main>
   );

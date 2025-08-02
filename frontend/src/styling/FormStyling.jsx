@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-//this is stylinf for the login/sign up form
+//this is styling for the login/sign up form
 export const Label = styled.label`
   display: block;
   margin-bottom: 5px;

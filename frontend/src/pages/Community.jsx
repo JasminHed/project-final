@@ -150,7 +150,7 @@ const CommunityPost = ({ post }) => {
   return (
     <main id="main-content">
       <PostContainer>
-        <h1>My intention is: {post.intention}</h1>
+        <h2>My intention is: {post.intention}</h2>
         <p>
           <strong>Posted by: {post.userName || "Anonymous"}</strong>
         </p>

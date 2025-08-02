@@ -13,6 +13,8 @@ const GlobalStyles = createGlobalStyle`
   --color-background: #FFFFFF;  
   --color-error: #1565C0;    
   --color-success: #0D6EFD; 
+  --color-chart-active: #004d40;    
+  --color-chart-completed: #e47885;  
    
 }
 
@@ -28,6 +30,8 @@ const GlobalStyles = createGlobalStyle`
   --color-background: #000000;  
   --color-error: #74b3ff;   
   --color-success: #4da6ff;  
+  --color-chart-active: #004d40;
+  --color-chart-completed: #fac04b;
        
 }
 

@@ -100,7 +100,8 @@ app.post("/sessions", async (req, res) => {
     res.json({ 
       userId: user._id,
       accessToken: user.accessToken,
-      name: user.name 
+      name: user.name,
+      email: user.email 
     });
   } else {
     res.json({ notFound: true });
@@ -112,11 +113,50 @@ app.patch("/users/public-status", authenticateUser, async (req, res) => {
   const { isPublic } = req.body;
 
   try {
+    // Update user's public status
     req.user.isPublic = isPublic;
     await req.user.save();
-    res.status(200).json({ success: true, message: "Public status updated" });
+
+    if (isPublic) {
+      // Add all incomplete goals to community
+      const incompleteGoals = await Goal.find({ 
+        userId: req.user._id, 
+        completed: { $ne: true } 
+      });
+
+      for (const goal of incompleteGoals) {
+        await CommunityPost.findOneAndUpdate(
+          { userId: req.user._id, goalId: goal._id },
+          {
+            userId: req.user._id,
+            goalId: goal._id,
+            userName: req.user.name,
+            intention: goal.intention,
+            specific: goal.specific,
+            measurable: goal.measurable,
+            achievable: goal.achievable,
+            relevant: goal.relevant,
+            timebound: goal.timebound,
+            createdAt: new Date()
+          },
+          { upsert: true, new: true }
+        );
+      }
+    } else {
+      // Remove all user's posts from community
+      await CommunityPost.deleteMany({ userId: req.user._id });
+    }
+
+    res.status(200).json({ 
+      success: true, 
+      message: "Public status updated",
+      user: { isPublic: req.user.isPublic }
+    });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Could not update status" });
+    res.status(500).json({ 
+      success: false, 
+      message: "Could not update status" 
+    });
   }
 });
 
@@ -212,7 +252,7 @@ app.get("/goals", authenticateUser, async (req, res) => {
   }
 });
 
-// PATCH - Update goal by id, only user can edit int+goal and keeps it sync with edits, updates 
+//PATCH - Update goal by id, only user can edit int+goal and keeps it sync with edits, updates 
 app.patch("/goals/:id", authenticateUser, async (req, res) => {
   const { id } = req.params;
   const updates = req.body;
@@ -240,35 +280,8 @@ app.patch("/goals/:id", authenticateUser, async (req, res) => {
       });
     }
 
-    // ispublic
-    if (updates.hasOwnProperty("isPublic")) {
-      if (updates.isPublic) {
-        // create or update community post to community
-        await CommunityPost.findOneAndUpdate(
-          { userId: req.user._id, goalId: updatedGoal._id },
-          {
-            userId: req.user._id,
-            goalId: updatedGoal._id,
-            intention: updatedGoal.intention,
-            specific: updatedGoal.specific,
-            measurable: updatedGoal.measurable,
-            achievable: updatedGoal.achievable,
-            relevant: updatedGoal.relevant,
-            timebound: updatedGoal.timebound,
-            createdAt: new Date(),
-            userName: req.user.name,
-          },
-          { upsert: true, new: true }
-        );
-      } else {
-        // remove community post if ispublic is false
-        await CommunityPost.deleteOne({
-          userId: req.user._id,
-          goalId: updatedGoal._id
-        });
-      }
-    } else if (req.user.isPublic && !updatedGoal.completed) {
-      // if isPublic true and goals are non complete, update community-post as usual
+    // if user is public and goal is not complete, update community post
+    if (req.user.isPublic && !updatedGoal.completed) {
       await CommunityPost.findOneAndUpdate(
         { userId: req.user._id, goalId: updatedGoal._id },
         {

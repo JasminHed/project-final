@@ -161,18 +161,6 @@ app.patch("/users/public-status", authenticateUser, async (req, res) => {
 });
 
 
-//Authorization
-
-//Dashboard
-//GET - Get user data (name and email) of a user by their user ID
-/*app.get("/users/:id", authenticateUser, async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id);
-    res.json({ name: user.name, email: user.email });
-  } catch (error) {
-    res.status(500).json({ error: "Failed to fetch user data" });
-  }
-});*/
 
 //Setup
 // POST - Create intention+smart goal as a logged in user
@@ -281,7 +269,7 @@ app.patch("/goals/:id", authenticateUser, async (req, res) => {
     }
 
     // if user is public and goal is not complete, update community post
-    if (req.user.isPublic && !updatedGoal.completed) {
+    /*if (req.user.isPublic && !updatedGoal.completed) {
       await CommunityPost.findOneAndUpdate(
         { userId: req.user._id, goalId: updatedGoal._id },
         {
@@ -298,7 +286,7 @@ app.patch("/goals/:id", authenticateUser, async (req, res) => {
         },
         { upsert: true, new: true }
       );
-    }
+    }*/
 
     res.status(200).json({
       success: true,

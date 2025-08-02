@@ -138,6 +138,19 @@ app.patch("/users/public-status", authenticateUser, async (req, res) => {
 // POST - Create intention+smart goal as a logged in user
 app.post("/goals", authenticateUser, async (req, res) => {
   const { intention, specific, measurable, achievable, relevant, timebound } = req.body;
+
+  // Check if user already has 3 active goals
+const activeGoalsCount = await Goal.countDocuments({ 
+  userId: req.user._id, 
+  completed: { $ne: true } 
+});
+
+if (activeGoalsCount >= 3) {
+  return res.status(400).json({
+    success: false,
+    message: "You can only have 3 active goals at a time. Complete existing goals first."
+  });
+}
   
   try {
     //Checks for exisiting intention+goal. No duplicates aload
@@ -302,17 +315,6 @@ app.get('/community-posts', async (req, res) => {
 });
 
 
-//POST in community
-/*app.post('/community-posts', authenticateUser, async (req, res) => {
-  const post = new CommunityPost({
-    ...req.body,
-    userId: req.user._id,
-    userName: req.user.name 
-  });
-  await post.save();
-  res.json(post);
-});*/
-
 
 // POST - Like a community-post
 app.post("/community-posts/:id/like", authenticateUser, async (req, res) => {
@@ -406,7 +408,9 @@ app.get("/api/weekly-motivation", authenticateUser, async (req, res) => {
       "Keep going! You're doing great.",
       "Remember why you set your goal in the first place.",
       "Small steps every day lead to big changes!",
-      "You’ve got this — stay focused and keep moving forward."
+      "You’ve got this — stay focused and keep moving forward.",
+      "Being discerning is part of how we set up the life we want.",
+      "Perfectin is not the end goal, effort is."
     ];
 
     const randomMotivation = motivations[Math.floor(Math.random() * motivations.length)];

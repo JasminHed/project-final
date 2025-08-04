@@ -9,6 +9,8 @@ import { useUserStore } from "../store/UserStore.jsx";
 import { ButtonBox, Textarea } from "../styling/BoxStyling.jsx";
 import { Message } from "../styling/LoadingMessage.jsx";
 
+//aria labels added, but check again
+
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
@@ -246,22 +248,23 @@ const Dashboard = () => {
         <h1>Welcome to your dashboard</h1>
 
         <ProfileSetting user={user} onOptionSelect={handleOptionSelect} />
+        <section aria-label="Introduction">
+          <p>
+            Here you'll see your active goals, up to three at a time — designed
+            to keep you focused and purposeful. You can add, edit, and save your
+            goals whenever you like.
+          </p>
 
-        <p>
-          Here you'll see your active goals, up to three at a time — designed to
-          keep you focused and purposeful. You can add, edit, and save your
-          goals whenever you like.
-        </p>
+          <p>
+            Choose to make your profile public and your goals will be shared
+            automatically with the community — so others can cheer you on, offer
+            support, and celebrate your progress. Motivation grows when we grow
+            together. When a goal is complete, simply check it off — it
+            disappears, clearing the way for your next achievement.
+          </p>
 
-        <p>
-          Choose to make your profile public and your goals will be shared
-          automatically with the community — so others can cheer you on, offer
-          support, and celebrate your progress. Motivation grows when we grow
-          together. When a goal is complete, simply check it off — it
-          disappears, clearing the way for your next achievement.
-        </p>
-
-        <p>You've got this! One clear step at a time.</p>
+          <p>You've got this! One clear step at a time.</p>
+        </section>
 
         <Img
           src="/assets/12.png"
@@ -278,10 +281,10 @@ const Dashboard = () => {
 
         {goals.length > 0 ? (
           goals.map((goal, index) => (
-            <GoalCard key={goal._id}>
+            <GoalCard key={goal._id} aria-labelledby={`goal-title-${goal._id}`}>
               <Section>
                 <ButtonBox>
-                  <h1>Your Intention</h1>
+                  <h1 id={`goal-title-${goal._id}`}>Your Intention</h1>
                   <div>
                     <label htmlFor={`intention-${goal._id}`}>
                       Your Intention
@@ -297,7 +300,7 @@ const Dashboard = () => {
                   </div>
                 </ButtonBox>
                 <ButtonBox>
-                  <h2>Your detailed goals</h2>
+                  <h2 id={`details-title-${goal._id}`}>Your detailed goals</h2>
                   {SMART_FIELDS.map((field) => (
                     <div key={field}>
                       <strong>

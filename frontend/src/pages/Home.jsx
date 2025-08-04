@@ -8,6 +8,7 @@ import { Message } from "../styling/LoadingMessage.jsx";
 //import Setup from "../sections/Setup.jsx";
 
 //i need to add another external library
+//arialabels added
 
 const SignUpButton = styled.div`
   display: flex;
@@ -136,66 +137,76 @@ const WelcomeScreen = () => {
         setIsLoggedIn={setIsLoggedIn}
         onSignUpSuccess={handleSignUpSuccess}
       />
+      <section role="region" aria-labelledby="about-intention-hub">
+        <Description>
+          <p>
+            The Intention Hub is a digital space and personal growth tool —
+            designed to help you slow down, reflect, set intentions, define
+            doable goals and actually follow through. All supported by SMART
+            goals, an AI helper, a clear progress dashboard and an encouraging
+            community.
+          </p>
 
-      <Description>
-        <p>
-          The Intention Hub is a digital space and personal growth tool —
-          designed to help you slow down, reflect, set intentions, define doable
-          goals and actually follow through. All supported by SMART goals, an AI
-          helper, a clear progress dashboard and an encouraging community.
-        </p>
+          <p>
+            Whether you're building better habits, navigating change, or simply
+            looking to live with more clarity, The Intention Hub gives you
+            structure without pressure, and support without overwhelm. It turns
+            your everyday reflections into real momentum — one step, one
+            intention at a time.
+          </p>
 
-        <p>
-          Whether you're building better habits, navigating change, or simply
-          looking to live with more clarity, The Intention Hub gives you
-          structure without pressure, and support without overwhelm. It turns
-          your everyday reflections into real momentum — one step, one intention
-          at a time.
-        </p>
+          <p>
+            Use it to create mindful morning routines, stay on track with
+            personal projects, set boundaries, break old patterns, or commit to
+            long-term goals. Whether it's wellness, creativity, relationships or
+            work-life balance — The Intention Hub meets you where you are and
+            grows with you.
+          </p>
 
-        <p>
-          Use it to create mindful morning routines, stay on track with personal
-          projects, set boundaries, break old patterns, or commit to long-term
-          goals. Whether it's wellness, creativity, relationships or work-life
-          balance — The Intention Hub meets you where you are and grows with
-          you.
-        </p>
+          <p>Stay with it. See what shifts.</p>
 
-        <p>Stay with it. See what shifts.</p>
-
-        <p>
-          I'm Jasmin Hedlund — the creator behind this site. I’ve always been
-          passionate about personal and professional growth, both in my own life
-          and in others. I regularly use tools like this myself and know how
-          powerful it can be to reflect, set clear intentions, and actually
-          follow through. With The Intention Hub, I wanted to create a space
-          that makes that process feel simple, supported, and meaningful — a
-          space where more people can discover their potential and learn how to
-          turn it into real, lasting action.
-        </p>
-        <p>
-          <strong>
-            To get started, sign up or log in to create goals, access your
-            dashboard, and join the community.
-          </strong>
-          "Learn about Intention and SMART goals" is free to explore without an
-          account.
-        </p>
-        <SignUpButton>
-          <button onClick={() => setIsOpen(true)}>Sign Up</button>
-        </SignUpButton>
-      </Description>
-
+          <p>
+            I'm Jasmin Hedlund — the creator behind this site. I’ve always been
+            passionate about personal and professional growth, both in my own
+            life and in others. I regularly use tools like this myself and know
+            how powerful it can be to reflect, set clear intentions, and
+            actually follow through. With The Intention Hub, I wanted to create
+            a space that makes that process feel simple, supported, and
+            meaningful — a space where more people can discover their potential
+            and learn how to turn it into real, lasting action.
+          </p>
+          <p>
+            <strong>
+              To get started, sign up or log in to create goals, access your
+              dashboard, and join the community.
+            </strong>
+            "Learn about Intention and SMART goals" is free to explore without
+            an account.
+          </p>
+          <SignUpButton>
+            <button
+              onClick={() => setIsOpen(true)}
+              aria-label="Sign up to start using The Intention Hub"
+            >
+              Sign Up
+            </button>
+          </SignUpButton>
+        </Description>
+      </section>
       <AuthForm
         isLoggedIn={isLoggedIn}
         setIsLoggedIn={setIsLoggedIn}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
       />
+      <section role="region" aria-label="Choose your next step"></section>
       <MainBox>
         <Box
+          role="button"
+          tabIndex={0}
           onClick={handleOnboardingClick}
           aria-label="Learn about Intention and SMART goals"
+          onKeyDown={(e) => e.key === "Enter" && handleOnboardingClick()} //user can use enter
         >
           <img
             src="/assets/9.png"
@@ -204,8 +215,11 @@ const WelcomeScreen = () => {
           Learn about Intention & SMART goals
         </Box>
         <Box
+          role="button"
+          tabIndex={0}
           onClick={handleSetupClick}
           aria-label="Set your intention and goals with clarity and purpose"
+          onKeyDown={(e) => e.key === "Enter" && handleSetupClick()}
         >
           <img
             src="/assets/10.png"
@@ -214,8 +228,11 @@ const WelcomeScreen = () => {
           Set your intention and goals with clarity and purpose
         </Box>
         <Box
+          role="button"
+          tabIndex={0}
           onClick={handleDashboardClick}
           aria-label="Track your journey here"
+          onKeyDown={(e) => e.key === "Enter" && handleDashboardClick()}
         >
           <img
             src="/assets/12.png"
@@ -225,7 +242,7 @@ const WelcomeScreen = () => {
         </Box>
       </MainBox>
       <hr />
-      {showError && <ErrorMessage>{showError}</ErrorMessage>}
+      {showError && <ErrorMessage role="alert">{showError}</ErrorMessage>}
 
       {currentStep === "onboarding" && <Onboarding goBack={handleGoBack} />}
     </main>

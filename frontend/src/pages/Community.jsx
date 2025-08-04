@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { Message } from "../styling/LoadingMessage.jsx";
 
 //add delete instead of cancel, more user friendly i think
+//aria label added - but not fully. Check again, some missing and some need more clarification.
 
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
 
@@ -165,13 +166,24 @@ const CommunityPost = ({ post }) => {
           <button onClick={handleLike} aria-label="Like post">
             ❤️ Like {likes}
           </button>
-          <button onClick={handleCommentClick} aria-label="Comment on post">
+          <button
+            onClick={handleCommentClick}
+            aria-label={`Toggle comments, ${comments.length} comments`}
+            aria-expanded={showComments}
+            aria-controls={`comments-section-${post._id}`}
+          >
             💬 Comment ({comments.length})
           </button>
         </ButtonContainer>
 
         {showComments && (
-          <CommentsContainer>
+          <CommentsContainer
+            id={`comments-section-${post._id}`}
+            role="region"
+            aria-live="polite"
+            aria-relevant="additions"
+            aria-labelledby={`comments-title-${post._id}`}
+          >
             <CommentForm>
               <CommentTextarea
                 aria-label="Write your comment here"

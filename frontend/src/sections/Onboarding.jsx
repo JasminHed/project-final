@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
+//arialabels added
+
 const Container = styled.div`
   padding: 80px 20px 100px;
   max-width: 100%;
@@ -186,20 +188,24 @@ const Onboarding = ({ goBack }) => {
     <Container>
       <h1>Start your journey</h1>
 
-      <ModuleContainer>
+      <ModuleContainer
+        role="region"
+        aria-labelledby="module-title"
+        aria-describedby="module-content"
+      >
         <Img src="/assets/9.png" alt="Graphic image showing a thinking mind" />
-        <h2>{currentModule.title}</h2>
-        <Content>{currentModule.content}</Content>
+        <h2 id="module-title">{currentModule.title}</h2>
+        <Content id="module-content">{currentModule.content}</Content>
       </ModuleContainer>
 
-      <ButtonContainer>
+      <ButtonContainer role="navigation" aria-label="Onboarding navigation">
         {showPreviousButton && (
           <button onClick={handlePrevious}>Previous</button>
         )}
         <button onClick={handleNext}>{buttonText}</button>
       </ButtonContainer>
 
-      {showError && <ErrorMessage>{showError}</ErrorMessage>}
+      {showError && <ErrorMessage role="alert">{showError}</ErrorMessage>}
     </Container>
   );
 };

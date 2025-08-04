@@ -22,7 +22,7 @@ export const Input = styled.input`
 
 export const ErrorDiv = styled.div`
   color: var(--color-error);
-  margin-bottom: 4px;
+  margin-bottom: 8px;
   margin-top: 4px;
 `;
 

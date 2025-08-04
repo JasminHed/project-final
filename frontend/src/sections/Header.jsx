@@ -43,16 +43,16 @@ const DesktopNav = styled.nav`
     display: flex;
     gap: 10px;
     position: absolute;
-    right: 40px;
-    top: 50%;
-    transform: translateY(-50%);
+    left: 50%;
+    transform: translateX(-50%);
+    top: calc(100% + -35px);
     z-index: 102;
   }
 
   @media (min-width: 1024px) {
-    right: 40px;
-    top: 50%;
-    transform: translateY(-50%);
+    left: 50%;
+    transform: translateX(-50%);
+    top: calc(100% + -35px);
   }
 `;
 
@@ -60,7 +60,7 @@ const HamburgerButton = styled.button`
   display: block;
   position: absolute;
   top: 40px;
-  right: 40px;
+  right: 15px;
   transform: none;
 
   @media (min-width: 668px) {
@@ -95,8 +95,8 @@ const MobileNav = styled.nav`
 const LogoutMessage = styled.p`
   position: absolute;
   color: var(--color-success);
-  top: 60px;
-  left: 90px;
+  top: 30px;
+  text-align: center;
 `;
 
 const Header = () => {

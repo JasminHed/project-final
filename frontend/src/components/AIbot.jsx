@@ -5,6 +5,22 @@ import useClickOutside from "../components/useClickOutside";
 
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
 
+const ChatbotIcon = styled.div`
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  background: var(--primary-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 999;
+`;
+
 const ChatbotWindow = styled.div`
   position: fixed;
   bottom: 80px;
@@ -21,28 +37,27 @@ const Section = styled.section`
 `;
 
 const AIbot = () => {
-  const [motivation, setMotivation] = useState("");
-  const [motivationMessage, setMotivationMessage] = useState("");
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef();
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/api/weekly-motivation`, {
+    fetch(`${API_BASE_URL}/api/weekly-messages`, {
       headers: {
         Authorization: localStorage.getItem("accessToken"),
       },
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.motivation) {
-          setMotivation(data.motivation);
+        if (data.message) {
+          setMessage(data.message);
+          setMessageType(data.type);
           setIsOpen(true);
-        } else if (data.message) {
-          setMotivationMessage(data.message);
         }
       })
       .catch((error) => {
-        setMotivationMessage("Failed to load motivation.");
+        setMessage("Failed to load message.");
         console.error(error);
       });
   }, []);
@@ -50,20 +65,22 @@ const AIbot = () => {
   // Hook to close when click outside
   useClickOutside(ref, () => setIsOpen(false));
 
-  if (!isOpen) return null;
+  //if (!isOpen) return null;
 
   return (
-    <ChatbotWindow ref={ref}>
-      <Section>
-        <h4>Hey you!</h4>
-        {motivation ? (
-          <p>{motivation}</p>
-        ) : (
-          <p>{motivationMessage || "Loading..."}</p>
-        )}
-      </Section>
-    </ChatbotWindow>
+    <>
+      <ChatbotIcon onClick={() => setIsOpen(!isOpen)}>🤖</ChatbotIcon>
+      {isOpen && (
+        <ChatbotWindow ref={ref}>
+          <Section>
+            <h4>
+              {messageType === "checkin" ? "How are you doing?" : "Hey you!"}
+            </h4>
+            <p>{message}</p>
+          </Section>
+        </ChatbotWindow>
+      )}
+    </>
   );
 };
-
 export default AIbot;

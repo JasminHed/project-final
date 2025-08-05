@@ -192,7 +192,8 @@ const WelcomeScreen = () => {
           <p>
             <strong>
               To get started, sign up or log in to create goals, access your
-              dashboard, and join the community.
+              dashboard, get access to your AI bot for motivation and check-ins
+              and to be able to join the community.
             </strong>
             "Learn about Intention and SMART goals" is free to explore without
             an account.

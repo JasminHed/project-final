@@ -61,7 +61,7 @@ const ErrorMessage = styled.p`
 `;
 
 //Track module to know where user is, to show next slide
-const Onboarding = ({ goBack }) => {
+const Onboarding = ({ goBack, signUpRef }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showError, setShowError] = useState("");
   const navigate = useNavigate();
@@ -176,11 +176,17 @@ const Onboarding = ({ goBack }) => {
       navigate("/setup");
     } else {
       setShowError(
-        "You need to be logged in to continue. Redirecting to homepage."
+        "You need to be logged in to continue. Redirecting to Sign Up"
       );
       setTimeout(() => {
+        if (signUpRef.current) {
+          signUpRef.current.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }
         goBack();
-      }, 2000);
+      }, 100);
     }
   };
 

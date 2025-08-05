@@ -268,26 +268,6 @@ app.patch("/goals/:id", authenticateUser, async (req, res) => {
       });
     }
 
-    // if user is public and goal is not complete, update community post
-    /*if (req.user.isPublic && !updatedGoal.completed) {
-      await CommunityPost.findOneAndUpdate(
-        { userId: req.user._id, goalId: updatedGoal._id },
-        {
-          userId: req.user._id,
-          goalId: updatedGoal._id,
-          intention: updatedGoal.intention,
-          specific: updatedGoal.specific,
-          measurable: updatedGoal.measurable,
-          achievable: updatedGoal.achievable,
-          relevant: updatedGoal.relevant,
-          timebound: updatedGoal.timebound,
-          createdAt: new Date(),
-          userName: req.user.name,
-        },
-        { upsert: true, new: true }
-      );
-    }*/
-
     res.status(200).json({
       success: true,
       response: updatedGoal,
@@ -393,37 +373,48 @@ app.post("/community-posts/:id/comments", authenticateUser, async (req, res) => 
   }
 });
 
-// AI get - motivation (1/day)
-app.get("/api/weekly-motivation", authenticateUser, async (req, res) => {
+// AI get - check in & motivation (motovation 3 times/week and check-in 2times/week)
+app.get("/api/weekly-messages", authenticateUser, async (req, res) => {
   try {
     const user = req.user;
     const today = new Date();
-    const lastMotivation = new Date(user.lastMotivationDate || 0);
-    const diffDays = (today - lastMotivation) / (1000 * 60 * 60 * 24);
-
+    const lastMessage = new Date(user.lastMessageDate || 0);
+    const diffDays = (today - lastMessage) / (1000 * 60 * 60 * 24);
+ 
     if (diffDays < 1) {
-      return res.json({ message: "Motivation already sent this week." });
+      return res.json({ message: "You got everything you need today" });
     }
-
+ 
     const motivations = [
       "Keep going! You're doing great.",
       "Remember why you set your goal in the first place.",
-      "Small steps every day lead to big changes!",
-      "You’ve got this — stay focused and keep moving forward.",
-      "Being discerning is part of how we set up the life we want.",
-      "Perfectin is not the end goal, effort is."
+      "Small steps every day lead to big changes!"
     ];
-
-    const randomMotivation = motivations[Math.floor(Math.random() * motivations.length)];
-
-    user.lastMotivationDate = today.toISOString().slice(0, 10);
+ 
+    const checkins = [
+      "How are you feeling about your progress this week?",
+      "What's been your biggest win lately?",
+      "Which goal needs the most attention right now?",
+      "How are you balancing your intentions with daily life?",
+      "What's challenging you the most in your journey?"
+    ];
+ 
+    // Alternate between motivation and check-in
+    const isMotivation = Math.random() > 0.4; // 60% motivation, 40% check-in
+    const messages = isMotivation ? motivations : checkins;
+    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+ 
+    user.lastMessageDate = today.toISOString().slice(0, 10);
     await user.save();
-
-    res.json({ motivation: randomMotivation });
+ 
+    res.json({ 
+      message: randomMessage, 
+      type: isMotivation ? 'motivation' : 'checkin' 
+    });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Failed to get weekly motivation." });
+    res.status(500).json({ success: false, message: "Failed to get message." });
   }
-});
+ });
 
 // Start the server
 app.listen(port, () => {

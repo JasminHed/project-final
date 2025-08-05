@@ -101,7 +101,7 @@ const LogoutMessage = styled.p`
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false); // Track if mobile menu is open or closed
-  const [isOpen, setIsOpen] = useState(false); // Controls AuthForm popup open state
+  // const [isOpen, setIsOpen] = useState(false); // Controls AuthForm popup open state
   const [logoutMessage, setLogoutMessage] = useState(""); // To show logout confirmation
 
   const toggleMenu = () => setMenuOpen((prev) => !prev); // Open and close menu toggle

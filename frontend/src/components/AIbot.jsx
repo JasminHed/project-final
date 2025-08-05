@@ -7,10 +7,10 @@ const API_BASE_URL = "https://project-final-ualo.onrender.com";
 
 const ChatbotIcon = styled.div`
   position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 60px;
-  height: 60px;
+  bottom: 50px;
+  right: 50px;
+  width: 30px;
+  height: 30px;
   background: var(--primary-color);
   border-radius: 50%;
   display: flex;
@@ -21,6 +21,12 @@ const ChatbotIcon = styled.div`
   z-index: 999;
 `;
 
+const Img = styled.img`
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+`;
+
 const ChatbotWindow = styled.div`
   position: fixed;
   bottom: 80px;
@@ -28,7 +34,6 @@ const ChatbotWindow = styled.div`
   width: 320px;
   border-radius: 8px;
   padding: 15px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   z-index: 1000;
 `;
 
@@ -42,6 +47,7 @@ const AIbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef();
 
+  //this fecthes all messages
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/weekly-messages`, {
       headers: {
@@ -65,11 +71,14 @@ const AIbot = () => {
   // Hook to close when click outside
   useClickOutside(ref, () => setIsOpen(false));
 
-  //if (!isOpen) return null;
-
   return (
     <>
-      <ChatbotIcon onClick={() => setIsOpen(!isOpen)}>🤖</ChatbotIcon>
+      <ChatbotIcon onClick={() => setIsOpen(!isOpen)}>
+        <Img
+          src="/assets/speech-bubble.png"
+          alt="A blue and pink speach bubble"
+        />
+      </ChatbotIcon>
       {isOpen && (
         <ChatbotWindow ref={ref}>
           <Section>

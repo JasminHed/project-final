@@ -151,8 +151,9 @@ const Setup = () => {
             <p id="intention-description">
               Write your intention. Based on your reflections above, write your
               main intention/goal. It can be broad, you will specify how to get
-              there in your SMART goals."
+              there in your SMART goals.
             </p>
+
             <Textarea
               aria-labelledby="intention-section intention-description"
               placeholder={`Examples:\nBuild a healthier lifestyle that gives me more energy and confidence\nCreate a stable financial foundation for my family's future\nDevelop my creative skills and find more fulfillment in my work`}

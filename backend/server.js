@@ -416,6 +416,41 @@ app.get("/api/weekly-messages", authenticateUser, async (req, res) => {
   }
  });
 
+ app.post("/api/chat", authenticateUser, async (req, res) => {
+  try {
+    const user = req.user;
+    const userMessage = req.body.message;
+
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer sk-...r5QA"
+      },
+      body: JSON.stringify({
+        model: "gpt-3.5-turbo",
+        messages: [
+          {
+            role: "system",
+            content: "You are a helpful coach and assistant that guides the user through the website structure and content and with their intention setting and SMART goal setting. The user is on this webpage because they are creating and setting up their intention and SMART goal to make a change, reach a goal, create a dreamlife. They can have up to three intention + SMART goals at a time."
+          },
+          {
+            role: "user",
+            content: userMessage
+          }
+        ]
+      })
+    });
+
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: "Something went wrong" });
+  }
+});
+
+
+
 // Start the server
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);

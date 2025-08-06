@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Message } from "../styling/LoadingMessage.jsx";
 
 //add delete instead of cancel, more user friendly i think
-//aria label added - but not fully. Check again, some missing and some need more clarification.
+//aria label added + semantic html
 
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
 
@@ -18,7 +18,7 @@ const Container = styled.div`
   }
 `;
 
-const PostContainer = styled.div`
+const PostContainer = styled.article`
   border: 2px solid var(--color-focus);
   border-radius: 15px;
   padding: 20px;
@@ -32,13 +32,13 @@ const ButtonContainer = styled.div`
   margin-top: 15px;
 `;
 
-const CommentsContainer = styled.div`
+const CommentsContainer = styled.section`
   margin-top: 15px;
   border-top: 1px solid #ddd;
   padding-top: 15px;
 `;
 
-const CommentForm = styled.div`
+const CommentForm = styled.form`
   margin-bottom: 15px;
 `;
 
@@ -114,7 +114,9 @@ const CommunityPost = ({ post }) => {
     setShowComments(!showComments);
   };
 
-  const handleAddComment = () => {
+  const handleAddComment = (e) => {
+    e.preventDefault();
+
     if (!newComment.trim()) return;
 
     fetch(`${API_BASE_URL}/community-posts/${post._id}/comments`, {
@@ -149,58 +151,75 @@ const CommunityPost = ({ post }) => {
   };
 
   return (
-    <main id="main-content">
-      <PostContainer>
-        <h2>My intention is: {post.intention}</h2>
-        <p>
-          <strong>Posted by: {post.userName || "Anonymous"}</strong>
-        </p>
+    <PostContainer>
+      <header>
+        <h2>
+          My intention is: <p>{post.intention}</p>
+        </h2>
+      </header>
+      <p>
+        <strong>Posted by:</strong> {post.userName || "Anonymous"}
+      </p>
 
-        <p>Specific: {post.specific}</p>
-        <p>Measurable: {post.measurable}</p>
-        <p>Achievable: {post.achievable}</p>
-        <p>Relevant: {post.relevant}</p>
-        <p>Time-bound: {post.timebound}</p>
+      <p>
+        <strong>Specific:</strong> {post.specific}
+      </p>
+      <p>
+        <strong>Measurable:</strong> {post.measurable}
+      </p>
+      <p>
+        <strong>Achievable:</strong> {post.achievable}
+      </p>
+      <p>
+        <strong>Relevant:</strong> {post.relevant}
+      </p>
+      <p>
+        <strong>Time-bound: </strong>
+        {post.timebound}
+      </p>
 
-        <ButtonContainer>
-          <button onClick={handleLike} aria-label="Like post">
-            ❤️ Like {likes}
-          </button>
-          <button
-            onClick={handleCommentClick}
-            aria-label={`Toggle comments, ${comments.length} comments`}
-            aria-expanded={showComments}
-            aria-controls={`comments-section-${post._id}`}
-          >
-            💬 Comment ({comments.length})
-          </button>
-        </ButtonContainer>
+      <ButtonContainer>
+        <button
+          onClick={handleLike}
+          aria-label={`Like this post, currently has ${likes} likes`}
+        >
+          ❤️ Like {likes}
+        </button>
+        <button
+          onClick={handleCommentClick}
+          aria-label={`Toggle comments section, ${comments.length} comments available`}
+          aria-expanded={showComments}
+          aria-controls={`comments-section-${post._id}`}
+        >
+          💬 Comment ({comments.length})
+        </button>
+      </ButtonContainer>
 
-        {showComments && (
-          <CommentsContainer
-            id={`comments-section-${post._id}`}
-            role="region"
-            aria-live="polite"
-            aria-relevant="additions"
-            aria-labelledby={`comments-title-${post._id}`}
-          >
-            <CommentForm>
-              <CommentTextarea
-                aria-label="Write your comment here"
-                value={newComment}
-                onChange={handleTextareaChange}
-                placeholder="Write your comment here"
-              />
-              <div>
-                <CommentButton onClick={handleAddComment}>
-                  Send comment
-                </CommentButton>
-                <CommentButton onClick={handleCancelComment}>
-                  Cancel comment
-                </CommentButton>
-              </div>
-            </CommentForm>
-
+      {showComments && (
+        <CommentsContainer
+          id={`comments-section-${post._id}`}
+          role="region"
+          aria-live="polite"
+          aria-relevant="additions"
+          aria-labelledby={`comments-title-${post._id}`}
+        >
+          <CommentForm onSubmit={handleAddComment}>
+            <CommentTextarea
+              aria-label="Write your comment here"
+              value={newComment}
+              onChange={handleTextareaChange}
+              placeholder="Write your comment here"
+            />
+            <div>
+              <CommentButton onClick={handleAddComment}>
+                Send comment
+              </CommentButton>
+              <CommentButton onClick={handleCancelComment}>
+                Cancel comment
+              </CommentButton>
+            </div>
+          </CommentForm>
+          <div role="log" aria-live="polite" aria-label="Comments list">
             {comments.map((comment, index) => (
               <CommentItem key={index}>
                 <p>{comment.text}</p>
@@ -215,10 +234,10 @@ const CommunityPost = ({ post }) => {
                 )}
               </CommentItem>
             ))}
-          </CommentsContainer>
-        )}
-      </PostContainer>
-    </main>
+          </div>
+        </CommentsContainer>
+      )}
+    </PostContainer>
   );
 };
 
@@ -241,31 +260,35 @@ const Community = () => {
 
   return (
     <Container>
-      <h1>Welcome to the Community</h1>
-      <p>
-        All posts you see here are public, meaning every user can view, like,
-        and comment on your intentions and goals.{" "}
-      </p>
+      <main id="main-content">
+        <header>
+          <h1>Welcome to the Community</h1>
+        </header>
+        <p>
+          All posts you see here are public, meaning every user can view, like,
+          and comment on your intentions and goals.{" "}
+        </p>
 
-      <p>
-        The purpose of this community is to build connection along the journey.
-        We’re here to cheer each other on, offer support, and share in the ups
-        and downs.{" "}
-      </p>
+        <p>
+          The purpose of this community is to build connection along the
+          journey. We’re here to cheer each other on, offer support, and share
+          in the ups and downs.{" "}
+        </p>
 
-      <p>
-        Jump in, join the energy, and remember — you’re never alone on your
-        path.
-      </p>
+        <p>
+          Jump in, join the energy, and remember — you’re never alone on your
+          path.
+        </p>
 
-      <Img
-        src="/assets/13.png"
-        alt="A graphic image showing two hearts hugging"
-      />
+        <Img
+          src="/assets/13.png"
+          alt="A graphic image showing two hearts hugging"
+        />
 
-      {posts.map((post) => (
-        <CommunityPost key={post._id} post={post} />
-      ))}
+        {posts.map((post) => (
+          <CommunityPost key={post._id} post={post} />
+        ))}
+      </main>
     </Container>
   );
 };

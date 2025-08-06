@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-const ProfileSection = styled.div`
+//semantic + aria label added
+
+const ProfileSection = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -10,16 +12,22 @@ const ProfileSection = styled.div`
   margin: 20px 0;
 `;
 
-const Avatar = styled.img`
+const AvatarButton = styled.button`
   width: 120px;
   height: 70px;
   border-radius: 30%;
   cursor: pointer;
   margin-bottom: 10px;
+  border: none;
+  padding: 0;
+  background: none;
+  display: block;
 
-  &:hover {
-    opacity: 0.8;
-    transform: scale(1.05);
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 30%;
+    display: block;
   }
 `;
 
@@ -58,25 +66,30 @@ const DisclaimerText = styled.p`
   max-width: 250px;
 `;
 
-const Dropdown = styled.div`
+const DropdownMenu = styled.ul`
   position: absolute;
   top: 120px;
-  background: white;
-  border: 1px solid #ddd;
+  background: var(--color-background);
   border-radius: 4px;
   width: 160px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   z-index: 10;
+  list-style: none;
 `;
 
-const DropdownItem = styled.div`
+const MenuItem = styled.li`
+  padding: 15;
+`;
+
+const MenuButton = styled.button`
+  width: 100%;
   padding: 10px;
+  color: var(--color-text-primary);
+  border: none;
+  background: none;
   cursor: pointer;
   font-size: 14px;
-
-  &:hover {
-    background: #f5f5f5;
-  }
+  text-align: left;
 `;
 
 const Hint = styled.p`
@@ -104,24 +117,26 @@ const ProfileSetting = ({ user, onOptionSelect }) => {
 
   return (
     <ProfileSection>
-      <Avatar
-        src={user?.avatar || "/assets/avatar.png"}
-        alt="User avatar"
+      <AvatarButton
         onClick={toggleDropdown}
-        aria-label="Click on avatar to change privacy settings"
-      />
+        aria-label="Open privacy settings"
+        aria-expanded={open}
+        aria-haspopup="menu"
+      >
+        <img src={user?.avatar || "/assets/avatar.png"} alt="User avatar" />
+      </AvatarButton>
       <Hint>Click avatar to change privacy settings</Hint>
       <UserInfo>
         <UserName>{user?.name || "User"}</UserName>
         <UserEmail>{user?.email || "user@example.com"}</UserEmail>
       </UserInfo>
 
-      <StatusNote isPublic={isPublic}>
+      <StatusNote isPublic={isPublic} role="status">
         {isPublic ? "Your profile is public" : "Your profile is private"}
       </StatusNote>
 
       {showDisclaimer && (
-        <DisclaimerText>
+        <DisclaimerText role="status" aria-live="polite">
           {isPublic
             ? "Your name, intention and goals are now shared with the community"
             : "Your name, intention and goals are now private and hidden from others"}
@@ -129,14 +144,24 @@ const ProfileSetting = ({ user, onOptionSelect }) => {
       )}
 
       {open && (
-        <Dropdown>
-          <DropdownItem onClick={() => handleOptionSelect("public")}>
-            Make my profile public
-          </DropdownItem>
-          <DropdownItem onClick={() => handleOptionSelect("private")}>
-            Make my profile private
-          </DropdownItem>
-        </Dropdown>
+        <DropdownMenu role="menu" aria-label="Privacy settings">
+          <MenuItem role="none">
+            <MenuButton
+              onClick={() => handleOptionSelect("public")}
+              role="menuitem"
+            >
+              Make my profile public
+            </MenuButton>
+          </MenuItem>
+          <MenuItem role="none">
+            <MenuButton
+              onClick={() => handleOptionSelect("private")}
+              role="menuitem"
+            >
+              Make my profile private
+            </MenuButton>
+          </MenuItem>
+        </DropdownMenu>
       )}
     </ProfileSection>
   );

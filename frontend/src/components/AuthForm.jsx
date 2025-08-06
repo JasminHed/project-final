@@ -5,6 +5,8 @@ import LogIn from "./LogIn";
 import SignUp from "./SignUp";
 import useClickOutside from "./useClickOutside";
 
+//aria labels + semantic html added. Should you have escape for screenreaders?
+
 const PopUp = styled.div`
   position: fixed;
   bottom: 0;
@@ -44,8 +46,8 @@ const AuthForm = ({
   return (
     <>
       {isOpen && (
-        <PopUp>
-          <Form ref={ref} onClick={(e) => e.stopPropagation()}>
+        <PopUp role="dialog" aria-modal="true" aria-label="Log In och Sign Up">
+          <Form ref={ref} onClick={(e) => e.stopPropagation()} tabIndex="-1">
             {!showLogin ? (
               <SignUp
                 setShowLogin={setShowLogin}

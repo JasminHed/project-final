@@ -116,6 +116,7 @@ const Dashboard = () => {
   const [goals, setGoals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [successMessage, setSuccessMessage] = useState("");
+  const [showVisionBoard, setShowVisionBoard] = useState(false);
 
   //Chart
   const incompleteGoals = goals.filter((goal) => !goal.completed);

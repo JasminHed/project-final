@@ -11,13 +11,9 @@ const ChatbotIcon = styled.div`
   right: 50px;
   width: 30px;
   height: 30px;
-  background: var(--primary-color);
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   cursor: pointer;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+
   z-index: 999;
 `;
 
@@ -29,10 +25,12 @@ const Img = styled.img`
 
 const ChatbotWindow = styled.div`
   position: fixed;
+  background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
   bottom: 80px;
   right: 20px;
-  width: 320px;
+  width: 280px;
   border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   padding: 15px;
   z-index: 1000;
 `;
@@ -74,16 +72,13 @@ const AIbot = () => {
   return (
     <>
       <ChatbotIcon onClick={() => setIsOpen(!isOpen)}>
-        <Img
-          src="/assets/speech-bubble.png"
-          alt="A blue and pink speach bubble"
-        />
+        <Img src="/assets/chat.png" alt="A blue and pink speach bubble" />
       </ChatbotIcon>
       {isOpen && (
         <ChatbotWindow ref={ref}>
           <Section>
             <h4>
-              {messageType === "checkin" ? "How are you doing?" : "Hey you!"}
+              {messageType === "checkin" ? "How are you doing?" : "Hello!"}
             </h4>
             <p>{message}</p>
           </Section>

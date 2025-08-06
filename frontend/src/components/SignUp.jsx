@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useUserStore } from "../store/UserStore";
 import { ErrorDiv, Input, Label, LinkSpan, RegisterLink } from "../styling/FormStyling.jsx";
 
+//semantic html + aria added
+
 const SignUp = ({
   setShowLogin,
   setIsLoggedIn,
@@ -22,7 +24,8 @@ const SignUp = ({
   const navigate = useNavigate();
   const { login } = useUserStore();
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     if (!formData.name || !formData.email || !formData.password) {
       setError("Please fill in all fields");
       return;
@@ -94,38 +97,68 @@ const SignUp = ({
 
   return (
     <>
-      <Label htmlFor="name">Name</Label>
-      <Input
-        onChange={handleName}
-        type="text"
-        name="name"
-        value={formData.name}
-      />
-      <Label htmlFor="email">Email</Label>
-      <Input
-        onChange={handleEmail}
-        type="email"
-        name="email"
-        value={formData.email}
-      />
-      <Label htmlFor="password">Password</Label>
-      <Input
-        onChange={handlePassword}
-        type="password"
-        name="password"
-        value={formData.password}
-      />
-      {error && <ErrorDiv>{error}</ErrorDiv>}
+      <form onSubmit={handleSubmit} noValidate>
+        <Label htmlFor="signup-name">Name</Label>
+        <Input
+          id="signup-name"
+          onChange={handleName}
+          type="text"
+          name="name"
+          value={formData.name}
+          required
+          aria-describedby={error ? "signup-error" : undefined}
+          aria-invalid={!!error}
+        />
+        <Label htmlFor="signup-email">Email</Label>
+        <Input
+          id="signup-email"
+          onChange={handleEmail}
+          type="email"
+          name="email"
+          value={formData.email}
+          required
+          aria-describedby={error ? "signup-error" : undefined}
+          aria-invalid={!!error}
+        />
+        <Label htmlFor="signup-password">Password</Label>
+        <Input
+          id="signup-password"
+          onChange={handlePassword}
+          type="password"
+          name="password"
+          value={formData.password}
+          required
+          aria-describedby={error ? "signup-error" : undefined}
+          aria-invalid={!!error}
+        />
+        {error && (
+          <ErrorDiv id="signup-error" aria-live="polite">
+            {error}
+          </ErrorDiv>
+        )}
 
-      {successMessage && <ErrorDiv>{successMessage}</ErrorDiv>}
-      <button type="button" onClick={handleSubmit}>
-        Sign up
-      </button>
+        {successMessage && (
+          <ErrorDiv role="status" aria-live="polite">
+            {successMessage}
+          </ErrorDiv>
+        )}
+        <button type="submit" onClick={handleSubmit}>
+          Sign up
+        </button>
 
-      <RegisterLink>
-        <LinkSpan>Already a user? </LinkSpan>
-        <LinkSpan onClick={handleShowLogin}>Log in here</LinkSpan>
-      </RegisterLink>
+        <RegisterLink>
+          <LinkSpan>Already a user? </LinkSpan>
+          <LinkSpan
+            onClick={handleShowLogin}
+            onKeyDown={(e) => e.key === "Enter" && handleShowLogin()}
+            role="button"
+            tabIndex="0"
+            aria-label="Go to log in form"
+          >
+            Log in here
+          </LinkSpan>
+        </RegisterLink>
+      </form>
     </>
   );
 };

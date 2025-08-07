@@ -3,6 +3,14 @@ import styled from "styled-components";
 
 import useClickOutside from "../components/useClickOutside";
 
+//An input field or textarea where the user can type.
+
+//A send button that posts the message to your /api/chat endpoint.
+
+//Manage the conversation history to display both the user's and AI's messages.
+
+//Update the chat with the AI's response when it comes back from the backend.
+
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
 
 const ChatbotIcon = styled.div`
@@ -64,6 +72,28 @@ const AIbot = () => {
         setMessage("Failed to load message.");
         console.error(error);
       });
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch(
+        "https://api.openai.com/v1/chat/completions",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("accessToken"),
+          },
+          body: JSON.stringify({
+            model: "gpt-3.5-turbo",
+            messages: [{ role: "user", content: "Hello!" }],
+          }),
+        }
+      );
+      const data = await response.json();
+    };
+
+    fetchData();
   }, []);
 
   // Hook to close when click outside

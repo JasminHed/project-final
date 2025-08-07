@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Route, Routes } from "react-router-dom";
 
 import AIbot from "./components/AIbot.jsx";
@@ -9,6 +9,8 @@ import Footer from "./sections/Footer.jsx";
 import Header from "./sections/Header.jsx";
 import Setup from "./sections/Setup.jsx";
 import GlobalStyles from "./styling/GlobalStyling.jsx";
+
+const NotFound = () => <h2>404 - Page Not Found</h2>;
 
 export const App = () => {
   return (
@@ -25,6 +27,7 @@ export const App = () => {
         <Route path="/setup" element={<Setup />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/community" element={<Community />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
 
       <Footer />

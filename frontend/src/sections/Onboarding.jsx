@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
@@ -27,9 +27,7 @@ const Img = styled.img`
   object-fit: contain;
 
   @media (min-width: 668px) {
-    img {
-      max-width: 500px;
-    }
+    max-width: 500px;
   }
 `;
 
@@ -61,9 +59,14 @@ const ErrorMessage = styled.p`
 `;
 
 //Track module to know where user is, to show next slide
-const Onboarding = ({ goBack, signUpRef }) => {
+const Onboarding = ({ goBack, signUpRef, autoStart = false }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showError, setShowError] = useState("");
+  useEffect(() => {
+    if (autoStart) {
+      setCurrentSlide(0);
+    }
+  }, [autoStart]);
   const navigate = useNavigate();
 
   //List of onboarding modules

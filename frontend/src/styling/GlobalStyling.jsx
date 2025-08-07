@@ -47,7 +47,7 @@ const GlobalStyles = createGlobalStyle`
   body {
     background-color: var(--color-background);
     color: var(--color-text-primary);
-    font-family: system-ui, sans-serif;
+    font-family: 'Inter', sans-serif;
     transition: background-color 0.3s ease, color 0.3s ease;
   }
 
@@ -57,6 +57,8 @@ const GlobalStyles = createGlobalStyle`
   margin-bottom: 8px;
   font-weight: 700;
   text-align: center;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600; 
 }
 
 h1 {

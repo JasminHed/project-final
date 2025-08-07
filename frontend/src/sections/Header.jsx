@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 //import AuthForm from "../components/AuthForm";
@@ -15,14 +14,6 @@ const HeaderContainer = styled.header`
   display: flex;
   align-items: center;
   justify-content: center; /* Title centered on mobile */
-
-  @media (min-width: 668px) {
-    justify-content: center;
-  }
-
-  @media (min-width: 1024px) {
-    justify-content: center;
-  }
 `;
 
 const Title = styled.h1`
@@ -101,20 +92,16 @@ const LogoutMessage = styled.p`
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false); // Track if mobile menu is open or closed
-  // const [isOpen, setIsOpen] = useState(false); // Controls AuthForm popup open state
   const [logoutMessage, setLogoutMessage] = useState(""); // To show logout confirmation
-
   const toggleMenu = () => setMenuOpen((prev) => !prev); // Open and close menu toggle
-
   const { isLoggedIn, setIsLoggedIn, logout } = useUserStore(); // Track if user is logged in
-
   const navigate = useNavigate(); // React-router hook to change pages
 
   // Check if user has a saved token to know if user is logged in
-  useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    setIsLoggedIn(!!token); // Convert token to true/false (boolean)
-  }, []);
+  //useEffect(() => {
+  //const token = localStorage.getItem("accessToken");
+  //setIsLoggedIn(!!token); // Convert token to true/false (boolean)
+  //}, []);
 
   // When user clicks logout button
   const handleLogout = () => {
@@ -123,7 +110,7 @@ const Header = () => {
     logout();
     setLogoutMessage("You are now logged out.");
     setTimeout(() => setLogoutMessage(""), 2000);
-    setIsLoggedIn(false);
+    //setIsLoggedIn(false);
     navigate("/"); // Redirect user to homepage after logout
   };
 

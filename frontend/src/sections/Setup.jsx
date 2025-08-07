@@ -32,9 +32,7 @@ const Img = styled.img`
   object-fit: contain;
 
   @media (min-width: 668px) {
-    img {
-      max-width: 500px;
-    }
+    max-width: 500px;
   }
 `;
 

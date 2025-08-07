@@ -284,8 +284,133 @@ app.patch("/goals/:id", authenticateUser, async (req, res) => {
 
 
 //Community
+// GET - All Community Posts (Newest First)
+app.get("/community-posts", async (req, res) => {
+  try {
+    const posts = await CommunityPost.find().sort({ createdAt: -1 });
+    res.status(200).json(posts);
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch posts",
+      error,
+    });
+  }
+});
 
-//GET community-post 
+// POST - Like a Community Post
+app.post("/community-posts/:id/like", authenticateUser, async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const updatedPost = await CommunityPost.findByIdAndUpdate(
+      id,
+      { $inc: { likes: 1 } },
+      { new: true }
+    );
+
+    if (!updatedPost) {
+      return res.status(404).json({
+        success: false,
+        message: "Community post not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      response: updatedPost,
+      message: "Like added successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to like the post",
+      error,
+    });
+  }
+});
+
+// POST - Add a Comment to a Community Post
+app.post("/community-posts/:id/comments", authenticateUser, async (req, res) => {
+  const { id } = req.params;
+  const { text } = req.body;
+
+  if (!text?.trim()) {
+    return res.status(400).json({
+      success: false,
+      message: "Comment text is required",
+    });
+  }
+
+  try {
+    const post = await CommunityPost.findById(id);
+    if (!post) {
+      return res.status(404).json({
+        success: false,
+        message: "Community post not found",
+      });
+    }
+
+    const comment = {
+      text,
+      userName: req.user.name,
+      createdAt: new Date(),
+    };
+
+    post.comments.push(comment);
+    await post.save();
+
+    const newComment = post.comments[post.comments.length - 1]; // includes _id
+
+    res.status(201).json({
+      success: true,
+      response: newComment,
+      message: "Comment added successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to add comment",
+      error,
+    });
+  }
+});
+
+// DELETE - Remove a Comment by ID (from any post)
+app.delete("/messages/:id", authenticateUser, async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const post = await CommunityPost.findOne({ "comments._id": id });
+
+    if (!post) {
+      return res.status(404).json({
+        success: false,
+        message: "Comment not found",
+      });
+    }
+
+    post.comments = post.comments.filter(
+      (comment) => comment._id.toString() !== id
+    );
+
+    await post.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Comment deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Something went wrong while deleting the comment",
+      error,
+    });
+  }
+});
+
+
+/*GET community-post 
 app.get('/community-posts', async (req, res) => {
   try {
     const posts = await CommunityPost.find().sort({ createdAt: -1 });
@@ -371,7 +496,7 @@ app.post("/community-posts/:id/comments", authenticateUser, async (req, res) => 
       message: "Failed to add comment",
     });
   }
-});
+});*/
 
 // AI get - check in & motivation (motovation 3 times/week and check-in 2times/week)
 app.get("/api/weekly-messages", authenticateUser, async (req, res) => {

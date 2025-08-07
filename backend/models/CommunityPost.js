@@ -12,7 +12,13 @@ const communityPostSchema = new mongoose.Schema({
   goalId: { type: mongoose.Schema.Types.ObjectId, ref: 'Goal' },
   createdAt: { type: Date, default: Date.now },
   likes: { type: Number, default: 0 },
-  comments: [{ text: String, userName: String, createdAt: Date }]
+  comments: [{
+    _id: { type: mongoose.Schema.Types.ObjectId, auto: true }, // gives the comment a unique id, needed for deletion
+    text: String,
+    userName: String,
+    createdAt: { type: Date, default: Date.now }
+  }]
+  
 });
 
 module.exports = mongoose.model('CommunityPost', communityPostSchema);

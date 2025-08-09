@@ -153,7 +153,7 @@ const Onboarding = ({ goBack, signUpRef, autoStart = false }) => {
               away.
             </dd>
             <dt>
-              <strong>Realistic</strong>
+              <strong>Relevent</strong>
             </dt>
             <dd>
               Challenge yourself but keep goals attainable. Don’t expect to run

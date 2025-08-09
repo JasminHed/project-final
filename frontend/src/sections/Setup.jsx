@@ -194,7 +194,7 @@ const Setup = () => {
           ></Textarea>
           <p aria-live="polite">{values.achievable.length}/150</p>
 
-          <h3 id="relevant-label">Relevant</h3>
+          <h3 id="relevant-label">Relevent</h3>
           <Textarea
             aria-labelledby="relevant-label"
             placeholder={`Examples:\nHealthy habits boost my energy for work and family\nReading expands my knowledge for career growth\nSavings create security and reduce stress`}

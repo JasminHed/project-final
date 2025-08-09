@@ -3,7 +3,6 @@ import { create } from "zustand";
 //Used for signup and log in authorozation logic
 export const useUserStore = create((set) => ({
   isLoggedIn: !!localStorage.getItem("accessToken"),
-  //isLoggedIn: false,
   user: { name: "", email: "" },
 
   // Actions

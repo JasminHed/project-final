@@ -1,9 +1,9 @@
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { Message } from "../styling/LoadingMessage.jsx";
 
-//add delete instead of cancel, more user friendly i think
 //aria label added + semantic html
 
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
@@ -24,6 +24,8 @@ const PostContainer = styled.article`
   padding: 20px;
   margin-bottom: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 2px solid #ddd;
+  background: #f9f9f9;
 `;
 
 const ButtonContainer = styled.div`
@@ -131,6 +133,7 @@ const CommunityPost = ({ post }) => {
       .then((data) => {
         if (data.success) {
           const added = {
+            _id: data.response._id,
             text: data.response.text,
             createdAt: data.response.createdAt,
             userName: data.response.userName || "Anonymous",
@@ -141,13 +144,26 @@ const CommunityPost = ({ post }) => {
       });
   };
 
-  const handleCancelComment = () => {
-    setNewComment("");
-    setShowComments(false);
-  };
-
   const handleTextareaChange = (e) => {
     setNewComment(e.target.value);
+  };
+
+  const handleDeleteComment = (commentId) => {
+    fetch(`${API_BASE_URL}/messages/${commentId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: localStorage.getItem("accessToken"),
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setComments((prev) =>
+            prev.filter((comment) => comment._id !== commentId)
+          );
+        }
+      })
+      .catch((err) => console.error("Delete failed", err));
   };
 
   return (
@@ -214,24 +230,21 @@ const CommunityPost = ({ post }) => {
               <CommentButton onClick={handleAddComment}>
                 Send comment
               </CommentButton>
-              <CommentButton onClick={handleCancelComment}>
-                Cancel comment
-              </CommentButton>
             </div>
           </CommentForm>
           <div role="log" aria-live="polite" aria-label="Comments list">
             {comments.map((comment, index) => (
-              <CommentItem key={index}>
+              <CommentItem key={comment._id}>
                 <p>{comment.text}</p>
-                <small>
-                  {comment.timestamp ||
-                    new Date(comment.createdAt).toLocaleString()}
-                </small>
+                <small>{moment(comment.createdAt).fromNow()}</small>
                 {comment.userName && (
                   <p>
                     <strong>{comment.userName}</strong>
                   </p>
                 )}
+                <CommentButton onClick={() => handleDeleteComment(comment._id)}>
+                  Delete comment
+                </CommentButton>
               </CommentItem>
             ))}
           </div>

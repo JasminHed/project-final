@@ -49,7 +49,11 @@ const GlobalStyles = createGlobalStyle`
     color: var(--color-text-primary);
     font-family: 'Inter', sans-serif;
     transition: background-color 0.3s ease, color 0.3s ease;
+    
   }
+
+ 
+
 
   h1, h2, h3, h4 {
   color: var(--color-text-primary);

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-//import AuthForm from "../components/AuthForm";
 import { useUserStore } from "../store/UserStore";
 
 const HeaderContainer = styled.header`
@@ -97,12 +96,6 @@ const Header = () => {
   const { isLoggedIn, setIsLoggedIn, logout } = useUserStore(); // Track if user is logged in
   const navigate = useNavigate(); // React-router hook to change pages
 
-  // Check if user has a saved token to know if user is logged in
-  //useEffect(() => {
-  //const token = localStorage.getItem("accessToken");
-  //setIsLoggedIn(!!token); // Convert token to true/false (boolean)
-  //}, []);
-
   // When user clicks logout button
   const handleLogout = () => {
     localStorage.removeItem("userId");
@@ -110,10 +103,9 @@ const Header = () => {
     logout();
     setLogoutMessage("You are now logged out.");
     setTimeout(() => setLogoutMessage(""), 2000);
-    //setIsLoggedIn(false);
     navigate("/"); // Redirect user to homepage after logout
   };
-
+  // Manages dark mode state and toggles the "dark" class on the document element
   const [darkMode, setDarkMode] = useState(false);
   useEffect(() => {
     if (darkMode) {
@@ -123,21 +115,25 @@ const Header = () => {
     }
   }, [darkMode]);
 
+  // Toggles the dark mode state between true and false
   const toggleDarkMode = () => setDarkMode((prev) => !prev);
 
-  // Links in navbar (conditional)
   const NavLinks = () => {
-    if (isLoggedIn) {
-      return (
-        <>
-          <Link to="/dashboard">Dashboard</Link>
-          <Link to="/community">Community</Link>
-        </>
-      );
-    } else {
-      return <Link to="/">Home</Link>;
-    }
+    return (
+      <>
+        <Link to="/">Home</Link>
+        <Link to="/about">About</Link>
+
+        {isLoggedIn && (
+          <>
+            <Link to="/dashboard">Dashboard</Link>
+            <Link to="/community">Community</Link>
+          </>
+        )}
+      </>
+    );
   };
+
   const AuthButtons = () => {
     if (!isLoggedIn) return null;
 
@@ -210,7 +206,6 @@ const Header = () => {
           {DarkModeButton()}
         </Link>
       </MobileNav>
-      <hr />
     </>
   );
 };

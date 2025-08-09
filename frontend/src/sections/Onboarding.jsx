@@ -2,9 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-//arialabels added
+//arialabels added + semantic html
+//<dl> (definition list) for the SMART goals breakdown because you're literally defining terms
+//<dt> = definition term (like "Specific")
+//<dd> = definition description (the explanation)
 
-const Container = styled.div`
+const Container = styled.section`
   padding: 80px 20px 100px;
   max-width: 100%;
   margin: 0 auto;
@@ -14,7 +17,7 @@ const Container = styled.div`
   }
 `;
 
-const ModuleContainer = styled.div`
+const ModuleContainer = styled.article`
   margin-bottom: 40px;
 `;
 
@@ -36,7 +39,7 @@ const Content = styled.div`
   line-height: 1.6;
 
   p {
-    margin-bottom: 15px;
+    margin: 10px 0 25px 0;
   }
 
   strong {
@@ -44,7 +47,7 @@ const Content = styled.div`
   }
 `;
 
-const ButtonContainer = styled.div`
+const ButtonContainer = styled.nav`
   display: flex;
   gap: 15px;
   justify-content: center;
@@ -75,24 +78,27 @@ const Onboarding = ({ goBack, signUpRef, autoStart = false }) => {
       title: "Setting your intention",
       content: (
         <>
-          <p>
-            Visualizing your dream life isn’t just a pleasant daydream — it’s a
-            powerful tool for making clear, meaningful decisions. Ask yourself:
-            What matters most in your life? Whether it’s family, career, travel,
-            or something else, your answers reveal your core values.
-          </p>
-          <p>
-            Picture this dream life in detail — where you live, what you do, and
-            who you share it with. From there, set short-term goals like taking
-            a course or planning a trip, and long-term goals like early
-            retirement or launching a passion project. Keep these visions close
-            — they’ll guide your journey.
-          </p>
-          <p>
-            Remember, these visions and goals can touch every part of your life
-            — career changes, healthier habits, lifestyle upgrades, or anything
-            else that matters to you.
-          </p>
+          <article>
+            <p>
+              Visualizing your dream life isn’t just a pleasant daydream, it’s a
+              powerful tool for making clear, meaningful decisions. Ask
+              yourself: What matters most in your life? Whether it’s family,
+              career, travel, or something else, your answers reveal your core
+              values.
+            </p>
+            <p>
+              Picture this dream life in detail. Where you live, what you do,
+              and who you share it with. From there, set short-term goals like
+              taking a course or planning a trip, and long-term goals like early
+              retirement or launching a passion project. Keep these visions
+              close, they will guide your journey.
+            </p>
+            <p>
+              Remember, these visions and goals can touch every part of your
+              life — career changes, healthier habits, lifestyle upgrades, or
+              anything else that matters to you.
+            </p>
+          </article>
         </>
       ),
     },
@@ -100,52 +106,69 @@ const Onboarding = ({ goBack, signUpRef, autoStart = false }) => {
       title: "Making goals SMART",
       content: (
         <>
-          <p>
-            A clear, well-crafted action plan is what bridges the gap between
-            dreaming and doing and it all starts with setting focused goals.
-          </p>
-          <p>
-            Achieving a goal opens up new opportunities and increases your
-            motivation. There is never a “wrong time” to set new goals. With
-            determination and discipline, success is possible. Goals help turn
-            big ideas into clear, focused steps that guide your actions.
-            Tracking progress and ticking off completed goals builds momentum
-            and keeps your motivation alive.
-          </p>
+          <article>
+            <p>
+              A clear, well-crafted action plan is what bridges the gap between
+              dreaming and doing and it all starts with setting focused goals.
+            </p>
+            <p>
+              Achieving a goal opens up new opportunities and increases your
+              motivation. There is never a “wrong time” to set new goals. With
+              determination and discipline, success is possible. Goals help turn
+              big ideas into clear, focused steps that guide your actions.
+              Tracking progress and ticking off completed goals builds momentum
+              and keeps your motivation alive.
+            </p>
+          </article>
         </>
       ),
     },
     {
       title: "Breaking down SMART goals",
       content: (
-        <div>
-          <p>
-            <strong>Specific</strong> - Avoid vague goals like “be healthier.”
-            Instead, break them into concrete, actionable steps. For example,
-            “exercise 3 times a week” or “walk 10,000 steps daily” offers clear
-            direction.
-          </p>
-          <p>
-            <strong>Measurable</strong> - To track progress clearly, make your
-            goal measurable. If you’re aiming for a new career, try “apply to 5
-            positions each month.” Measuring progress helps you stay on course.
-          </p>
-          <p>
-            <strong>Achievable</strong> - Set realistic, manageable steps to
-            keep motivated. For example, start meditating for 5 minutes a day
-            rather than an hour right away.
-          </p>
-          <p>
-            <strong>Realistic</strong> - Challenge yourself but keep goals
-            attainable. Don’t expect to run a marathon next month if you’re just
-            starting out — instead, build toward it step by step.
-          </p>
-          <p>
-            <strong>Time-bound</strong> - Deadlines encourage focus and urgency.
-            Decide to complete that coding course in three months to stay
-            motivated and on track.
-          </p>
-        </div>
+        <article>
+          <dl>
+            <dt>
+              <strong>Specific</strong>
+            </dt>
+            <dd>
+              Avoid vague goals like “be healthier.” Instead, break them into
+              concrete, actionable steps. For example, “exercise 3 times a week”
+              or “walk 10,000 steps daily” offers clear direction.
+            </dd>
+            <dt>
+              <strong>Measurable</strong>
+            </dt>
+            <dd>
+              To track progress clearly, make your goal measurable. If you’re
+              aiming for a new career, try “apply to 5 positions each month.”
+              Measuring progress helps you stay on course.
+            </dd>
+            <dt>
+              <strong>Achievable</strong>
+            </dt>
+            <dd>
+              Set realistic, manageable steps to keep motivated. For example,
+              start meditating for 5 minutes a day rather than an hour right
+              away.
+            </dd>
+            <dt>
+              <strong>Realistic</strong>
+            </dt>
+            <dd>
+              Challenge yourself but keep goals attainable. Don’t expect to run
+              a marathon next month if you’re just starting out — instead, build
+              toward it step by step.
+            </dd>
+            <dt>
+              <strong>Time-bound</strong>
+            </dt>
+            <dd>
+              Deadlines encourage focus and urgency. Decide to complete that
+              coding course in three months to stay motivated and on track.
+            </dd>
+          </dl>
+        </article>
       ),
     },
   ];

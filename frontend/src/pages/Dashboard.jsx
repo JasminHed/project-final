@@ -261,7 +261,7 @@ const Dashboard = () => {
             automatically with the community — so others can cheer you on, offer
             support, and celebrate your progress. Motivation grows when we grow
             together. When a goal is complete, simply check it off — it
-            disappears, clearing the way for your next achievement.
+            disappears, clearing the way for your next adventure.
           </p>
 
           <p>You've got this! One clear step at a time.</p>
@@ -274,7 +274,7 @@ const Dashboard = () => {
 
         <ButtonContainer>
           <button onClick={handleNavigateToSetup}>
-            Add new intention and goals
+            Add new intention and goals (max 3)
           </button>
         </ButtonContainer>
 

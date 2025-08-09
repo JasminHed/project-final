@@ -2,6 +2,7 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 
 import AIbot from "./components/AIbot.jsx";
+import About from "./pages/About.jsx";
 import Community from "./pages/Community.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import Home from "./pages/Home.jsx";
@@ -24,6 +25,7 @@ export const App = () => {
       <AIbot />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
         <Route path="/setup" element={<Setup />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/community" element={<Community />} />

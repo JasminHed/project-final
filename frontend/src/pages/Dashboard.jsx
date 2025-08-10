@@ -1,26 +1,24 @@
-import { ArcElement, Chart as ChartJS, Legend, Tooltip } from "chart.js";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+
+ChartJS.register(ArcElement, Tooltip, Legend);
+
 import React, { useEffect, useState } from "react";
-import { Doughnut } from "react-chartjs-2";
+
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import ProfileSetting from "../components/ProfileSetting.jsx";
 import { useUserStore } from "../store/UserStore.jsx";
-import { ButtonBox, Textarea } from "../styling/BoxStyling.jsx";
+
+import GoalForm from "../components/GoalForm.jsx";
+import GoalChart from "../components/GoalChart.jsx";
 import { Message } from "../styling/LoadingMessage.jsx";
 
-//aria labels added, but check again
+//varför täcker inte bakgrundsfärg hela bredden på bilden?
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
-const SMART_FIELDS = [
-  "specific",
-  "measurable",
-  "achievable",
-  "relevant",
-  "timebound",
-];
 
 const Container = styled.div`
   padding: 80px 20px 100px;
@@ -32,22 +30,17 @@ const Container = styled.div`
   }
 `;
 
-const Section = styled.div`
-  margin-bottom: 40px;
-`;
-
 const Img = styled.img`
   width: 100%;
-  max-width: 500px;
+  height: auto;
+  max-height: 300px;
   margin: 0 auto;
   display: block;
+  object-fit: contain;
 
-  @media (min-width: 668px) {
-    max-width: 700px;
-  }
-
-  @media (min-width: 1024px) {
-    max-width: 900px;
+  &:hover {
+    background: var(--color-button-hover);
+    max-height: 300px;
   }
 `;
 
@@ -59,17 +52,6 @@ const ButtonContainer = styled.div`
   flex-wrap: wrap;
 `;
 
-const ChartContainer = styled.div`
-  width: 150px;
-  height: 150px;
-  margin: 20px auto;
-
-  @media (min-width: 669px) {
-    width: 200px;
-    height: 200px;
-  }
-`;
-
 const GoalCard = styled.div`
   border: 2px solid #ddd;
   border-radius: 10px;
@@ -78,19 +60,6 @@ const GoalCard = styled.div`
   background: #f9f9f9;
 `;
 
-const SuccessMessage = styled.p`
-  color: var(--color-success);
-  margin-top: 8px;
-  font-size: 14px;
-`;
-
-const ChartStats = styled.p`
-  text-align: center;
-  margin-top: 13px;
-  color: var(--color-text-primary);
-`;
-
-// API Functions
 const fetchGoals = (token) => {
   return fetch(`${API_BASE_URL}/goals`, {
     headers: {
@@ -113,44 +82,18 @@ const updateGoalAPI = (goalId, goalData, token) => {
 const Dashboard = () => {
   const navigate = useNavigate();
   const { user, setUser } = useUserStore();
-  const [goals, setGoals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [successMessage, setSuccessMessage] = useState("");
-  const [showVisionBoard, setShowVisionBoard] = useState(false);
+  const [goals, setGoals] = useState([]);
 
-  //Chart
   const incompleteGoals = goals.filter((goal) => !goal.completed);
   const completedGoals = goals.filter((goal) => goal.completed);
-  const chartData = {
-    labels: ["Active Goals", "Completed"],
-    datasets: [
-      {
-        data: [incompleteGoals.length, completedGoals.length],
-        backgroundColor: ["#004d40", "#e47885"],
-      },
-    ],
-  };
 
-  const chartOptions = {
-    plugins: {
-      legend: {
-        labels: {
-          color: "#3750be",
-          font: {
-            size: 13,
-          },
-        },
-      },
-    },
-  };
-
-  // Fetch goals
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     fetchGoals(token)
       .then((response) => response.json())
       .then((data) => {
-        // Filter and sort goals
         const filteredGoals = data
           .filter((goal) => !goal.completed)
           .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
@@ -162,7 +105,7 @@ const Dashboard = () => {
         console.error("Error fetching goals:", error);
         setLoading(false);
       });
-    // Fetch user data
+
     fetch(`${API_BASE_URL}/users/me`, {
       headers: { Authorization: token },
     })
@@ -182,7 +125,6 @@ const Dashboard = () => {
     );
   };
 
-  // SMART fields handling
   const handleFieldChange = (goalId, field) => (e) => {
     setGoals((prevGoals) =>
       prevGoals.map((goal) =>
@@ -191,8 +133,7 @@ const Dashboard = () => {
     );
   };
 
-  //Handling saving of goal and update of goals
-  const handleSaveGoal = (goalId) => () => {
+  const handleSaveGoal = (goalId) => {
     const token = localStorage.getItem("accessToken");
     const goalToSave = goals.find((goal) => goal._id === goalId);
 
@@ -205,18 +146,15 @@ const Dashboard = () => {
         console.error("Error saving goal:", error);
       });
   };
-  //handling completed goal
+
   const handleCompleteGoal = (goalId) => () => {
     const token = localStorage.getItem("accessToken");
-    // Remove from frontend
     setGoals((prevGoals) => prevGoals.filter((goal) => goal._id !== goalId));
-    // Update backend
     updateGoalAPI(goalId, { completed: true }, token).catch((error) =>
       console.error("Error updating completion:", error)
     );
   };
 
-  //handles and sends users state to backend, public or private
   const handleOptionSelect = async (option) => {
     const token = localStorage.getItem("accessToken");
     const isPublic = option === "public";
@@ -238,7 +176,6 @@ const Dashboard = () => {
     }
   };
 
-  //loadingstate
   if (loading) {
     return <Message>Loading your dashboard...</Message>;
   }
@@ -249,103 +186,54 @@ const Dashboard = () => {
         <h1>Welcome to your dashboard</h1>
 
         <ProfileSetting user={user} onOptionSelect={handleOptionSelect} />
+
         <section aria-label="Introduction">
           <p>
             Here you'll see your active goals, up to three at a time — designed
             to keep you focused and purposeful. You can add, edit, and save your
             goals whenever you like.
           </p>
-
           <p>
             Choose to make your profile public and your goals will be shared
             automatically with the community — so others can cheer you on, offer
-            support, and celebrate your progress. Motivation grows when we grow
-            together. When a goal is complete, simply check it off — it
-            disappears, clearing the way for your next adventure.
+            support, and celebrate your progress.
           </p>
-
           <p>You've got this! One clear step at a time.</p>
         </section>
+      </Container>
 
-        <Img
-          src="/assets/12.png"
-          alt="A graphic image showing a thinking mind with flowers around it for decoration"
-        />
+      <Img
+        src="/assets/12.png"
+        alt="A graphic image showing a thinking mind with flowers around it for decoration"
+      />
 
+      <Container>
         <ButtonContainer>
           <button onClick={handleNavigateToSetup}>
             Add new intention and goals (max 3)
           </button>
         </ButtonContainer>
 
-        {/* Loop through goals */}
-
         {goals.length > 0 ? (
-          goals.map((goal, index) => (
-            <GoalCard key={goal._id} aria-labelledby={`goal-title-${goal._id}`}>
-              <Section>
-                <ButtonBox>
-                  <h1 id={`goal-title-${goal._id}`}>Your Intention</h1>
-                  <div>
-                    <label htmlFor={`intention-${goal._id}`}>
-                      Your Intention
-                    </label>
-                    <Textarea
-                      id={`intention-${goal._id}`}
-                      rows={2}
-                      maxLength={150}
-                      value={goal.intention || ""}
-                      onChange={handleIntentionChange(goal._id)}
-                    />
-                    <p>{(goal.intention || "").length}/150</p>
-                  </div>
-                </ButtonBox>
-                <ButtonBox>
-                  <h2 id={`details-title-${goal._id}`}>Your detailed goals</h2>
-                  {SMART_FIELDS.map((field) => (
-                    <div key={field}>
-                      <strong>
-                        {field.charAt(0).toUpperCase() + field.slice(1)}:
-                      </strong>
-                      <label htmlFor={`${field}-${goal._id}`}></label>
-                      <Textarea
-                        id={`${field}-${goal._id}`}
-                        rows={2}
-                        maxLength={150}
-                        value={goal[field] || ""}
-                        onChange={handleFieldChange(goal._id, field)}
-                      />
-                      <p>{(goal[field] || "").length}/150</p>
-                    </div>
-                  ))}
-                </ButtonBox>
-
-                <ButtonContainer>
-                  <button onClick={handleSaveGoal(goal._id)}>
-                    Save this goal
-                  </button>
-                  <button onClick={handleCompleteGoal(goal._id)}>
-                    Mark goal as completed
-                  </button>
-                </ButtonContainer>
-              </Section>
-              {successMessage && (
-                <SuccessMessage>{successMessage}</SuccessMessage>
-              )}
-            </GoalCard>
+          goals.map((goal) => (
+            <GoalForm
+              key={goal._id}
+              goal={goal}
+              onIntentionChange={handleIntentionChange}
+              onFieldChange={handleFieldChange}
+              onSave={handleSaveGoal}
+              onComplete={() => handleCompleteGoal(goal._id)()}
+              successMessage={successMessage}
+            />
           ))
         ) : (
           <p>No active intention and goal. Create your first!</p>
         )}
 
-        <ChartContainer
-          aria-label={`Goal progress: ${incompleteGoals.length} active, ${completedGoals.length} completed`}
-        >
-          <Doughnut data={chartData} options={chartOptions} />
-        </ChartContainer>
-        <ChartStats>
-          Active: {incompleteGoals.length} | Completed: {completedGoals.length}
-        </ChartStats>
+        <GoalChart
+          incompleteCount={incompleteGoals.length}
+          completedCount={completedGoals.length}
+        />
       </Container>
     </main>
   );

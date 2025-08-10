@@ -15,6 +15,7 @@ const GlobalStyles = createGlobalStyle`
   --color-success: #0D6EFD; 
   --color-chart-active: #004d40;    
   --color-chart-completed: #e47885;  
+  
    
 }
 

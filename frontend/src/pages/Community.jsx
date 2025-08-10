@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { Message } from "../styling/LoadingMessage.jsx";
 
 //aria label added + semantic html
+//varför täcker inte abkgrund hela bilden
 
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
 
@@ -26,6 +27,11 @@ const PostContainer = styled.article`
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border: 2px solid #ddd;
   background: #f9f9f9;
+
+  p {
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
 `;
 
 const ButtonContainer = styled.div`
@@ -78,16 +84,15 @@ const CommentItem = styled.div`
 
 const Img = styled.img`
   width: 100%;
-  max-width: 500px;
   height: auto;
+  max-height: 300px;
   margin: 0 auto;
   display: block;
   object-fit: contain;
 
-  @media (min-width: 668px) {
-    img {
-      max-width: 700px;
-    }
+  &:hover {
+    background: var(--color-button-hover);
+    max-height: 300px;
   }
 `;
 
@@ -176,7 +181,6 @@ const CommunityPost = ({ post }) => {
       <p>
         <strong>Posted by:</strong> {post.userName || "Anonymous"}
       </p>
-
       <p>
         <strong>Specific:</strong> {post.specific}
       </p>

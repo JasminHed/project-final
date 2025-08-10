@@ -2,14 +2,23 @@ import styled from "styled-components";
 
 //This is styling for setup and dashboard
 
-/* Buttonbox styling */
-export const ButtonBox = styled.div`
-  background: var(--color-box-bg);
-  border: 1px solid var(--color-box-border);
+export const FormCard = styled.div`
+  background: #f9f9f9;
+  border: 1px solid #dddddd;
   border-radius: 8px;
   padding: 20px;
   margin-bottom: 15px;
-  box-shadow: 0 4px 8px var(--color-box-shadow);
+  box-shadow: rgba(0, 0, 0, 0.1);
+
+  ul {
+    margin-top: 20px;
+    margin-bottom: 30px;
+    padding-left: 20px;
+  }
+
+  li {
+    margin-bottom: 15px;
+  }
 `;
 
 /* Textarea styling */

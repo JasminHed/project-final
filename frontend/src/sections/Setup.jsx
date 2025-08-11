@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-//arialabels added
+//arialabels added and html semantic form
 
 import { FormCard, Textarea } from "../styling/FormCard.jsx";
 
@@ -50,7 +50,7 @@ const Img = styled.img`
   max-height: 300px;
   margin: 0 auto;
   display: block;
-  object-fit: contain;
+  object-fit: cover;
 
   &:hover {
     background: var(--color-button-hover);

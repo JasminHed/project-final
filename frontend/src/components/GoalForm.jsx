@@ -68,7 +68,7 @@ const GoalForm = ({
         <Fieldset>
           <FormCard>
             <h1 id={`goal-title-${goal._id}`}>Your Intention</h1>
-            <Label htmlFor={`intention-${goal._id}`}>Your Intention</Label>
+            <Label htmlFor={`intention-${goal._id}`}></Label>
             <Textarea
               id={`intention-${goal._id}`}
               rows={2}

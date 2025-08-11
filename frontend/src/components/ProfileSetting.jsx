@@ -51,10 +51,11 @@ const StatusNote = styled.div`
   border-radius: 4px;
   font-size: 12px;
   margin-bottom: 10px;
-  background-color: ${(props) =>
-    props.isPublic ? "var(--color-button-bg)" : "var(--color-button-hover)"};
-  color: ${(props) =>
-    props.isPublic ? "var(--color-button-text)" : "var(--color-text-primary)"};
+  //the dollar sign makes sure it is not sent directly to DOM
+  background-color: ${({ $isPublic }) =>
+    $isPublic ? "var(--color-button-bg)" : "var(--color-button-hover)"};
+  color: ${({ $isPublic }) =>
+    $isPublic ? "var(--color-button-text)" : "var(--color-text-primary)"};
   text-align: center;
 `;
 
@@ -131,7 +132,7 @@ const ProfileSetting = ({ user, onOptionSelect }) => {
         <UserEmail>{user?.email || "user@example.com"}</UserEmail>
       </UserInfo>
 
-      <StatusNote isPublic={isPublic} role="status">
+      <StatusNote $isPublic={isPublic} role="status">
         {isPublic ? "Your profile is public" : "Your profile is private"}
       </StatusNote>
 

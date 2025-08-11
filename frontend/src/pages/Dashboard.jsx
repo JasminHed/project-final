@@ -1,22 +1,14 @@
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-
 ChartJS.register(ArcElement, Tooltip, Legend);
-
 import React, { useEffect, useState } from "react";
-
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-
 import ProfileSetting from "../components/ProfileSetting.jsx";
 import { useUserStore } from "../store/UserStore.jsx";
-
 import GoalForm from "../components/GoalForm.jsx";
 import GoalChart from "../components/GoalChart.jsx";
 import { Message } from "../styling/LoadingMessage.jsx";
-
-//varför täcker inte bakgrundsfärg hela bredden på bilden?
-
-ChartJS.register(ArcElement, Tooltip, Legend);
+import useGoal from "../hooks/useGoal.jsx";
 
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
 
@@ -26,7 +18,22 @@ const Container = styled.div`
   margin: 0 auto;
 
   @media (min-width: 669px) {
-    max-width: 800px;
+    max-width: 1200px;
+  }
+
+  @media (min-width: 1025px) {
+    max-width: 1400px;
+  }
+`;
+
+const GoalsGrid = styled.div`
+  display: block; /* default for mobile */
+
+  @media (min-width: 669px) and (max-width: 1600px) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: start;
   }
 `;
 
@@ -36,7 +43,7 @@ const Img = styled.img`
   max-height: 300px;
   margin: 0 auto;
   display: block;
-  object-fit: contain;
+  object-fit: cover;
 
   &:hover {
     background: var(--color-button-hover);
@@ -60,52 +67,25 @@ const GoalCard = styled.div`
   background: #f9f9f9;
 `;
 
-const fetchGoals = (token) => {
-  return fetch(`${API_BASE_URL}/goals`, {
-    headers: {
-      Authorization: token,
-    },
-  });
-};
-
-const updateGoalAPI = (goalId, goalData, token) => {
-  return fetch(`${API_BASE_URL}/goals/${goalId}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: token,
-    },
-    body: JSON.stringify(goalData),
-  });
-};
-
 const Dashboard = () => {
   const navigate = useNavigate();
   const { user, setUser } = useUserStore();
-  const [loading, setLoading] = useState(true);
-  const [successMessage, setSuccessMessage] = useState("");
-  const [goals, setGoals] = useState([]);
+
+  const {
+    goals,
+    loading,
+    successMessage,
+    updateGoal,
+    completeGoal,
+    updateGoalField,
+  } = useGoal();
 
   const incompleteGoals = goals.filter((goal) => !goal.completed);
   const completedGoals = goals.filter((goal) => goal.completed);
 
+  // user-fetching
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
-    fetchGoals(token)
-      .then((response) => response.json())
-      .then((data) => {
-        const filteredGoals = data
-          .filter((goal) => !goal.completed)
-          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-          .slice(0, 3);
-        setGoals(filteredGoals);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching goals:", error);
-        setLoading(false);
-      });
-
     fetch(`${API_BASE_URL}/users/me`, {
       headers: { Authorization: token },
     })
@@ -117,65 +97,51 @@ const Dashboard = () => {
     navigate("/setup");
   };
 
+  //handlers
   const handleIntentionChange = (goalId) => (e) => {
-    setGoals((prevGoals) =>
-      prevGoals.map((goal) =>
-        goal._id === goalId ? { ...goal, intention: e.target.value } : goal
-      )
-    );
+    updateGoalField(goalId, "intention", e.target.value);
   };
 
   const handleFieldChange = (goalId, field) => (e) => {
-    setGoals((prevGoals) =>
-      prevGoals.map((goal) =>
-        goal._id === goalId ? { ...goal, [field]: e.target.value } : goal
-      )
-    );
+    updateGoalField(goalId, field, e.target.value);
   };
 
   const handleSaveGoal = (goalId) => {
-    const token = localStorage.getItem("accessToken");
     const goalToSave = goals.find((goal) => goal._id === goalId);
-
-    updateGoalAPI(goalId, goalToSave, token)
-      .then(() => {
-        setSuccessMessage("Goal saved successfully!");
-        setTimeout(() => setSuccessMessage(""), 4000);
-      })
-      .catch((error) => {
-        console.error("Error saving goal:", error);
-      });
+    updateGoal(goalId, goalToSave);
   };
 
   const handleCompleteGoal = (goalId) => () => {
-    const token = localStorage.getItem("accessToken");
-    setGoals((prevGoals) => prevGoals.filter((goal) => goal._id !== goalId));
-    updateGoalAPI(goalId, { completed: true }, token).catch((error) =>
-      console.error("Error updating completion:", error)
-    );
+    completeGoal(goalId);
   };
 
-  const handleOptionSelect = async (option) => {
+  const handleUserStatus = (option) => {
     const token = localStorage.getItem("accessToken");
     const isPublic = option === "public";
-    try {
-      const response = await fetch(`${API_BASE_URL}/users/public-status`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token,
-        },
-        body: JSON.stringify({ isPublic }),
-      });
 
-      if (response.ok) {
+    fetch(`${API_BASE_URL}/users/public-status`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+      body: JSON.stringify({ isPublic }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to update profile status");
+        }
+        return response.json();
+      })
+      .then(() => {
         setUser({ ...user, isPublic });
-      }
-    } catch (error) {
-      console.error("Failed to update profile status:", error);
-    }
+      })
+      .catch((error) => {
+        console.error("Failed to update profile status:", error);
+      });
   };
 
+  //loading message
   if (loading) {
     return <Message>Loading your dashboard...</Message>;
   }
@@ -185,7 +151,7 @@ const Dashboard = () => {
       <Container>
         <h1>Welcome to your dashboard</h1>
 
-        <ProfileSetting user={user} onOptionSelect={handleOptionSelect} />
+        <ProfileSetting user={user} onOptionSelect={handleUserStatus} />
 
         <section aria-label="Introduction">
           <p>
@@ -213,23 +179,23 @@ const Dashboard = () => {
             Add new intention and goals (max 3)
           </button>
         </ButtonContainer>
-
-        {goals.length > 0 ? (
-          goals.map((goal) => (
-            <GoalForm
-              key={goal._id}
-              goal={goal}
-              onIntentionChange={handleIntentionChange}
-              onFieldChange={handleFieldChange}
-              onSave={handleSaveGoal}
-              onComplete={() => handleCompleteGoal(goal._id)()}
-              successMessage={successMessage}
-            />
-          ))
-        ) : (
-          <p>No active intention and goal. Create your first!</p>
-        )}
-
+        <GoalsGrid>
+          {goals.length > 0 ? (
+            goals.map((goal) => (
+              <GoalForm
+                key={goal._id}
+                goal={goal}
+                onIntentionChange={handleIntentionChange}
+                onFieldChange={handleFieldChange}
+                onSave={handleSaveGoal}
+                onComplete={() => handleCompleteGoal(goal._id)()}
+                successMessage={successMessage}
+              />
+            ))
+          ) : (
+            <p>No active intention and goal. Create your first!</p>
+          )}
+        </GoalsGrid>
         <GoalChart
           incompleteCount={incompleteGoals.length}
           completedCount={completedGoals.length}

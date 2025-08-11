@@ -1,12 +1,11 @@
 import styled from "styled-components";
 
 const FooterContainer = styled.footer`
-  position: relative;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  display: flex;
+  justify-content: center;
   padding: 60px;
   text-align: center;
+  margin-top: auto; //presses to bottom
 `;
 
 const FooterList = styled.ul`

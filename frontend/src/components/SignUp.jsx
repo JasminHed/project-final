@@ -104,7 +104,7 @@ const SignUp = ({
   return (
     <>
       <form onSubmit={handleSubmit} noValidate>
-        <Label htmlFor="signup-name">Name</Label>
+        <Label htmlFor="signup-name">First and Last Name</Label>
         <Input
           id="signup-name"
           onChange={handleName}

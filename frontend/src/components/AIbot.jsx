@@ -1,120 +1,155 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
-
-import useClickOutside from "../components/useClickOutside";
-
-//An input field or textarea where the user can type.
-
-//A send button that posts the message to your /api/chat endpoint.
-
-//Manage the conversation history to display both the user's and AI's messages.
-
-//Update the chat with the AI's response when it comes back from the backend.
+import useClickOutside from "../hooks/useClickOutside.jsx";
 
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
 
-const ChatbotIcon = styled.div`
+const ChatIcon = styled.button`
   position: fixed;
-  bottom: 50px;
-  right: 50px;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  cursor: pointer;
-
-  z-index: 999;
-`;
-
-const Img = styled.img`
+  bottom: 20px;
+  right: 20px;
   width: 60px;
   height: 60px;
-  object-fit: contain;
+  border-radius: 50%;
+  border: none;
+  color: var(--color-button-text);
+  background-color: var(--color-button-bh);
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    background-color: var(--color-button-hover);
+  }
 `;
 
-const ChatbotWindow = styled.div`
+const ChatContainer = styled.div`
   position: fixed;
-  background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
-  bottom: 80px;
+  bottom: 90px;
   right: 20px;
-  width: 280px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  padding: 15px;
-  z-index: 1000;
+  width: 300px;
+  background: var(--color-background);
+  border: 2px solid var(--color-focus);
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: ${(props) => (props.$isOpen ? "block" : "none")};
+  color: var(--color-text-primary);
 `;
 
-const Section = styled.section`
+const MessagesContainer = styled.div`
+  height: 200px;
+  overflow-y: auto;
   margin-bottom: 15px;
+  border: 1px solid #eee;
+  padding: 10px;
+  border-radius: 5px;
+`;
+
+const Message = styled.div`
+  margin-bottom: 10px;
+  padding: 8px;
+  border-radius: 5px;
+  background-color: ${(props) =>
+    props.isUser ? "var(--color-text-link)" : "var(--color-card-background)"};
+  color: ${(props) =>
+    props.isUser ? "var(--color-button-text)" : "var(--color-text-primary)"};
+`;
+
+const InputContainer = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+
+const Input = styled.input`
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 `;
 
 const AIbot = () => {
-  const [message, setMessage] = useState("");
-  const [messageType, setMessageType] = useState("");
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const ref = useRef();
+  const chatRef = useRef();
 
-  //this fecthes all messages
-  useEffect(() => {
-    fetch(`${API_BASE_URL}/api/weekly-messages`, {
+  // Close chat when clicking outside
+  useClickOutside(chatRef, () => setIsOpen(false));
+
+  const sendMessage = () => {
+    if (!input.trim()) return;
+
+    const newMessages = [...messages, { text: input, isUser: true }];
+    setMessages(newMessages);
+    setLoading(true);
+
+    const userInput = input;
+    setInput("");
+
+    fetch(`${API_BASE_URL}/api/chat`, {
+      method: "POST",
       headers: {
+        "Content-Type": "application/json",
         Authorization: localStorage.getItem("accessToken"),
       },
+      body: JSON.stringify({ message: userInput }),
     })
-      .then((res) => res.json())
+      .then((response) => response.json())
       .then((data) => {
-        if (data.message) {
-          setMessage(data.message);
-          setMessageType(data.type);
-          setIsOpen(true);
-        }
+        const aiResponse =
+          data.choices?.[0]?.message?.content || "Sorry, I couldn't respond.";
+        setMessages([...newMessages, { text: aiResponse, isUser: false }]);
       })
-      .catch((error) => {
-        setMessage("Failed to load message.");
-        console.error(error);
+      .catch(() => {
+        setMessages([
+          ...newMessages,
+          { text: "Error: Could not get response.", isUser: false },
+        ]);
+      })
+      .finally(() => {
+        setLoading(false);
       });
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch(
-        "https://api.openai.com/v1/chat/completions",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + localStorage.getItem("accessToken"),
-          },
-          body: JSON.stringify({
-            model: "gpt-3.5-turbo",
-            messages: [{ role: "user", content: "Hello!" }],
-          }),
-        }
-      );
-      const data = await response.json();
-    };
-
-    fetchData();
-  }, []);
-
-  // Hook to close when click outside
-  useClickOutside(ref, () => setIsOpen(false));
+  };
+  //users can press enter
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      sendMessage();
+    }
+  };
 
   return (
     <>
-      <ChatbotIcon onClick={() => setIsOpen(!isOpen)}>
-        <Img src="/assets/chat.png" alt="A blue and pink speach bubble" />
-      </ChatbotIcon>
-      {isOpen && (
-        <ChatbotWindow ref={ref}>
-          <Section>
-            <h4>
-              {messageType === "checkin" ? "How are you doing?" : "Hello!"}
-            </h4>
-            <p>{message}</p>
-          </Section>
-        </ChatbotWindow>
-      )}
+      <ChatIcon onClick={() => setIsOpen(!isOpen)}>💬</ChatIcon>
+
+      <ChatContainer ref={chatRef} $isOpen={isOpen}>
+        <h3>Intention Coach</h3>
+
+        <MessagesContainer>
+          {messages.map((msg, index) => (
+            <Message key={index} isUser={msg.isUser}>
+              <strong>{msg.isUser ? "You" : "AI"}:</strong> {msg.text}
+            </Message>
+          ))}
+          {loading && <Message>AI is typing...</Message>}
+        </MessagesContainer>
+
+        <InputContainer>
+          <Input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyPress={handleKeyPress}
+            placeholder="Ask me anything..."
+          />
+          <button onClick={sendMessage} disabled={loading}>
+            Send message
+          </button>
+        </InputContainer>
+      </ChatContainer>
     </>
   );
 };
+
 export default AIbot;

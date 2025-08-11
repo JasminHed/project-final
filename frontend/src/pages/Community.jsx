@@ -4,9 +4,6 @@ import styled from "styled-components";
 
 import { Message } from "../styling/LoadingMessage.jsx";
 
-//aria label added + semantic html
-//varför täcker inte abkgrund hela bilden
-
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
 
 const Container = styled.div`
@@ -15,7 +12,27 @@ const Container = styled.div`
   margin: 0 auto;
 
   @media (min-width: 669px) {
-    max-width: 800px;
+    max-width: 1200px;
+  }
+
+  @media (min-width: 1025px) {
+    max-width: 1400px;
+  }
+`;
+
+const HeaderSection = styled.div`
+  margin-bottom: 40px;
+`;
+
+const PostsGrid = styled.div`
+  @media (min-width: 669px) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  @media (min-width: 1025px) {
+    gap: 20px;
   }
 `;
 
@@ -26,7 +43,7 @@ const PostContainer = styled.article`
   margin-bottom: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border: 2px solid #ddd;
-  background: #f9f9f9;
+  background: var(--color-card-background);
 
   p {
     margin-top: 15px;
@@ -40,14 +57,10 @@ const ButtonContainer = styled.div`
   margin-top: 15px;
 `;
 
-const CommentsContainer = styled.section`
+const CommentsSection = styled.section`
   margin-top: 15px;
   border-top: 1px solid #ddd;
   padding-top: 15px;
-`;
-
-const CommentForm = styled.form`
-  margin-bottom: 15px;
 `;
 
 const CommentTextarea = styled.textarea`
@@ -88,17 +101,19 @@ const Img = styled.img`
   max-height: 300px;
   margin: 0 auto;
   display: block;
-  object-fit: contain;
+  object-fit: cover;
 
   &:hover {
     background: var(--color-button-hover);
     max-height: 300px;
   }
 `;
+//Community → fetches all posts →
+//loops through posts and passes each post to CommunityPost
+//CommunityPost renders a "card" with like/comment functionality
 
 const CommunityPost = ({ post }) => {
   const [likes, setLikes] = useState(post.likes || 0);
-  const [showComments, setShowComments] = useState(false);
   const [newComment, setNewComment] = useState("");
   const [comments, setComments] = useState(post.comments || []);
 
@@ -115,10 +130,6 @@ const CommunityPost = ({ post }) => {
           setLikes(data.response.likes);
         }
       });
-  };
-
-  const handleCommentClick = () => {
-    setShowComments(!showComments);
   };
 
   const handleAddComment = (e) => {
@@ -147,10 +158,6 @@ const CommunityPost = ({ post }) => {
           setNewComment("");
         }
       });
-  };
-
-  const handleTextareaChange = (e) => {
-    setNewComment(e.target.value);
   };
 
   const handleDeleteComment = (commentId) => {
@@ -205,59 +212,47 @@ const CommunityPost = ({ post }) => {
         >
           ❤️ Like {likes}
         </button>
-        <button
-          onClick={handleCommentClick}
-          aria-label={`Toggle comments section, ${comments.length} comments available`}
-          aria-expanded={showComments}
-          aria-controls={`comments-section-${post._id}`}
-        >
-          💬 Comment ({comments.length})
-        </button>
       </ButtonContainer>
 
-      {showComments && (
-        <CommentsContainer
-          id={`comments-section-${post._id}`}
-          role="region"
-          aria-live="polite"
-          aria-relevant="additions"
-          aria-labelledby={`comments-title-${post._id}`}
-        >
-          <CommentForm onSubmit={handleAddComment}>
-            <CommentTextarea
-              aria-label="Write your comment here"
-              value={newComment}
-              onChange={handleTextareaChange}
-              placeholder="Write your comment here"
-            />
-            <div>
-              <CommentButton onClick={handleAddComment}>
-                Send comment
-              </CommentButton>
-            </div>
-          </CommentForm>
-          <div role="log" aria-live="polite" aria-label="Comments list">
-            {comments.map((comment, index) => (
-              <CommentItem key={comment._id}>
-                <p>{comment.text}</p>
-                <small>{moment(comment.createdAt).fromNow()}</small>
-                {comment.userName && (
-                  <p>
-                    <strong>{comment.userName}</strong>
-                  </p>
-                )}
-                <CommentButton onClick={() => handleDeleteComment(comment._id)}>
-                  Delete comment
-                </CommentButton>
-              </CommentItem>
-            ))}
+      <CommentsSection
+        role="region"
+        aria-live="polite"
+        aria-label="Comments section"
+      >
+        <form onSubmit={handleAddComment}>
+          <CommentTextarea
+            aria-label="Write your comment here"
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+            placeholder="Write your comment here"
+          />
+          <div>
+            <CommentButton type="submit">Send comment</CommentButton>
           </div>
-        </CommentsContainer>
-      )}
+        </form>
+
+        <div role="log" aria-live="polite" aria-label="Comments list">
+          {comments.map((comment) => (
+            <CommentItem key={comment._id}>
+              <p>{comment.text}</p>
+              <small>{moment(comment.createdAt).fromNow()}</small>
+              {comment.userName && (
+                <p>
+                  <strong>{comment.userName}</strong>
+                </p>
+              )}
+              <CommentButton onClick={() => handleDeleteComment(comment._id)}>
+                Delete comment
+              </CommentButton>
+            </CommentItem>
+          ))}
+        </div>
+      </CommentsSection>
     </PostContainer>
   );
 };
 
+//Show the first part of community page, header intro + delegates a post to postcommunity
 const Community = () => {
   const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useState([]);
@@ -278,33 +273,36 @@ const Community = () => {
   return (
     <Container>
       <main id="main-content">
-        <header>
-          <h1>Welcome to the Community</h1>
-        </header>
-        <p>
-          All posts you see here are public, meaning every user can view, like,
-          and comment on your intentions and goals.{" "}
-        </p>
+        <HeaderSection>
+          <header>
+            <h1>Welcome to the Community</h1>
+          </header>
+          <p>
+            All posts you see here are public, meaning every user can view,
+            like, and comment on your intentions and goals.{" "}
+          </p>
 
-        <p>
-          The purpose of this community is to build connection along the
-          journey. We’re here to cheer each other on, offer support, and share
-          in the ups and downs.{" "}
-        </p>
+          <p>
+            The purpose of this community is to build connection along the
+            journey. We're here to cheer each other on, offer support, and share
+            in the ups and downs.{" "}
+          </p>
 
-        <p>
-          Jump in, join the energy, and remember — you’re never alone on your
-          path.
-        </p>
+          <p>
+            Jump in, join the energy, and remember — you're never alone on your
+            path.
+          </p>
 
-        <Img
-          src="/assets/13.png"
-          alt="A graphic image showing two hearts hugging"
-        />
-
-        {posts.map((post) => (
-          <CommunityPost key={post._id} post={post} />
-        ))}
+          <Img
+            src="/assets/13.png"
+            alt="A graphic image showing two hearts hugging"
+          />
+        </HeaderSection>
+        <PostsGrid>
+          {posts.map((post) => (
+            <CommunityPost key={post._id} post={post} />
+          ))}
+        </PostsGrid>
       </main>
     </Container>
   );

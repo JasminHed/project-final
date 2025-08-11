@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const Description = styled.p`
+const Description = styled.div`
   margin: 20px auto;
   max-width: 90%;
 

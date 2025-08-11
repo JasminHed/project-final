@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-
 import AuthForm from "../components/AuthForm";
 import Taglines from "../components/Tagline.jsx";
 import Onboarding from "../sections/Onboarding.jsx";

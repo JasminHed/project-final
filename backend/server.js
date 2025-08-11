@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import cors from "cors";
-import dotenv from "dotenv";
+
 import express from "express";
 import mongoose from "mongoose";
 
@@ -8,7 +8,8 @@ import CommunityPost from "./models/CommunityPost.js";
 import Goal from "./models/Goal.js"
 import User from "./models/User.js";
 
-dotenv.config(); 
+require('dotenv').config();
+
 
 //Connects to mongoDB database
 const mongoUrl = process.env.MONGO_URL || "mongodb://localhost/final-project";
@@ -410,48 +411,7 @@ app.delete("/messages/:id", authenticateUser, async (req, res) => {
 });
 
 
-// AI get - check in & motivation (motovation 3 times/week and check-in 2times/week)
-app.get("/api/weekly-messages", authenticateUser, async (req, res) => {
-  try {
-    const user = req.user;
-    const today = new Date();
-    const lastMessage = new Date(user.lastMessageDate || 0);
-    const diffDays = (today - lastMessage) / (1000 * 60 * 60 * 24);
- 
-    if (diffDays < 1) {
-      return res.json({ message: "You got everything you need today" });
-    }
- 
-    const motivations = [
-      "Keep going! You're doing great.",
-      "Remember why you set your goal in the first place.",
-      "Small steps every day lead to big changes!"
-    ];
- 
-    const checkins = [
-      "How are you feeling about your progress this week?",
-      "What's been your biggest win lately?",
-      "Which goal needs the most attention right now?",
-      "How are you balancing your intentions with daily life?",
-      "What's challenging you the most in your journey?"
-    ];
- 
-    // Alternate between motivation and check-in
-    const isMotivation = Math.random() > 0.4; // 60% motivation, 40% check-in
-    const messages = isMotivation ? motivations : checkins;
-    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
- 
-    user.lastMessageDate = today.toISOString().slice(0, 10);
-    await user.save();
- 
-    res.json({ 
-      message: randomMessage, 
-      type: isMotivation ? 'motivation' : 'checkin' 
-    });
-  } catch (error) {
-    res.status(500).json({ success: false, message: "Failed to get message." });
-  }
- });
+
 
  //Chat
 
@@ -464,7 +424,8 @@ app.get("/api/weekly-messages", authenticateUser, async (req, res) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer sk-...r5QA"
+     "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
+
       },
       body: JSON.stringify({
         model: "gpt-3.5-turbo",

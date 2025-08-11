@@ -47,7 +47,7 @@ app.use(cors({
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.send("Hello, Welcome to The Intention App!");
+  res.send("Hello, Welcome to Intention Hub!");
 });
 
 // Endpoint to register 
@@ -410,94 +410,6 @@ app.delete("/messages/:id", authenticateUser, async (req, res) => {
 });
 
 
-/*GET community-post 
-app.get('/community-posts', async (req, res) => {
-  try {
-    const posts = await CommunityPost.find().sort({ createdAt: -1 });
-    res.json(posts);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to fetch posts" });
-  }
-});
-
-
-
-// POST - Like a community-post
-app.post("/community-posts/:id/like", authenticateUser, async (req, res) => {
-  const { id } = req.params;
-
-  try {
-    const updatedPost = await CommunityPost.findByIdAndUpdate(
-      id,
-      { $inc: { likes: 1 } },  
-      { new: true }           
-    );
-
-    if (!updatedPost) {
-      return res.status(404).json({
-        success: false,
-        message: "Community post not found",
-      });
-    }
-
-    res.status(200).json({
-      success: true,
-      response: updatedPost,
-      message: "Like added successfully",
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      response: error,
-      message: "Failed to like the post",
-    });
-  }
-});
-
-// POST Comment on a specific community‑post  
-app.post("/community-posts/:id/comments", authenticateUser, async (req, res) => {
-  const { id } = req.params;
-  const { text } = req.body;
-
-  if (!text?.trim()) {
-    return res.status(400).json({
-      success: false,
-      message: "Comment text is required",
-    });
-  }
-
-  try {
-    const post = await CommunityPost.findById(id);
-    if (!post) {
-      return res.status(404).json({
-        success: false,
-        message: "Community post not found",
-      });
-    }
-
-    const comment = {
-      text,
-      userName: req.user.name,   
-      createdAt: new Date(),
-    };
-
-    post.comments.push(comment);
-    await post.save();
-
-    res.status(201).json({
-      success: true,
-      response: comment,
-      message: "Comment added successfully",
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      response: error,
-      message: "Failed to add comment",
-    });
-  }
-});*/
-
 // AI get - check in & motivation (motovation 3 times/week and check-in 2times/week)
 app.get("/api/weekly-messages", authenticateUser, async (req, res) => {
   try {
@@ -541,6 +453,8 @@ app.get("/api/weekly-messages", authenticateUser, async (req, res) => {
   }
  });
 
+ //Chat
+
  app.post("/api/chat", authenticateUser, async (req, res) => {
   try {
     const user = req.user;
@@ -572,6 +486,12 @@ app.get("/api/weekly-messages", authenticateUser, async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: "Something went wrong" });
   }
+});
+
+//get user info to dashboard
+app.get("/users/me", authenticateUser, (req, res) => {
+  const { name, email, isPublic } = req.user;
+  res.json({ name, email, isPublic });
 });
 
 

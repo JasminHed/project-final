@@ -3,20 +3,21 @@ import styled from "styled-components";
 //this is styling for the login/sign up form
 
 export const PopUp = styled.div`
-  position: fixed;
+  margin-top: 15px;
   bottom: 0;
   left: 0;
   right: 0;
   display: flex;
   align-items: flex-start;
-  justify-content: flex-start;
+  justify-content: center;
   z-index: 2000;
 `;
 
 export const Container = styled.div`
-  background-color: #2a2a2a;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  border: 2px solid #444;
+  background: var(--color-background);
+  border: 2px solid var(--color-focus);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
   border-radius: 8px;
   width: 100%;
@@ -28,7 +29,7 @@ export const Label = styled.label`
   margin-bottom: 5px;
   margin-top: 25px;
   font-size: 14px;
-  color: white;
+  color: var(--color-text-primary);
 `;
 
 export const Input = styled.input`

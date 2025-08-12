@@ -1,5 +1,6 @@
-import React, { useState, useRef } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
+
 import useClickOutside from "../hooks/useClickOutside.jsx";
 
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
@@ -87,7 +88,7 @@ const AIbot = () => {
 
     const userInput = input;
     setInput("");
-
+    //fetching from backend
     fetch(`${API_BASE_URL}/api/chat`, {
       method: "POST",
       headers: {

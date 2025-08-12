@@ -4,6 +4,8 @@ import styled from "styled-components";
 
 import { Message } from "../styling/LoadingMessage.jsx";
 
+//the old post must be able to be deleted somehow, chek on that
+
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
 
 const Container = styled.div`

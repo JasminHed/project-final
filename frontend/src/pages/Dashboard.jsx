@@ -1,4 +1,5 @@
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { ArcElement, Chart as ChartJS, Legend, Tooltip } from "chart.js";
+
 ChartJS.register(ArcElement, Tooltip, Legend);
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +10,8 @@ import GoalForm from "../components/GoalForm.jsx";
 import GoalChart from "../components/GoalChart.jsx";
 import { Message } from "../styling/LoadingMessage.jsx";
 import useGoal from "../hooks/useGoal.jsx";
+
+//check bakcend, i think its better that when you set public profiel discliamer comes and everything but it should not happen automatically, rather there should be a button on the save, complete and share to community so that the user can actually do this activley or?
 
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
 

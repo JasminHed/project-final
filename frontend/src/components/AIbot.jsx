@@ -7,66 +7,100 @@ const API_BASE_URL = "https://project-final-ualo.onrender.com";
 
 const ChatIcon = styled.button`
   position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 60px;
-  height: 60px;
+  bottom: 30px;
+  right: 30px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
   border: none;
+  background: var(--color-button-bh);
   color: var(--color-button-text);
-  background-color: var(--color-button-bh);
-  font-size: 24px;
+  font-size: 28px;
   cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 
   &:hover {
-    background-color: var(--color-button-hover);
+    transform: scale(1.05);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+    background: var(--color-button-hover);
   }
 `;
 
 const ChatContainer = styled.div`
   position: fixed;
-  bottom: 90px;
-  right: 20px;
-  width: 300px;
-  background: var(--color-background);
-  border: 2px solid var(--color-focus);
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  display: ${(props) => (props.$isOpen ? "block" : "none")};
+  bottom: 100px;
+  right: 30px;
+  width: 340px;
+  background: rgba(var(--color-background-rgb), 0.85);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: ${(props) => (props.$isOpen ? "flex" : "none")};
+  flex-direction: column;
+  transition: opacity 0.25s ease, transform 0.25s ease;
   color: var(--color-text-primary);
 `;
 
 const MessagesContainer = styled.div`
-  height: 200px;
+  flex: 1;
+  height: 250px;
   overflow-y: auto;
-  margin-bottom: 15px;
-  border: 1px solid #eee;
-  padding: 10px;
-  border-radius: 5px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 `;
 
 const Message = styled.div`
-  margin-bottom: 10px;
-  padding: 8px;
-  border-radius: 5px;
+  align-self: ${(props) => (props.$isUser ? "flex-end" : "flex-start")};
+  max-width: 80%;
+  padding: 10px 14px;
+  border-radius: 16px;
   background-color: ${(props) =>
-    props.isUser ? "var(--color-text-link)" : "var(--color-card-background)"};
+    props.$isUser ? "var(--color-text-link)" : "var(--color-card-background)"};
   color: ${(props) =>
-    props.isUser ? "var(--color-button-text)" : "var(--color-text-primary)"};
+    props.$isUser ? "var(--color-button-text)" : "var(--color-text-primary)"};
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.2s ease forwards;
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 `;
 
 const InputContainer = styled.div`
   display: flex;
-  gap: 10px;
+  gap: 8px;
+  padding: 12px;
+  background: var(--color-background);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
 `;
 
 const Input = styled.input`
   flex: 1;
-  padding: 8px;
+  padding: 10px;
+  border-radius: 20px;
   border: 1px solid #ddd;
-  border-radius: 5px;
+  outline: none;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-text-primary);
+
+  &:focus {
+    border-color: var(--color-focus);
+  }
 `;
 
 const AIbot = () => {
@@ -122,14 +156,14 @@ const AIbot = () => {
 
   return (
     <>
-      <ChatIcon onClick={() => setIsOpen(!isOpen)}>💬</ChatIcon>
+      <ChatIcon onClick={() => setIsOpen(!isOpen)}></ChatIcon>
 
       <ChatContainer ref={chatRef} $isOpen={isOpen}>
-        <h3>Intention Coach</h3>
+        <h3>AI Assistant</h3>
 
         <MessagesContainer>
           {messages.map((msg, index) => (
-            <Message key={index} isUser={msg.isUser}>
+            <Message key={index} $isUser={msg.isUser}>
               <strong>{msg.isUser ? "You" : "AI"}:</strong> {msg.text}
             </Message>
           ))}

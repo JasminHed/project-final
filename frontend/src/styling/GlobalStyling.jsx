@@ -47,6 +47,7 @@ const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
   }
 
+
   body {
     background-color: var(--color-background);
     color: var(--color-text-primary);

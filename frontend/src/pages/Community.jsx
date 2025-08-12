@@ -104,11 +104,6 @@ const Img = styled.img`
   margin: 0 auto;
   display: block;
   object-fit: cover;
-
-  &:hover {
-    background: var(--color-button-hover);
-    max-height: 300px;
-  }
 `;
 //Community → fetches all posts →
 //loops through posts and passes each post to CommunityPost

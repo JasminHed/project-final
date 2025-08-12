@@ -47,11 +47,6 @@ const Img = styled.img`
   margin: 0 auto;
   display: block;
   object-fit: cover;
-
-  &:hover {
-    background: var(--color-button-hover);
-    max-height: 300px;
-  }
 `;
 
 const ButtonContainer = styled.div`
@@ -78,9 +73,11 @@ const Dashboard = () => {
     goals,
     loading,
     successMessage,
+    shareSuccessMessage,
     updateGoal,
     completeGoal,
     updateGoalField,
+    shareGoal,
   } = useGoal();
 
   const incompleteGoals = goals.filter((goal) => !goal.completed);
@@ -116,6 +113,10 @@ const Dashboard = () => {
 
   const handleCompleteGoal = (goalId) => () => {
     completeGoal(goalId);
+  };
+
+  const handleShareGoal = (goalId) => {
+    shareGoal(goalId);
   };
 
   const handleUserStatus = (option) => {
@@ -192,7 +193,9 @@ const Dashboard = () => {
                 onFieldChange={handleFieldChange}
                 onSave={handleSaveGoal}
                 onComplete={() => handleCompleteGoal(goal._id)()}
+                onShare={handleShareGoal}
                 successMessage={successMessage}
+                shareSuccessMessage={shareSuccessMessage}
               />
             ))
           ) : (

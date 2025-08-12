@@ -23,14 +23,16 @@ export const App = () => {
       <GlobalStyles />
       <Header />
       <AIbot />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/setup" element={<Setup />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/community" element={<Community />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      <main>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/setup" element={<Setup />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/community" element={<Community />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </main>
 
       <Footer />
     </>

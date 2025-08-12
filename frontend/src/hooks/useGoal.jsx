@@ -1,11 +1,12 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
 
-const useGoals = () => {
+const useGoal = () => {
   const [goals, setGoals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [successMessage, setSuccessMessage] = useState("");
+  const [shareSuccessMessage, setShareSuccessMessage] = useState("");
 
   const fetchGoals = () => {
     const token = localStorage.getItem("accessToken");
@@ -69,6 +70,27 @@ const useGoals = () => {
     );
   };
 
+  const shareGoal = (goalId) => {
+    const token = localStorage.getItem("accessToken");
+    fetch(`${API_BASE_URL}/goals/${goalId}/share`, {
+      method: "POST",
+      headers: { Authorization: token },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setShareSuccessMessage("Goal shared to community!");
+          setTimeout(() => setShareSuccessMessage(""), 3000);
+        } else {
+          setShareSuccessMessage("Failed to share goal.");
+          setTimeout(() => setShareSuccessMessage(""), 3000);
+        }
+      })
+      .catch(() => {
+        setShareSuccessMessage("Error sharing goal.");
+      });
+  };
+
   useEffect(() => {
     fetchGoals();
   }, []);
@@ -77,10 +99,12 @@ const useGoals = () => {
     goals,
     loading,
     successMessage,
+    shareSuccessMessage,
     updateGoal,
     completeGoal,
     updateGoalField,
+    shareGoal,
   };
 };
 
-export default useGoals;
+export default useGoal;

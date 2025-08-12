@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-
 import { useUserStore } from "../store/UserStore";
 
 const HeaderContainer = styled.header`
@@ -9,10 +8,9 @@ const HeaderContainer = styled.header`
   padding: 80px;
   background: var(--color-background);
   z-index: 100;
-
   display: flex;
   align-items: center;
-  justify-content: center; /* Title centered on mobile */
+  justify-content: center;
 `;
 
 const Title = styled.h1`
@@ -21,13 +19,18 @@ const Title = styled.h1`
   transform: translateX(-50%);
   margin: 0;
   text-align: center;
-  width: 100%;
   max-width: 600px;
   z-index: 101;
 `;
 
 const DesktopNav = styled.nav`
   display: none;
+  gap: 10px;
+  position: absolute;
+  left: 50%;
+  top: 45px;
+  transform: translateX(-50%);
+  z-index: 102;
 
   @media (min-width: 668px) {
     display: flex;
@@ -38,44 +41,37 @@ const DesktopNav = styled.nav`
     top: calc(100% + -35px);
     z-index: 102;
   }
-
-  @media (min-width: 1024px) {
-    left: 50%;
-    transform: translateX(-50%);
-    top: calc(100% + -35px);
-  }
-`;
-
-const HamburgerButton = styled.button`
-  display: block;
-  position: absolute;
-  top: 40px;
-  right: 15px;
-  transform: none;
-
-  @media (min-width: 668px) {
-    display: none;
-  }
 `;
 
 const MobileNav = styled.nav`
   position: absolute;
-  top: ${(props) => (props.$isOpen ? "80px" : "-300px")};
+  top: ${({ $isOpen }) => ($isOpen ? "80px" : "-300px")};
   right: 40px;
   width: 200px;
   background: var(--color-background);
   padding: 20px;
-  transition: top 0.3s ease;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   gap: 15px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: top 0.3s ease;
   z-index: 102;
+
+  @media (min-width: 668px) {
+    display: none;
+  }
 
   button {
     margin-top: 20px;
   }
+`;
+
+const HamburgerButton = styled.button`
+  position: absolute;
+  top: 40px;
+  right: 15px;
+  display: block;
 
   @media (min-width: 668px) {
     display: none;
@@ -83,83 +79,69 @@ const MobileNav = styled.nav`
 `;
 
 const LogoutMessage = styled.p`
-  position: absolute;
+  position: fixed;
+  top: 130px;
+  left: 50%;
+  transform: translateX(-50%);
   color: var(--color-success);
-  top: 30px;
-  text-align: center;
+
+  @media (min-width: 669px) {
+    position: absolute;
+    top: 30px;
+    width: 100%;
+    text-align: center;
+    color: var(--color-success);
+  }
 `;
 
 const Header = () => {
-  const [menuOpen, setMenuOpen] = useState(false); // Track if mobile menu is open or closed
-  const [logoutMessage, setLogoutMessage] = useState(""); // To show logout confirmation
-  const toggleMenu = () => setMenuOpen((prev) => !prev); // Open and close menu toggle
-  const { isLoggedIn, setIsLoggedIn, logout } = useUserStore(); // Track if user is logged in
-  const navigate = useNavigate(); // React-router hook to change pages
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [logoutMessage, setLogoutMessage] = useState("");
+  const [darkMode, setDarkMode] = useState(false);
+  const { isLoggedIn, logout } = useUserStore();
+  const navigate = useNavigate();
 
-  // When user clicks logout button
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", darkMode);
+  }, [darkMode]);
+
+  const toggleMenu = () => setMenuOpen((prev) => !prev);
+  const toggleDarkMode = () => setDarkMode((prev) => !prev);
+
   const handleLogout = () => {
     localStorage.removeItem("userId");
     localStorage.removeItem("accessToken");
     logout();
     setLogoutMessage("You are now logged out.");
+    setMenuOpen(false); // close menu
+
+    setTimeout(() => {
+      navigate("/");
+    }, 100);
+
     setTimeout(() => setLogoutMessage(""), 2000);
-    navigate("/"); // Redirect user to homepage after logout
-  };
-  // Manages dark mode state and toggles the "dark" class on the document element
-  const [darkMode, setDarkMode] = useState(false);
-  useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [darkMode]);
-
-  // Toggles the dark mode state between true and false
-  const toggleDarkMode = () => setDarkMode((prev) => !prev);
-
-  const NavLinks = () => {
-    return (
-      <>
-        <Link to="/">Home</Link>
-        <Link to="/about">About</Link>
-
-        {isLoggedIn && (
-          <>
-            <Link to="/dashboard">Dashboard</Link>
-            <Link to="/community">Community</Link>
-          </>
-        )}
-      </>
-    );
   };
 
-  const AuthButtons = () => {
-    if (!isLoggedIn) return null;
-
-    return (
-      <a
-        href="#"
-        onClick={(e) => {
-          e.preventDefault();
-          handleLogout();
-        }}
-      >
-        Logout
-      </a>
-    );
-  };
-
-  const LogoutText = () => {
-    if (logoutMessage) {
-      return <LogoutMessage>{logoutMessage}</LogoutMessage>;
-    }
-    return null;
-  };
-
-  const DarkModeButton = () => {
-    return darkMode ? "Light mode" : "Dark mode";
-  };
+  const NavLinks = () => (
+    <>
+      <Link to="/" onClick={() => setMenuOpen(false)}>
+        Home
+      </Link>
+      <Link to="/about" onClick={() => setMenuOpen(false)}>
+        About
+      </Link>
+      {isLoggedIn && (
+        <>
+          <Link to="/dashboard" onClick={() => setMenuOpen(false)}>
+            Dashboard
+          </Link>
+          <Link to="/community" onClick={() => setMenuOpen(false)}>
+            Community
+          </Link>
+        </>
+      )}
+    </>
+  );
 
   return (
     <>
@@ -169,44 +151,36 @@ const Header = () => {
       <HeaderContainer>
         <Title>Intention Hub</Title>
 
-        <HamburgerButton onClick={toggleMenu} aria-label="Toggle the menu">
+        <HamburgerButton
+          onClick={toggleMenu}
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={menuOpen}
+          aria-controls="mobile-nav"
+        >
           ☰
         </HamburgerButton>
 
         <DesktopNav>
-          {NavLinks()}
-          {AuthButtons()}
-          {LogoutText()}
-
-          <Link
-            href="#!"
-            onClick={(e) => {
-              e.preventDefault();
-              toggleDarkMode();
-            }}
-            aria-label="Toggle dark mode"
-          >
-            {DarkModeButton()}
+          <NavLinks />
+          {isLoggedIn ? <Link onClick={handleLogout}>Logout</Link> : null}
+          <Link onClick={toggleDarkMode} aria-label="Toggle dark mode">
+            {darkMode ? "Light mode" : "Dark mode"}
           </Link>
+
+          {logoutMessage && <LogoutMessage>{logoutMessage}</LogoutMessage>}
         </DesktopNav>
       </HeaderContainer>
 
-      <MobileNav $isOpen={menuOpen}>
-        {NavLinks()}
-        {AuthButtons()}
-        {LogoutText()}
-        <Link
-          href="#!"
-          onClick={(e) => {
-            e.preventDefault();
-            toggleDarkMode();
-          }}
-          aria-label="Toggle dark mode"
-        >
-          {DarkModeButton()}
+      <MobileNav id="mobile-nav" $isOpen={menuOpen} aria-hidden={!menuOpen}>
+        <NavLinks />
+        {isLoggedIn ? <Link onClick={handleLogout}>Logout</Link> : null}
+        <Link onClick={toggleDarkMode} aria-label="Toggle dark mode">
+          {darkMode ? "Light mode" : "Dark mode"}
         </Link>
+        {logoutMessage && <LogoutMessage>{logoutMessage}</LogoutMessage>}
       </MobileNav>
     </>
   );
 };
+
 export default Header;

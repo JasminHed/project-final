@@ -202,7 +202,7 @@ const Onboarding = ({ goBack, signUpRef, autoStart = false }) => {
       navigate("/setup");
     } else {
       setShowError(
-        "You need to be logged in to continue. Redirecting to Sign Up"
+        "You need to be logged in to continue. Scrolling to Sign Up button"
       );
       setTimeout(() => {
         if (signUpRef.current) {
@@ -212,7 +212,7 @@ const Onboarding = ({ goBack, signUpRef, autoStart = false }) => {
           });
         }
         goBack();
-      }, 100);
+      }, 2000);
     }
   };
 

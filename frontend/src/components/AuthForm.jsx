@@ -1,8 +1,9 @@
 import { useRef, useState } from "react";
-import { PopUp, Container } from "../styling/FormStyling.jsx";
+
+import useClickOutside from "../hooks/useClickOutside.jsx";
+import { Container, PopUp } from "../styling/FormStyling.jsx";
 import LogIn from "./LogIn";
 import SignUp from "./SignUp";
-import useClickOutside from "../hooks/useClickOutside.jsx";
 
 //aria labels + semantic html added. Should you have escape for screenreaders?
 
@@ -24,7 +25,7 @@ const AuthForm = ({
   return (
     <>
       {isOpen && (
-        <PopUp role="dialog" aria-modal="true" aria-label="Log In och Sign Up">
+        <PopUp role="dialog" aria-modal="true" aria-label="Log In or Sign Up">
           <Container
             ref={ref}
             onClick={(e) => e.stopPropagation()}

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+
 import AuthForm from "../components/AuthForm";
 import Taglines from "../components/Tagline.jsx";
 import Onboarding from "../sections/Onboarding.jsx";
@@ -26,6 +27,14 @@ const Box = styled.div`
   border-radius: 8px;
   text-align: center;
   cursor: pointer;
+
+  ${(props) =>
+    props.disabled &&
+    `
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+  `}
 
   img {
     width: 100%;
@@ -164,7 +173,7 @@ const WelcomeScreen = () => {
         <SignUpButton>
           <button
             ref={signUpRef}
-            onClick={() => setIsOpen(true)}
+            onClick={() => setIsOpen((prev) => !prev)}
             aria-label="Sign up to start using The Intention Hub"
           >
             Sign Up/Log In
@@ -196,7 +205,9 @@ const WelcomeScreen = () => {
         </Box>
         <Box
           role="button"
-          tabIndex={0}
+          aria-disabled={!isLoggedIn}
+          tabIndex={isLoggedIn ? 0 : -1} //tab when logged in
+          disabled={!isLoggedIn}
           onClick={handleSetupClick}
           aria-label="Set your intention and goals with clarity and purpose"
           onKeyDown={(e) => e.key === "Enter" && handleSetupClick()}
@@ -209,7 +220,9 @@ const WelcomeScreen = () => {
         </Box>
         <Box
           role="button"
-          tabIndex={0}
+          aria-disabled={!isLoggedIn}
+          tabIndex={isLoggedIn ? 0 : -1} //tab when logged in
+          disabled={!isLoggedIn}
           onClick={handleDashboardClick}
           aria-label="Track your journey here"
           onKeyDown={(e) => e.key === "Enter" && handleDashboardClick()}

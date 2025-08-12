@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+
 import { FormCard, Textarea } from "../styling/FormCard.jsx";
 
 const Fieldset = styled.fieldset`
@@ -55,7 +56,9 @@ const GoalForm = ({
   onFieldChange,
   onSave,
   onComplete,
+  onShare,
   successMessage,
+  shareSuccessMessage,
 }) => {
   return (
     <div aria-labelledby={`goal-title-${goal._id}`}>
@@ -105,10 +108,16 @@ const GoalForm = ({
           <button type="button" onClick={() => onComplete(goal._id)}>
             Mark goal as completed
           </button>
+          <button type="button" onClick={() => onShare && onShare(goal._id)}>
+            Share to Community
+          </button>
         </ButtonContainer>
       </form>
 
       {successMessage && <SuccessMessage>{successMessage}</SuccessMessage>}
+      {shareSuccessMessage && (
+        <SuccessMessage>{shareSuccessMessage}</SuccessMessage>
+      )}
     </div>
   );
 };

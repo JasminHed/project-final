@@ -51,11 +51,6 @@ const Img = styled.img`
   margin: 0 auto;
   display: block;
   object-fit: cover;
-
-  &:hover {
-    background: var(--color-button-hover);
-    max-height: 300px;
-  }
 `;
 
 const ErrorMessage = styled.p`
@@ -94,43 +89,111 @@ const Setup = () => {
   // Hook to navigate to another page
   const navigate = useNavigate();
 
-  // Save goals to backend when user clicks save button
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    //Check if field is empty
-    const hasEmpty = Object.values(values).some((value) => value.trim() === "");
-    if (hasEmpty) {
-      setShowError(true);
-    } else {
-      const token = localStorage.getItem("accessToken");
-      //Send POST request to save goal data
-      saveGoalToAPI(values, token)
-        .then((response) => {
-          if (response.ok) {
-            // Mark onboarding complete in local storage
-            localStorage.setItem("hasCompletedOnboarding", "true");
-            //Navigate to dahsboard page
-            navigate("/dashboard");
-          } else {
-            setErrorMessage(
-              "There is a maximum of 3 saved intention and goal cards. It's to help you stay focused and not feel overwhelmed."
-            );
-            setTimeout(() => setErrorMessage(""), 3000);
-          }
-        })
-        .catch((error) => {
-          console.error("Error", error);
-          setErrorMessage("Something went wrong. Please try again.");
-          setTimeout(() => setErrorMessage(""), 3000);
-        });
-    }
+  const [errors, setErrors] = useState({
+    intention: "",
+    specific: "",
+    measurable: "",
+    achievable: "",
+    relevant: "",
+    timebound: "",
+  });
+
+  const validateField = (value) => {
+    if (value.trim() === "") return "This field is required";
+    if (value.trim().length < 20) return "Minimum 20 characters required";
+    return "";
   };
 
-  // Combined event handler for all fields
   const handleFieldChange = (field) => (e) => {
-    setValues((prev) => ({ ...prev, [field]: e.target.value }));
-    setShowError(false);
+    const value = e.target.value;
+    setValues((prev) => ({ ...prev, [field]: value }));
+    setErrors((prev) => ({ ...prev, [field]: validateField(value) }));
   };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const newErrors = {};
+    Object.entries(values).forEach(([field, value]) => {
+      newErrors[field] = validateField(value);
+    });
+    setErrors(newErrors);
+
+    const hasErrors = Object.values(newErrors).some((err) => err !== "");
+    if (hasErrors) {
+      setShowError(true);
+      return;
+    }
+
+    setShowError(false);
+
+    const token = localStorage.getItem("accessToken");
+    saveGoalToAPI(values, token)
+      .then((res) => {
+        if (res.ok) {
+          localStorage.setItem("hasCompletedOnboarding", "true");
+          navigate("/dashboard");
+        } else {
+          setErrorMessage(
+            "There is a maximum of 3 saved intention and goal cards. It's to help you stay focused and not feel overwhelmed."
+          );
+          setTimeout(() => setErrorMessage(""), 3000);
+        }
+      })
+      .catch(() => {
+        setErrorMessage("Something went wrong. Please try again.");
+        setTimeout(() => setErrorMessage(""), 3000);
+      });
+  };
+
+  // Save goals to backend when user clicks save button
+  /*const handleSubmit = (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem("accessToken");
+    //Send POST request to save goal data
+    saveGoalToAPI(values, token)
+      .then((response) => {
+        if (response.ok) {
+          // Mark onboarding complete in local storage
+          localStorage.setItem("hasCompletedOnboarding", "true");
+          //Navigate to dahsboard page
+          navigate("/dashboard");
+        } else {
+          setErrorMessage(
+            "There is a maximum of 3 saved intention and goal cards. It's to help you stay focused and not feel overwhelmed."
+          );
+          setTimeout(() => setErrorMessage(""), 3000);
+        }
+      })
+      .catch((error) => {
+        console.error("Error", error);
+        setErrorMessage("Something went wrong. Please try again.");
+        setTimeout(() => setErrorMessage(""), 3000);
+      });
+  };
+  const [errors, setErrors] = useState({
+    intention: "",
+    specific: "",
+    measurable: "",
+    achievable: "",
+    relevant: "",
+    timebound: "",
+  });
+
+  // Inline validation for empty, min and max length
+  const handleFieldChange = (field) => (e) => {
+    const value = e.target.value;
+    setValues((prev) => ({ ...prev, [field]: value }));
+
+    let error = "";
+    if (value.trim() === "") {
+      error = "This field is required";
+    } else if (value.trim().length < 20) {
+      error = "Minimum 20 characters required";
+    }
+
+    setErrors((prev) => ({ ...prev, [field]: error }));
+  };*/
 
   return (
     <main id="main-content">
@@ -153,7 +216,7 @@ const Setup = () => {
         alt="A graphic image showing a thinking mind, a place where flowers are growing"
       />
       <Container>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} noValidate>
           <Fieldset>
             <FormCard>
               <h2>Your Intention</h2>
@@ -184,9 +247,13 @@ const Setup = () => {
                 placeholder={`Examples:\nBuild a healthier lifestyle that gives me more energy and confidence\nCreate a stable financial foundation for my family's future\nDevelop my creative skills and find more fulfillment in my work`}
                 value={values.intention}
                 onChange={handleFieldChange("intention")}
+                minLength={20}
                 maxLength="150"
                 required
               />
+              {errors.intention && (
+                <ErrorMessage role="alert">{errors.intention}</ErrorMessage>
+              )}
               <p aria-live="polite">{values.intention.length}/150</p>
             </FormCard>
           </Fieldset>
@@ -203,9 +270,13 @@ const Setup = () => {
                 placeholder={`Examples:\nI will meal prep healthy lunches every Sunday\nI will save SEK500 each month\nI will read 2 books per month`}
                 value={values.specific}
                 onChange={handleFieldChange("specific")}
+                minLength={20}
                 maxLength="150"
                 required
               />
+              {errors.specific && (
+                <ErrorMessage role="alert">{errors.specific}</ErrorMessage>
+              )}
               <p aria-live="polite">{values.specific.length}/150</p>
 
               <Label htmlFor="measurable">Measurable</Label>
@@ -215,9 +286,13 @@ const Setup = () => {
                 placeholder={`Examples:\nTrack workouts in fitness app and log weekly food diary\nUse journal to track reading progress\nMonitor savings with monthly budget spreadsheet`}
                 value={values.measurable}
                 onChange={handleFieldChange("measurable")}
+                minLength={20}
                 maxLength="150"
                 required
               />
+              {errors.measurable && (
+                <ErrorMessage role="alert">{errors.measurable}</ErrorMessage>
+              )}
               <p aria-live="polite">{values.measurable.length}/150</p>
 
               <Label htmlFor="achievable">Achievable</Label>
@@ -227,9 +302,13 @@ const Setup = () => {
                 placeholder={`Examples:\nStart with 20-minute home workouts, 3x/week\nBegin with 30 pages/day during commute\nCut dining out from 4x to 2x per week`}
                 value={values.achievable}
                 onChange={handleFieldChange("achievable")}
+                minLength={20}
                 maxLength="150"
                 required
               />
+              {errors.achievable && (
+                <ErrorMessage role="alert">{errors.achievable}</ErrorMessage>
+              )}
               <p aria-live="polite">{values.achievable.length}/150</p>
 
               <Label htmlFor="relevant">Relevant</Label>
@@ -239,9 +318,13 @@ const Setup = () => {
                 placeholder={`Examples:\nHealthy habits boost my energy for work and family\nReading expands my knowledge for career growth\nSavings create security and reduce stress`}
                 value={values.relevant}
                 onChange={handleFieldChange("relevant")}
+                minLength={20}
                 maxLength="150"
                 required
               />
+              {errors.relevant && (
+                <ErrorMessage role="alert">{errors.relevant}</ErrorMessage>
+              )}
               <p aria-live="polite">{values.relevant.length}/150</p>
 
               <Label htmlFor="timebound">Timebound</Label>
@@ -251,9 +334,13 @@ const Setup = () => {
                 placeholder={`Examples:\nEstablish routine within 6 weeks, 3rd of November 2025\nFinish 8 books by December 2025\nReach SEK6000 savings goal by December 2025`}
                 value={values.timebound}
                 onChange={handleFieldChange("timebound")}
+                minLength={20}
                 maxLength="150"
                 required
               />
+              {errors.timebound && (
+                <ErrorMessage role="alert">{errors.timebound}</ErrorMessage>
+              )}
               <p aria-live="polite">{values.timebound.length}/150</p>
             </FormCard>
           </Fieldset>

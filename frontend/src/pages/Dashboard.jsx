@@ -180,7 +180,7 @@ const Dashboard = () => {
       <Container>
         <ButtonContainer>
           <button onClick={handleNavigateToSetup}>
-            Add new intention and goals (max 3)
+            Add new intention and goals here
           </button>
         </ButtonContainer>
         <GoalsGrid>

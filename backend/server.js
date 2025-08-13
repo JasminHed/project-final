@@ -143,7 +143,7 @@ app.post("/goals/:id/share", authenticateUser, async (req, res) => {
   const { id } = req.params;
 
   try {
-    // Bara public-profiler får dela
+    
     if (!req.user.isPublic) {
       return res.status(403).json({
         success: false,
@@ -229,20 +229,6 @@ if (existingGoal) {
     });
     
     const savedGoal = await newGoal.save();
-    if (req.user.isPublic) {
-      const communityPost = new CommunityPost({
-        userId: req.user._id,
-        userName: req.user.name,
-        intention,
-        specific,
-        measurable,
-        achievable,
-        relevant,
-        timebound
-      });
-      await communityPost.save();
-    }    
-
     res.status(201).json({
       success: true,
       response: savedGoal,

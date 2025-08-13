@@ -53,14 +53,12 @@ const UserName = styled.h2`
 
 const UserEmail = styled.p`
   margin: 0;
-  font-size: 14px;
-  //color: var(--color-text-link);
+  font-style: italic;
 `;
 
 const StatusCard = styled.div`
   padding: 15px 20px;
   border-radius: 8px;
-  font-size: 14px;
   margin-bottom: 15px;
   border: 2px solid var(--color-text-link);
   text-align: center;
@@ -108,7 +106,7 @@ const DisclaimerText = styled.div`
   border: 2px solid var(--color-success);
   border-radius: 6px;
   padding: 12px;
-  font-size: 14px;
+  font-style: italic;
   text-align: center;
   margin-top: 10px;
   max-width: 300px;
@@ -128,7 +126,6 @@ const DisclaimerText = styled.div`
 `;
 
 const Hint = styled.p`
-  font-size: 14px;
   font-style: italic;
   color: var(--color-text-link);
   margin: 5px 0;
@@ -145,7 +142,7 @@ const ProfileSetting = ({ user, onOptionSelect }) => {
 
     // Show confirmation message
     setShowDisclaimer(true);
-    setTimeout(() => setShowDisclaimer(false), 4000);
+    setTimeout(() => setShowDisclaimer(false), 6000);
   };
 
   return (

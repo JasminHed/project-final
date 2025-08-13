@@ -194,7 +194,7 @@ const WelcomeScreen = () => {
           role="button"
           tabIndex={0}
           onClick={handleOnboardingClick}
-          aria-label="Learn about Intention and SMART goals"
+          aria-label="Learn about Intention and SMART goals here"
           onKeyDown={(e) => e.key === "Enter" && handleOnboardingClick()} //user can use enter
         >
           <img
@@ -209,7 +209,7 @@ const WelcomeScreen = () => {
           tabIndex={isLoggedIn ? 0 : -1} //tab when logged in
           disabled={!isLoggedIn}
           onClick={handleSetupClick}
-          aria-label="Set your intention and goals with clarity and purpose"
+          aria-label="Set your intention and goals with clarity and purpose here"
           onKeyDown={(e) => e.key === "Enter" && handleSetupClick()}
         >
           <img

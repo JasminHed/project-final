@@ -6,7 +6,7 @@ const Description = styled.div`
   max-width: 90%;
 
   @media (min-width: 668px) {
-    max-width: 700px;
+    max-width: 600px;
     margin-bottom: 50px;
     margin-top: 50px;
   }
@@ -18,9 +18,22 @@ const Description = styled.div`
   }
 `;
 
+const Img = styled.img`
+  width: 100%;
+  height: auto;
+  max-height: 300px;
+  margin: 0 auto;
+  display: block;
+  object-fit: cover;
+`;
+
 const About = () => {
   return (
     <Description>
+      <Img
+        src="/assets/About.png"
+        alt="A graphic image showing a heart writing notes on a desk"
+      />
       <p>
         The Intention Hub is a digital space and personal growth tool designed
         to help you slow down, reflect, set intentions, define doable goals and

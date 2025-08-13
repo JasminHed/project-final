@@ -10,8 +10,7 @@ import GoalForm from "../components/GoalForm.jsx";
 import GoalChart from "../components/GoalChart.jsx";
 import { Message } from "../styling/LoadingMessage.jsx";
 import useGoal from "../hooks/useGoal.jsx";
-
-//check bakcend, i think its better that when you set public profiel discliamer comes and everything but it should not happen automatically, rather there should be a button on the save, complete and share to community so that the user can actually do this activley or?
+import CommunityWidget from "../components/CommunityWidget.jsx";
 
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
 
@@ -34,6 +33,7 @@ const GoalsGrid = styled.div`
 
   @media (min-width: 669px) and (max-width: 1600px) {
     display: grid;
+    //justify-items: (props) => (props.itemCount === 1 ? "center" : "stretch")};
     grid-template-columns: 1fr 1fr;
     gap: 20px;
     align-items: start;
@@ -201,6 +201,7 @@ const Dashboard = () => {
           ) : (
             <p>No active intention and goal. Create your first!</p>
           )}
+          <CommunityWidget />
         </GoalsGrid>
         <GoalChart
           incompleteCount={incompleteGoals.length}

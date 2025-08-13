@@ -109,6 +109,10 @@ const Setup = () => {
     setValues((prev) => ({ ...prev, [field]: value }));
     setErrors((prev) => ({ ...prev, [field]: validateField(value) }));
   };
+  //button back to dashboard
+  const handleBackToDashboard = () => {
+    navigate("/dashboard");
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -145,55 +149,6 @@ const Setup = () => {
         setTimeout(() => setErrorMessage(""), 3000);
       });
   };
-
-  // Save goals to backend when user clicks save button
-  /*const handleSubmit = (e) => {
-    e.preventDefault();
-    const token = localStorage.getItem("accessToken");
-    //Send POST request to save goal data
-    saveGoalToAPI(values, token)
-      .then((response) => {
-        if (response.ok) {
-          // Mark onboarding complete in local storage
-          localStorage.setItem("hasCompletedOnboarding", "true");
-          //Navigate to dahsboard page
-          navigate("/dashboard");
-        } else {
-          setErrorMessage(
-            "There is a maximum of 3 saved intention and goal cards. It's to help you stay focused and not feel overwhelmed."
-          );
-          setTimeout(() => setErrorMessage(""), 3000);
-        }
-      })
-      .catch((error) => {
-        console.error("Error", error);
-        setErrorMessage("Something went wrong. Please try again.");
-        setTimeout(() => setErrorMessage(""), 3000);
-      });
-  };
-  const [errors, setErrors] = useState({
-    intention: "",
-    specific: "",
-    measurable: "",
-    achievable: "",
-    relevant: "",
-    timebound: "",
-  });
-
-  // Inline validation for empty, min and max length
-  const handleFieldChange = (field) => (e) => {
-    const value = e.target.value;
-    setValues((prev) => ({ ...prev, [field]: value }));
-
-    let error = "";
-    if (value.trim() === "") {
-      error = "This field is required";
-    } else if (value.trim().length < 20) {
-      error = "Minimum 20 characters required";
-    }
-
-    setErrors((prev) => ({ ...prev, [field]: error }));
-  };*/
 
   return (
     <main id="main-content">
@@ -354,7 +309,9 @@ const Setup = () => {
           {errorMessage && (
             <ErrorMessage role="alert">{errorMessage}</ErrorMessage>
           )}
-
+          <button type="button" onClick={handleBackToDashboard}>
+            Back to dashboard
+          </button>
           <button type="submit">Save and head to your dashboard</button>
         </form>
       </Container>

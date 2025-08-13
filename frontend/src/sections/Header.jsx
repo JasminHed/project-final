@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+
 import { useUserStore } from "../store/UserStore";
 
 const HeaderContainer = styled.header`
@@ -34,7 +35,7 @@ const DesktopNav = styled.nav`
 
   @media (min-width: 668px) {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
@@ -164,7 +165,7 @@ const Header = () => {
           <NavLinks />
           {isLoggedIn ? <Link onClick={handleLogout}>Logout</Link> : null}
           <Link onClick={toggleDarkMode} aria-label="Toggle dark mode">
-            {darkMode ? "Light mode" : "Dark mode"}
+            {darkMode ? "Light " : "Dark "}
           </Link>
 
           {logoutMessage && <LogoutMessage>{logoutMessage}</LogoutMessage>}

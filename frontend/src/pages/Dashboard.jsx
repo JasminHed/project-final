@@ -65,6 +65,13 @@ const GoalCard = styled.div`
   background: #f9f9f9;
 `;
 
+const ErrorMessage = styled.p`
+  color: var(--color-error);
+  font-size: 14px;
+  margin-bottom: 12px;
+  text-align: center;
+`;
+
 const Dashboard = () => {
   const navigate = useNavigate();
   const { user, setUser } = useUserStore();
@@ -82,6 +89,17 @@ const Dashboard = () => {
 
   const incompleteGoals = goals.filter((goal) => !goal.completed);
   const completedGoals = goals.filter((goal) => goal.completed);
+
+  //Handler for max 3 int+goals at once
+  const [showMaxMessage, setShowMaxMessage] = useState(false);
+  const handleAddGoalClick = () => {
+    if (goals.length >= 3) {
+      setShowMaxMessage(true);
+      setTimeout(() => setShowMaxMessage(false), 3000); // 3 sec
+    } else {
+      navigate("/setup");
+    }
+  };
 
   // user-fetching
   useEffect(() => {
@@ -103,7 +121,8 @@ const Dashboard = () => {
   };
 
   const handleFieldChange = (goalId, field) => (e) => {
-    updateGoalField(goalId, field, e.target.value);
+    const value = field === "started" ? e.target.checked : e.target.value;
+    updateGoalField(goalId, field, value);
   };
 
   const handleSaveGoal = (goalId) => {
@@ -180,10 +199,25 @@ const Dashboard = () => {
 
         <Container>
           <ButtonContainer>
-            <button onClick={handleNavigateToSetup}>
-              Add new intention and goals here
-            </button>
+            <ButtonContainer>
+              <button
+                onClick={handleAddGoalClick}
+                aria-label={
+                  goals.length >= 3
+                    ? "Maximum of 3 goals reached"
+                    : "Add new intention and goals"
+                }
+              >
+                Add new intention and goals here
+              </button>
+            </ButtonContainer>
           </ButtonContainer>
+          {showMaxMessage && (
+            <ErrorMessage>
+              There is a maximum of 3 saved intention and goal cards. It's to
+              help you stay focused and not feel overwhelmed.
+            </ErrorMessage>
+          )}
           <GoalsGrid>
             {goals.length > 0 ? (
               goals.map((goal) => (
@@ -203,10 +237,7 @@ const Dashboard = () => {
               <p>No active intention and goal. Create your first!</p>
             )}
           </GoalsGrid>
-          <GoalChart
-            incompleteCount={incompleteGoals.length}
-            completedCount={completedGoals.length}
-          />
+          <GoalChart goals={goals} />
         </Container>
       </main>
       <CommunityWidget />

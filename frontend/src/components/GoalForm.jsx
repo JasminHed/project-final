@@ -42,6 +42,16 @@ const SuccessMessage = styled.p`
   font-size: 14px;
 `;
 
+const TagLabel = styled.label`
+  display: inline-block;
+  background-color: #e0f7fa;
+  color: black;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  cursor: pointer;
+`;
+
 const SMART_FIELDS = [
   "specific",
   "measurable",
@@ -70,6 +80,16 @@ const GoalForm = ({
       >
         <Fieldset>
           <FormCard>
+            <TagLabel>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={goal.started || false}
+                  onChange={(e) => onFieldChange(goal._id, "started")(e)}
+                />
+                Started
+              </label>
+            </TagLabel>
             <h1 id={`goal-title-${goal._id}`}>Your Intention</h1>
             <Label htmlFor={`intention-${goal._id}`}></Label>
             <Textarea

@@ -150,6 +150,7 @@ p {
     background-color: var(--color-button-bg);
     color: var(--color-button-text);
     font-size: 15px;
+    gap: 6px;
     border: none;
     border-radius: 4px;
     padding: 10px 16px;

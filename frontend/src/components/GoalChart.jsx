@@ -1,7 +1,7 @@
+import { ArcElement, Chart as ChartJS, Legend, Tooltip } from "chart.js";
 import React from "react";
-import styled from "styled-components";
 import { Doughnut } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import styled from "styled-components";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -22,12 +22,15 @@ const ChartStats = styled.p`
   color: var(--color-text-primary);
 `;
 
-const GoalChart = ({ incompleteCount, completedCount }) => {
+const GoalChart = ({ goals }) => {
+  const startedGoals = goals.filter((goal) => goal.started).length;
+  const notStartedGoals = goals.length - startedGoals;
+
   const chartData = {
-    labels: ["Active Goals", "Completed"],
+    labels: ["Started", "Not Started"],
     datasets: [
       {
-        data: [incompleteCount, completedCount],
+        data: [startedGoals, notStartedGoals],
         backgroundColor: ["#004d40", "#e47885"],
       },
     ],
@@ -47,12 +50,12 @@ const GoalChart = ({ incompleteCount, completedCount }) => {
   return (
     <>
       <ChartContainer
-        aria-label={`Goal progress: ${incompleteCount} active, ${completedCount} completed`}
+        aria-label={`Goal progress: ${startedGoals} started, ${notStartedGoals} not started`}
       >
         <Doughnut data={chartData} options={chartOptions} />
       </ChartContainer>
       <ChartStats>
-        Active: {incompleteCount} | Completed: {completedCount}
+        Started: {startedGoals} | Not Started: {notStartedGoals}
       </ChartStats>
     </>
   );

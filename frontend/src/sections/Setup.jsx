@@ -60,6 +60,12 @@ const ErrorMessage = styled.p`
   margin-right: 5px;
 `;
 
+const ButtonGroup = styled.div`
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+`;
+
 // Functions
 const saveGoalToAPI = (values, token) => {
   return fetch(`${API_BASE_URL}/goals`, {
@@ -84,8 +90,7 @@ const Setup = () => {
   });
   // State to show error message if fields are not filled in
   const [showError, setShowError] = useState(false);
-  // State for max goals error
-  const [errorMessage, setErrorMessage] = useState("");
+
   // Hook to navigate to another page
   const navigate = useNavigate();
 
@@ -137,11 +142,6 @@ const Setup = () => {
         if (res.ok) {
           localStorage.setItem("hasCompletedOnboarding", "true");
           navigate("/dashboard");
-        } else {
-          setErrorMessage(
-            "There is a maximum of 3 saved intention and goal cards. It's to help you stay focused and not feel overwhelmed."
-          );
-          setTimeout(() => setErrorMessage(""), 3000);
         }
       })
       .catch(() => {
@@ -306,13 +306,12 @@ const Setup = () => {
             </ErrorMessage>
           )}
 
-          {errorMessage && (
-            <ErrorMessage role="alert">{errorMessage}</ErrorMessage>
-          )}
-          <button type="button" onClick={handleBackToDashboard}>
-            Back to dashboard
-          </button>
-          <button type="submit">Save and head to your dashboard</button>
+          <ButtonGroup>
+            <button type="button" onClick={handleBackToDashboard}>
+              Back to dashboard
+            </button>
+            <button type="submit">Save and head to your dashboard</button>
+          </ButtonGroup>
         </form>
       </Container>
     </main>

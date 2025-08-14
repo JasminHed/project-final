@@ -7,8 +7,8 @@ import Onboarding from "../sections/Onboarding.jsx";
 import { useUserStore } from "../store/UserStore.jsx";
 import { Message } from "../styling/LoadingMessage.jsx";
 
-//i need to add another external library (that will be drag and drop in visionboard)
-//arialabels added
+//arialabels check + semantic html
+//box 2 and 3 should be clickable when logged in
 
 const MainBox = styled.div`
   display: flex;
@@ -73,6 +73,7 @@ const SignUpButton = styled.div`
 
 const ErrorMessage = styled.p`
   color: var(--color-error);
+  font-size: 14px;
   margin-bottom: 4px;
   margin-top: 4px;
   margin-left: 18px;

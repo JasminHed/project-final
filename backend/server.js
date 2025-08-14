@@ -467,7 +467,7 @@ app.delete("/messages/:id", authenticateUser, async (req, res) => {
   }
 });*/
 
-app.post("/api/chat", authenticateUser, async (req, res) => {
+app.post("/api/chat", async (req, res) => {
   try {
     const user = req.user;
     const userMessage = req.body.message;

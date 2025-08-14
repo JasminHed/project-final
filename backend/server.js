@@ -469,8 +469,13 @@ app.delete("/messages/:id", authenticateUser, async (req, res) => {
 
 app.post("/api/chat", authenticateUser, async (req, res) => {
   try {
+    console.log("Auth header received:", req.headers.authorization);
+    console.log("User from middleware:", req.user);
+    
     const user = req.user;
     const userMessage = req.body.message;
+    
+    // Rest of your code...
 
     // Add debugging
     console.log("User authenticated:", !!user);

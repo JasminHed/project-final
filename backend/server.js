@@ -469,17 +469,8 @@ app.delete("/messages/:id", authenticateUser, async (req, res) => {
 
 app.post("/api/chat", authenticateUser, async (req, res) => {
   try {
-    console.log("Auth header received:", req.headers.authorization);
-    console.log("User from middleware:", req.user);
-    
     const user = req.user;
     const userMessage = req.body.message;
-    
-    // Rest of your code...
-
-    // Add debugging
-    console.log("User authenticated:", !!user);
-    console.log("API Key exists:", !!process.env.OPENAI_API_KEY);
 
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",

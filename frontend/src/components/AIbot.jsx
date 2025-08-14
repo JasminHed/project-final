@@ -34,9 +34,9 @@ const ChatContainer = styled.div`
   position: fixed;
   bottom: 100px;
   right: 30px;
-  width: 340px;
-  background: rgba(var(--color-background-rgb), 0.85);
-  backdrop-filter: blur(12px);
+  width: 280px;
+  z-index: 9999;
+  background: rgba(54, 69, 79, 0.95);
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
@@ -45,6 +45,10 @@ const ChatContainer = styled.div`
   flex-direction: column;
   transition: opacity 0.25s ease, transform 0.25s ease;
   color: var(--color-text-primary);
+
+  @media (min-width: 668px) {
+    width: 340px;
+  }
 `;
 
 const MessagesContainer = styled.div`
@@ -122,12 +126,43 @@ const AIbot = () => {
 
     const userInput = input;
     setInput("");
-    //fetching from backend
+
     fetch(`${API_BASE_URL}/api/chat`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: localStorage.getItem("accessToken"),
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+      body: JSON.stringify({ message: userInput }),
+    })
+      .then(async (response) => {
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(`HTTP ${response.status}: ${errorData.error}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        const aiResponse =
+          data.choices?.[0]?.message?.content || "Sorry, I couldn't respond.";
+        setMessages((prev) => [...prev, { text: aiResponse, isUser: false }]);
+      })
+      .catch((error) => {
+        console.error("Chat error:", error);
+        setMessages([
+          ...newMessages,
+          { text: `Error: ${error.message}`, isUser: false },
+        ]);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+    //fetching from backend
+    /*fetch(`${API_BASE_URL}/api/chat`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
       body: JSON.stringify({ message: userInput }),
     })
@@ -135,7 +170,7 @@ const AIbot = () => {
       .then((data) => {
         const aiResponse =
           data.choices?.[0]?.message?.content || "Sorry, I couldn't respond.";
-        setMessages([...newMessages, { text: aiResponse, isUser: false }]);
+        setMessages((prev) => [...prev, { text: aiResponse, isUser: false }]);
       })
       .catch(() => {
         setMessages([
@@ -145,7 +180,7 @@ const AIbot = () => {
       })
       .finally(() => {
         setLoading(false);
-      });
+      });*/
   };
   //users can press enter
   const handleKeyPress = (e) => {

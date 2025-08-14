@@ -82,7 +82,9 @@ const useGoal = () => {
           setShareSuccessMessage("Goal shared to community!");
           setTimeout(() => setShareSuccessMessage(""), 3000);
         } else {
-          setShareSuccessMessage("Failed to share goal.");
+          setShareSuccessMessage(
+            "Failed to share goal. Make your profile public first."
+          );
           setTimeout(() => setShareSuccessMessage(""), 3000);
         }
       })

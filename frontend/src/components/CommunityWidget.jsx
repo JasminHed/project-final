@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const Widget = styled.div`
-  position: fixed;
-  bottom: 20px;
+  position: absolute;
+  top: 1200px;
   left: 20px;
   background: rgba(228, 120, 133, 0.1);
   color: white;

@@ -151,64 +151,66 @@ const Dashboard = () => {
   }
 
   return (
-    <main id="main-content">
-      <Container>
-        <h1>Welcome to your dashboard</h1>
+    <>
+      <main id="main-content">
+        <Container>
+          <h1>Welcome to your dashboard</h1>
 
-        <ProfileSetting user={user} onOptionSelect={handleUserStatus} />
+          <ProfileSetting user={user} onOptionSelect={handleUserStatus} />
 
-        <section aria-label="Introduction">
-          <p>
-            Here you'll see your active goals, up to three at a time — designed
-            to keep you focused and purposeful. You can add, edit, and save your
-            goals whenever you like.
-          </p>
-          <p>
-            Choose to make your profile public and your goals will be shared
-            automatically with the community — so others can cheer you on, offer
-            support, and celebrate your progress.
-          </p>
-          <p>You've got this! One clear step at a time.</p>
-        </section>
-      </Container>
+          <section aria-label="Introduction">
+            <p>
+              Here you'll see your active goals, up to three at a time —
+              designed to keep you focused and purposeful. You can add, edit,
+              and save your goals whenever you like.
+            </p>
+            <p>
+              Choose to make your profile public and your goals will be shared
+              automatically with the community — so others can cheer you on,
+              offer support, and celebrate your progress.
+            </p>
+            <p>You've got this! One clear step at a time.</p>
+          </section>
+        </Container>
 
-      <Img
-        src="/assets/12.png"
-        alt="A graphic image showing a thinking mind with flowers around it for decoration"
-      />
-
-      <Container>
-        <ButtonContainer>
-          <button onClick={handleNavigateToSetup}>
-            Add new intention and goals here
-          </button>
-        </ButtonContainer>
-        <GoalsGrid>
-          {goals.length > 0 ? (
-            goals.map((goal) => (
-              <GoalForm
-                key={goal._id}
-                goal={goal}
-                onIntentionChange={handleIntentionChange}
-                onFieldChange={handleFieldChange}
-                onSave={handleSaveGoal}
-                onComplete={() => handleCompleteGoal(goal._id)()}
-                onShare={handleShareGoal}
-                successMessage={successMessage}
-                shareSuccessMessage={shareSuccessMessage}
-              />
-            ))
-          ) : (
-            <p>No active intention and goal. Create your first!</p>
-          )}
-          <CommunityWidget />
-        </GoalsGrid>
-        <GoalChart
-          incompleteCount={incompleteGoals.length}
-          completedCount={completedGoals.length}
+        <Img
+          src="/assets/12.png"
+          alt="A graphic image showing a thinking mind with flowers around it for decoration"
         />
-      </Container>
-    </main>
+
+        <Container>
+          <ButtonContainer>
+            <button onClick={handleNavigateToSetup}>
+              Add new intention and goals here
+            </button>
+          </ButtonContainer>
+          <GoalsGrid>
+            {goals.length > 0 ? (
+              goals.map((goal) => (
+                <GoalForm
+                  key={goal._id}
+                  goal={goal}
+                  onIntentionChange={handleIntentionChange}
+                  onFieldChange={handleFieldChange}
+                  onSave={handleSaveGoal}
+                  onComplete={() => handleCompleteGoal(goal._id)()}
+                  onShare={handleShareGoal}
+                  successMessage={successMessage}
+                  shareSuccessMessage={shareSuccessMessage}
+                />
+              ))
+            ) : (
+              <p>No active intention and goal. Create your first!</p>
+            )}
+          </GoalsGrid>
+          <GoalChart
+            incompleteCount={incompleteGoals.length}
+            completedCount={completedGoals.length}
+          />
+        </Container>
+      </main>
+      <CommunityWidget />
+    </>
   );
 };
 

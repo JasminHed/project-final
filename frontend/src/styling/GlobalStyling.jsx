@@ -125,6 +125,15 @@ p {
   h6 {
     font-size: 14px;
   }
+  p {
+    font-size: 18px;
+  }
+
+  @media (min-width: 1024px) {
+    p {
+      font-size: 20px;
+    }
+  }
   
 }
 
@@ -140,9 +149,10 @@ p {
   button {
     background-color: var(--color-button-bg);
     color: var(--color-button-text);
+    font-size: 15px;
     border: none;
     border-radius: 4px;
-    padding: 0.5rem 1rem;
+    padding: 10px 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
   }

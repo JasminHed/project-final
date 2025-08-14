@@ -15,7 +15,9 @@ const goalSchema = new mongoose.Schema({
   timebound: { type: String, required: true, minlength: 20, maxlength: 150 },
   completed: { type: Boolean, default: false },
   isPublic: { type: Boolean, default: false },
-  createdAt: { type: Date, default: Date.now }
+  createdAt: { type: Date, default: Date.now },
+  started: { type: Boolean, default: false },
+
 });
 
 const Goal = mongoose.model("Goal", goalSchema);

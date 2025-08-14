@@ -225,7 +225,8 @@ if (existingGoal) {
       measurable, 
       achievable,
       relevant,
-      timebound
+      timebound,
+      started: false
     });
     
     const savedGoal = await newGoal.save();

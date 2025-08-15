@@ -71,8 +71,8 @@ const Taglines = () => {
           </Tagline>
 
           <Tagline>
-            💡 Sign Up for a space of clarity, focus and momentum. Welcome to
-            Intention Hub.
+            <strong>Sign Up </strong> to get clear, focused and support. Welcome
+            to Intention Hub.
           </Tagline>
         </TaglineSection>
       </section>

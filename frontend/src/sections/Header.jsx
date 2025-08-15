@@ -4,6 +4,8 @@ import styled from "styled-components";
 
 import { useUserStore } from "../store/UserStore";
 
+//automatically log out after 12 hours?
+
 const HeaderContainer = styled.header`
   position: relative;
   padding: 80px;
@@ -81,6 +83,7 @@ const HamburgerButton = styled.button`
 
 const LogoutMessage = styled.p`
   position: fixed;
+  font-size: 14px;
   top: 130px;
   left: 50%;
   transform: translateX(-50%);

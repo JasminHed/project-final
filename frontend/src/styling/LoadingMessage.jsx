@@ -5,4 +5,5 @@ export const Message = styled.p`
   margin: 0 auto;
   margin-top: 20px;
   color: #4da6ff;
+  font-size: 14px;
 `;

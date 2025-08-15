@@ -156,7 +156,7 @@ const AIbot = () => {
 
   return (
     <>
-      <ChatIcon onClick={() => setIsOpen(!isOpen)}></ChatIcon>
+      <ChatIcon onClick={() => setIsOpen(!isOpen)}>💬</ChatIcon>
 
       <ChatContainer $isOpen={isOpen}>
         <h3>Luca</h3>

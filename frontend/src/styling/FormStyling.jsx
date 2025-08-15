@@ -69,7 +69,7 @@ export const ErrorDiv = styled.div`
 `;
 
 export const RegisterLink = styled.p`
-  font-size: 16px;
+  font-size: 14px;
   margin-top: 12px;
   text-align: center;
 `;
@@ -84,6 +84,6 @@ export const LinkSpan = styled.span`
   }
 
   @media (min-width: 1024px) {
-    font-size: 18px;
+    font-size: 16px;
   }
 `;

@@ -193,7 +193,8 @@ const WelcomeScreen = () => {
       <MainBox>
         <Box
           role="button"
-          tabIndex={0}
+          tabIndex={isLoggedIn ? 0 : -1}
+          disabled={!isLoggedIn}
           onClick={handleOnboardingClick}
           aria-label="Learn about Intention and SMART goals here"
           onKeyDown={(e) => e.key === "Enter" && handleOnboardingClick()} //user can use enter

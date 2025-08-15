@@ -37,48 +37,44 @@ const Tagline = styled.li`
   }
 `;
 
-const Note = styled.p`
-  text-align: center;
-
-  @media (max-width: 480px) {
-    max-width: 90%;
-  }
-`;
-
 const Taglines = () => {
   return (
     <>
       <section>
         <TaglineSection>
           <Tagline>
-            <strong>Create and set up your intentions and goals</strong> — Build
-            habits that last with clear structure and purpose.
+            <strong> 💡 Learn about </strong>
+            intentions and SMART goals to get you started with confidence today.
           </Tagline>
           <Tagline>
-            <strong>Access your dashboard</strong> that contains your intention
-            and goals, progress chart and journal section for complete tracking.
+            <strong> 💡 Access your dashboard </strong> that contains your
+            intention and goals, progress chart and journal section for complete
+            tracking.
           </Tagline>
           <Tagline>
-            <strong>Get access to your AI Coach</strong> for motivation,
+            <strong> 💡 From intention to action </strong> — with tools designed
+            for personal or professional growth, without the overwhelm.
+          </Tagline>
+
+          <Tagline>
+            <strong> 💡 Get access to your AI Coach </strong> for motivation,
             check-ins and support on your journey.
           </Tagline>
           <Tagline>
-            <strong>Join the community</strong> where posts on users intentions
-            and goals are shared for further support and accountability.
+            <strong> 💡 Create and set up your intentions and goals </strong>
+            Build habits that last with clear structure and purpose.
           </Tagline>
           <Tagline>
-            <strong>From intention to action</strong> — with tools designed for
-            personal or professional growth, without the overwhelm.
+            <strong> 💡 Join the community </strong> where posts on users
+            intentions and goals are shared for further support and
+            accountability.
           </Tagline>
+
           <Tagline>
-            A space for clarity, focus and momentum, create your own life with
-            The Intention Hub.
+            💡 Sign Up for a space of clarity, focus and momentum. Welcome to
+            Intention Hub.
           </Tagline>
         </TaglineSection>
-        <Note>
-          💡 Explore "Learn about Intention & SMART goals" free — no account
-          needed!
-        </Note>
       </section>
     </>
   );

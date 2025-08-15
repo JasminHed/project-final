@@ -404,6 +404,14 @@ app.delete("/messages/:id", authenticateUser, async (req, res) => {
         message: "Comment not found",
       });
     }
+//control if user owns the comment before deleteing
+    const comment = post.comments.find(comment => comment._id.toString() === id);
+    if (comment.userName !== req.user.name) {
+      return res.status(403).json({
+        success: false,
+        message: "You can only delete your own comments",
+      });
+    }
 
     post.comments = post.comments.filter(
       (comment) => comment._id.toString() !== id
@@ -428,49 +436,12 @@ app.delete("/messages/:id", authenticateUser, async (req, res) => {
 
 
  //Chat
-
- //check the authorization first
  //make sure it goes to database
 
-/*app.post("/api/chat", authenticateUser, async (req, res) => {
+ app.post("/api/chat", async (req, res) => {
   try {
-    const user = req.user; //rec. message
-    const userMessage = req.body.message; //sends message
-
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-     "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
-
-      },
-      body: JSON.stringify({
-        model: "gpt-3.5-turbo",
-        messages: [
-          {
-            role: "system",
-            content: "You are a helpful coach and assistant that guides the user through the website structure and content and with their intention setting and SMART goal setting. The user is on this webpage because they are creating and setting up their intention and SMART goal to make a change, reach a goal, create a dreamlife. They can have up to three intention + SMART goals at a time."
-          },
-          {
-            role: "user",
-            content: userMessage
-          }
-        ]
-      })
-    });
-
-
-
-    const data = await response.json();
-    res.json(data);
-  } catch (error) {
-    res.status(500).json({ error: "Something went wrong" });
-  }
-});*/
-
-app.post("/api/chat", authenticateUser, async (req, res) => {
-  try {
-    const user = req.user;
+    // Optional user - you do not need to be logged in
+    const user = req.user || null; 
     const userMessage = req.body.message;
 
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -494,31 +465,13 @@ app.post("/api/chat", authenticateUser, async (req, res) => {
       })
     });
 
-    console.log("OpenAI Response Status:", response.status);
-
-    // Check if the response was successful
-    if (!response.ok) {
-      const errorData = await response.text();
-      console.log("OpenAI Error:", errorData);
-      return res.status(response.status).json({ 
-        error: `OpenAI API Error: ${response.status}`,
-        details: errorData 
-      });
-    }
-
     const data = await response.json();
     res.json(data);
   } catch (error) {
-    console.error("Full error:", error);
-    res.status(500).json({ error: "Something went wrong", details: error.message });
+    res.status(500).json({ error: error.message });
   }
 });
 
-//get user info to dashboard
-app.get("/users/me", authenticateUser, (req, res) => {
-  const { name, email, isPublic } = req.user;
-  res.json({ name, email, isPublic });
-});
 
 
 

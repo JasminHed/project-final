@@ -110,6 +110,24 @@ app.post("/sessions", async (req, res) => {
   }
 });
 
+// GET current user
+app.get("/users/me", authenticateUser, async (req, res) => {
+  try {
+    res.status(200).json({
+      success: true,
+      user: {
+        id: req.user._id,
+        name: req.user.name,
+        email: req.user.email,
+        isPublic: req.user.isPublic,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Could not fetch user", error });
+  }
+});
+
+
 
 // Endpoint for private/public
 app.patch("/users/public-status", authenticateUser, async (req, res) => {

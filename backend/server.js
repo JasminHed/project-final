@@ -437,6 +437,7 @@ app.delete("/messages/:id", authenticateUser, async (req, res) => {
 
  //Chat
  //make sure it goes to database
+ // it has to be saved to database
 
  app.post("/api/chat", async (req, res) => {
   try {
@@ -448,6 +449,7 @@ app.delete("/messages/:id", authenticateUser, async (req, res) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        //not the same as the frontend token? Check this. 
         "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
       },
       body: JSON.stringify({
@@ -455,6 +457,7 @@ app.delete("/messages/:id", authenticateUser, async (req, res) => {
         messages: [
           {
             role: "system",
+            //make it more detailed, about the user message back and forth
             content: "You are a helpful coach and assistant that guides the user through the website structure and content and with their intention setting and SMART goal setting. The user is on this webpage because they are creating and setting up their intention and SMART goal to make a change, reach a goal, create a dreamlife. They can have up to three intention + SMART goals at a time."
           },
           {

@@ -439,7 +439,77 @@ app.delete("/messages/:id", authenticateUser, async (req, res) => {
  //make sure it goes to database
  // it has to be saved to database
 
- app.post("/api/chat", async (req, res) => {
+
+ import Chat from "./models/Chat.js";
+
+app.post("/api/chat", async (req, res) => {
+  try {
+    const user = req.user || null;
+    const { message, sessionId } = req.body;
+
+    // Hitta eller skapa chat session
+    let chat = await Chat.findOne({ sessionId });
+    if (!chat) {
+      chat = new Chat({
+        userId: user?.id || null,
+        sessionId,
+        messages: []
+      });
+    }
+
+    // Lägg till användarmeddelande
+    chat.messages.push({
+      role: "user",
+      content: message
+    });
+
+    // Hämta senaste meddelanden för kontext
+    const recentMessages = chat.messages.slice(-10).map(msg => ({
+      role: msg.role === "user" ? "user" : "assistant",
+      content: msg.content
+    }));
+
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: "gpt-3.5-turbo",
+        messages: [
+          {
+            role: "system",
+            content: "You are Luca, a helpful coach and assistant that guides users through intention setting and SMART goal setting. Keep responses conversational and supportive."
+          },
+          ...recentMessages
+        ]
+      })
+    });
+
+    const data = await response.json();
+    const aiMessage = data.choices?.[0]?.message?.content || "Sorry, I couldn't respond.";
+
+    // Lägg till AI-svar
+    chat.messages.push({
+      role: "assistant",
+      content: aiMessage
+    });
+
+    await chat.save();
+
+    res.json({
+      message: aiMessage,
+      sessionId: chat.sessionId
+    });
+
+  } catch (error) {
+    console.error("Chat error:", error);
+    res.status(500).json({ error: "Could not process chat message" });
+  }
+});
+
+ /*app.post("/api/chat", async (req, res) => {
   try {
     // Optional user - you do not need to be logged in
     const user = req.user || null; 
@@ -473,7 +543,7 @@ app.delete("/messages/:id", authenticateUser, async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-});
+});*/
 
 
 

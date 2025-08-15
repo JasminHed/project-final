@@ -1,18 +1,18 @@
 import React from "react";
 import styled from "styled-components";
 
+//style with grid on tablet + desktop
+
 const Description = styled.div`
   margin: 20px auto;
   max-width: 90%;
 
   @media (min-width: 668px) {
-    max-width: 600px;
     margin-bottom: 50px;
     margin-top: 50px;
   }
 
   @media (min-width: 1024px) {
-    max-width: 900px;
     margin-bottom: 80px;
     margin-top: 80px;
   }
@@ -27,6 +27,26 @@ const Img = styled.img`
   object-fit: cover;
 `;
 
+const GridWrapper = styled.div`
+  display: grid;
+  gap: 20px;
+
+  @media (min-width: 668px) {
+    grid-template-columns: repeat(3, 1fr);
+    width: 700px;
+    margin-bottom: 40px;
+    padding: 10px 16px;
+    margin-right: 30px;
+  }
+
+  @media (min-width: 1024px) {
+    margin: 0 auto;
+    grid-template-columns: repeat(3, 1fr);
+    width: 1000px;
+    margin-bottom: 70px;
+  }
+`;
+
 const About = () => {
   return (
     <Description>
@@ -34,30 +54,30 @@ const About = () => {
         src="/assets/About.png"
         alt="A graphic image showing a heart writing notes on a desk"
       />
-      <p>
-        The Intention Hub is a digital space and personal growth tool designed
-        to help you slow down, reflect, set intentions, define doable goals and
-        actually follow through. All supported by SMART goals, an AI bot, a
-        progress dashboard and an encouraging community.
-      </p>
+      <GridWrapper>
+        <p>
+          The Intention Hub is a digital space and personal growth tool designed
+          to help you slow down, reflect, set intentions, define doable goals
+          and actually follow through. All supported by SMART goals, an AI bot,
+          a progress dashboard and an encouraging community.
+        </p>
 
-      <p>
-        Whether you're building better habits, navigating change, or simply
-        looking to live with more clarity, The Intention Hub gives you structure
-        without pressure, and support without overwhelm. It turns your everyday
-        reflections into real momentum, one step, one intention at a time.
-      </p>
+        <p>
+          Whether you're building better habits, navigating change, or simply
+          looking to live with more clarity, The Intention Hub gives you
+          structure without pressure, and support without overwhelm. It turns
+          your everyday reflections into real momentum, one step, one intention
+          at a time.
+        </p>
 
-      <p>
-        Use it to create mindful morning routines, stay on track with personal
-        projects, set boundaries, break old patterns, or commit to long-term
-        goals. Whether it's wellness, creativity, relationships or work-life
-        balance. We hope that the The Intention Hub meets you where you are and
-        grows with you.
-      </p>
-
-      <p>Stay with it. See what shifts.</p>
-
+        <p>
+          Use it to create mindful morning routines, stay on track with personal
+          projects, set boundaries, break old patterns, or commit to long-term
+          goals. Whether it's wellness, creativity, relationships or work-life
+          balance. We hope that the The Intention Hub meets you where you are
+          and grows with you.Stay with it. See what shifts.
+        </p>
+      </GridWrapper>
       <p>
         I'm Jasmin Hedlund — the creator behind this site. I've always been
         passionate about personal and professional growth, both in my own life
@@ -66,16 +86,7 @@ const About = () => {
         through. With The Intention Hub, I wanted to create a platform that
         makes that process feel simple, supported and meaningful, a space where
         more people can discover their potential and learn how to turn it into
-        real, lasting action. This project is created with SMART goals, first
-        introduced by George T. Doran and is inspired by Female Invest App.
-      </p>
-      <p>
-        Special thanks to Daniel Montero, Senior Product Designer at Funnel for
-        support in user design.
-      </p>
-      <p>
-        Special thanks to Varvara Slugina, fellow bootcamp student for support
-        in design.
+        real, lasting action.
       </p>
     </Description>
   );

@@ -2,6 +2,7 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
+import { useUserStore } from "../store/UserStore";
 import { Message } from "../styling/LoadingMessage.jsx";
 
 //the old post must be able to be deleted somehow, chek on that
@@ -108,11 +109,13 @@ const Img = styled.img`
 //Community → fetches all posts →
 //loops through posts and passes each post to CommunityPost
 //CommunityPost renders a "card" with like/comment functionality
+//Delete button only for user who made the comment
 
 const CommunityPost = ({ post }) => {
   const [likes, setLikes] = useState(post.likes || 0);
   const [newComment, setNewComment] = useState("");
   const [comments, setComments] = useState(post.comments || []);
+  const { user: currentUser } = useUserStore();
 
   const handleLike = () => {
     fetch(`${API_BASE_URL}/community-posts/${post._id}/like`, {
@@ -238,9 +241,11 @@ const CommunityPost = ({ post }) => {
                   <strong>{comment.userName}</strong>
                 </p>
               )}
-              <CommentButton onClick={() => handleDeleteComment(comment._id)}>
-                Delete comment
-              </CommentButton>
+              {comment.userName === currentUser.name && (
+                <CommentButton onClick={() => handleDeleteComment(comment._id)}>
+                  Delete comment
+                </CommentButton>
+              )}
             </CommentItem>
           ))}
         </div>

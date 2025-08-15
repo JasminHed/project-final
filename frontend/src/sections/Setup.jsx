@@ -191,9 +191,8 @@ const Setup = () => {
               </ul>
 
               <Label htmlFor="intention">
-                Write your intention. Based on your reflections above, write
-                your main intention/goal. It can be broad, you will specify how
-                to get there in your SMART goals.
+                Based on your reflections above, write your intention. It can be
+                broad, you will specify how to get there in your SMART goals.
               </Label>
 
               <Textarea

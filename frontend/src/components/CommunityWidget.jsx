@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
+//placement on mobile and styling, more widgety?
+
 const Widget = styled.div`
   position: absolute;
   top: 1200px;

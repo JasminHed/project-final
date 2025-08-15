@@ -3,6 +3,8 @@ import styled from "styled-components";
 
 import { FormCard, Textarea } from "../styling/FormCard.jsx";
 
+//Add more taglabels, style different
+
 const Fieldset = styled.fieldset`
   border: none;
   margin: 0;

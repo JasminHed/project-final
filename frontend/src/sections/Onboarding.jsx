@@ -80,11 +80,10 @@ const Onboarding = ({ goBack, signUpRef, autoStart = false }) => {
         <>
           <article>
             <p>
-              Visualizing your dream life isn’t just a pleasant daydream, it’s a
-              powerful tool for making clear, meaningful decisions. Ask
-              yourself: What matters most in your life? Whether it’s family,
-              career, travel, or something else, your answers reveal your core
-              values.
+              Visualizing your dream life is a powerful tool for making clear,
+              meaningful decisions. Ask yourself: What matters most in your
+              life? Whether it’s family, career, travel, or something else, your
+              answers reveal your core values.
             </p>
             <p>
               Picture this dream life in detail. Where you live, what you do,
@@ -92,11 +91,6 @@ const Onboarding = ({ goBack, signUpRef, autoStart = false }) => {
               taking a course or planning a trip, and long-term goals like early
               retirement or launching a passion project. Keep these visions
               close, they will guide your journey.
-            </p>
-            <p>
-              Remember, these visions and goals can touch every part of your
-              life — career changes, healthier habits, lifestyle upgrades, or
-              anything else that matters to you.
             </p>
           </article>
         </>
@@ -112,12 +106,10 @@ const Onboarding = ({ goBack, signUpRef, autoStart = false }) => {
               dreaming and doing and it all starts with setting focused goals.
             </p>
             <p>
-              Achieving a goal opens up new opportunities and increases your
-              motivation. There is never a “wrong time” to set new goals. With
-              determination and discipline, success is possible. Goals help turn
-              big ideas into clear, focused steps that guide your actions.
-              Tracking progress and ticking off completed goals builds momentum
-              and keeps your motivation alive.
+              There is never a “wrong time” to set new goals. With determination
+              and discipline, success is possible. Tracking progress and ticking
+              off completed goals builds momentum and keeps your motivation
+              alive.
             </p>
           </article>
         </>

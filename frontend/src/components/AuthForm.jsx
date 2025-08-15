@@ -1,6 +1,5 @@
 import { useRef, useState } from "react";
 
-import useClickOutside from "../hooks/useClickOutside.jsx";
 import { Container, PopUp } from "../styling/FormStyling.jsx";
 import LogIn from "./LogIn";
 import SignUp from "./SignUp";
@@ -17,20 +16,11 @@ const AuthForm = ({
 }) => {
   const [showLogin, setShowLogin] = useState(false);
 
-  const ref = useRef(null);
-  useClickOutside(ref, () => {
-    setIsOpen(false); // Close popup when clicking outside
-  });
-
   return (
     <>
       {isOpen && (
         <PopUp role="dialog" aria-modal="true" aria-label="Log In or Sign Up">
-          <Container
-            ref={ref}
-            onClick={(e) => e.stopPropagation()}
-            tabIndex="-1"
-          >
+          <Container tabIndex="-1">
             {!showLogin ? (
               <SignUp
                 setShowLogin={setShowLogin}

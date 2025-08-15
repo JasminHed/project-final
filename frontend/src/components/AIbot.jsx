@@ -1,9 +1,9 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
 
-import useClickOutside from "../hooks/useClickOutside.jsx";
-
 //not working
+//no authorization
+//add icon
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
 
 const ChatIcon = styled.button`
@@ -37,7 +37,6 @@ const ChatContainer = styled.div`
   right: 30px;
   width: 280px;
   z-index: 9999;
-  background: rgba(54, 69, 79, 0.95);
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
@@ -108,15 +107,12 @@ const Input = styled.input`
   }
 `;
 
+//fetching from backend. No authorization
 const AIbot = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const chatRef = useRef();
-
-  // Close chat when clicking outside
-  useClickOutside(chatRef, () => setIsOpen(false));
 
   const sendMessage = () => {
     if (!input.trim()) return;
@@ -132,38 +128,6 @@ const AIbot = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-      body: JSON.stringify({ message: userInput }),
-    })
-      .then(async (response) => {
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(`HTTP ${response.status}: ${errorData.error}`);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        const aiResponse =
-          data.choices?.[0]?.message?.content || "Sorry, I couldn't respond.";
-        setMessages((prev) => [...prev, { text: aiResponse, isUser: false }]);
-      })
-      .catch((error) => {
-        console.error("Chat error:", error);
-        setMessages([
-          ...newMessages,
-          { text: `Error: ${error.message}`, isUser: false },
-        ]);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-    //fetching from backend
-    /*fetch(`${API_BASE_URL}/api/chat`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
       body: JSON.stringify({ message: userInput }),
     })
@@ -181,9 +145,9 @@ const AIbot = () => {
       })
       .finally(() => {
         setLoading(false);
-      });*/
+      });
   };
-  //users can press enter
+  //send message w. enter
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       sendMessage();
@@ -194,8 +158,8 @@ const AIbot = () => {
     <>
       <ChatIcon onClick={() => setIsOpen(!isOpen)}></ChatIcon>
 
-      <ChatContainer ref={chatRef} $isOpen={isOpen}>
-        <h3>AI Assistant</h3>
+      <ChatContainer $isOpen={isOpen}>
+        <h3>Luca</h3>
 
         <MessagesContainer>
           {messages.map((msg, index) => (
@@ -203,7 +167,7 @@ const AIbot = () => {
               <strong>{msg.isUser ? "You" : "AI"}:</strong> {msg.text}
             </Message>
           ))}
-          {loading && <Message>AI is typing...</Message>}
+          {loading && <Message>Luca is typing...</Message>}
         </MessagesContainer>
 
         <InputContainer>

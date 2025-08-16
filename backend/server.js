@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 import CommunityPost from "./models/CommunityPost.js";
 import Goal from "./models/Goal.js"
 import User from "./models/User.js";
+import Chat from "./models/Chat.js";
 
 dotenv.config();
 

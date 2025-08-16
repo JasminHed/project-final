@@ -89,7 +89,7 @@ const LogoutMessage = styled.p`
   transform: translateX(-50%);
   color: var(--color-success);
 
-  @media (min-width: 669px) {
+  @media (min-width: 668px) {
     position: absolute;
     top: 30px;
     width: 100%;

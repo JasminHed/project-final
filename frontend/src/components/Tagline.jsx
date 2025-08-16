@@ -37,35 +37,43 @@ const Tagline = styled.li`
   }
 `;
 
+const Note = styled.p`
+  text-align: center;
+  font-size: 16px;
+  margin-bottom: 40px;
+  max-width: 280px;
+
+  @media (min-width: 668px) {
+    width: 100%;
+    max-width: none;
+  }
+`;
+
 const Taglines = () => {
   return (
     <>
       <section>
         <TaglineSection>
           <Tagline>
-            <strong> 💡 Learn about </strong>
+            <strong> Learn about </strong>
             intentions and SMART goals to get you started with confidence today.
           </Tagline>
           <Tagline>
-            <strong> 💡 Access your dashboard </strong> that contains your
+            <strong> Access your dashboard </strong> that contains your
             intention and goals, progress chart and journal section for complete
             tracking.
           </Tagline>
-          <Tagline>
-            <strong> 💡 From intention to action </strong> — with tools designed
-            for personal or professional growth, without the overwhelm.
-          </Tagline>
 
           <Tagline>
-            <strong> 💡 Get access to your AI Coach </strong> for motivation,
+            <strong> Get access to your AI Coach </strong> for motivation,
             check-ins and support on your journey.
           </Tagline>
           <Tagline>
-            <strong> 💡 Create and set up your intentions and goals </strong>
+            <strong> Create and set up your intentions and goals </strong>
             Build habits that last with clear structure and purpose.
           </Tagline>
           <Tagline>
-            <strong> 💡 Join the community </strong> where posts on users
+            <strong> Join the community </strong> where posts on users
             intentions and goals are shared for further support and
             accountability.
           </Tagline>
@@ -75,6 +83,10 @@ const Taglines = () => {
             to Intention Hub.
           </Tagline>
         </TaglineSection>
+        <Note>
+          The Intention Hub is a digital space and personal growth tool designed
+          to help you slow down, reflect, set intentions, define doable goals
+        </Note>
       </section>
     </>
   );

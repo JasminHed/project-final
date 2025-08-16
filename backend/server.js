@@ -4,14 +4,14 @@ import dotenv from 'dotenv';
 import express from "express";
 import mongoose from "mongoose";
 
+import Chat from "./models/Chat.js";
 import CommunityPost from "./models/CommunityPost.js";
 import Goal from "./models/Goal.js"
 import User from "./models/User.js";
-import Chat from "./models/Chat.js";
 
 dotenv.config();
 
-//Anyone can delete a comment or edit a comment right now in community
+
 
 //Connects to mongoDB database
 const mongoUrl = process.env.MONGO_URL || "mongodb://localhost/final-project";
@@ -455,42 +455,39 @@ app.delete("/messages/:id", authenticateUser, async (req, res) => {
 
 
  //Chat
- //make sure it goes to database
- // it has to be saved to database
 
  app.post("/api/chat", async (req, res) => {
   try {
-    console.log("=== CHAT REQUEST START ===");
-    console.log("Request body:", req.body);
+   
     
     const user = req.user || null;
     const { message, sessionId } = req.body;
 
     if (!message || !sessionId) {
-      console.log("Missing message or sessionId");
+      
       return res.status(400).json({ error: "Message and sessionId required" });
     }
 
-    // Hitta eller skapa chat session
+
     let chat = await Chat.findOne({ sessionId });
     if (!chat) {
-      console.log("Creating new chat session:", sessionId);
+     
       chat = new Chat({
         userId: user?.id || null,
         sessionId,
         messages: []
       });
     } else {
-      console.log("Found existing chat with", chat.messages.length, "messages");
+    
     }
 
-    // Lägg till användarmeddelande
+   
     chat.messages.push({
       role: "user",
       content: message
     });
 
-    // Hämta senaste meddelanden för kontext
+    
     const recentMessages = chat.messages.slice(-10).map(msg => ({
       role: msg.role === "user" ? "user" : "assistant",
       content: msg.content
@@ -519,7 +516,7 @@ app.delete("/messages/:id", authenticateUser, async (req, res) => {
       })
     });
 
-    console.log("OpenAI response status:", response.status);
+  
 
     if (!response.ok) {
       const errorText = await response.text();
@@ -528,7 +525,7 @@ app.delete("/messages/:id", authenticateUser, async (req, res) => {
     }
 
     const data = await response.json();
-    console.log("OpenAI response data:", JSON.stringify(data, null, 2));
+   
 
     const aiMessage = data.choices?.[0]?.message?.content || "Sorry, I couldn't respond.";
     
@@ -536,16 +533,14 @@ app.delete("/messages/:id", authenticateUser, async (req, res) => {
       console.error("No valid response from OpenAI:", data);
     }
 
-    // Lägg till AI-svar
+   
     chat.messages.push({
       role: "assistant",
       content: aiMessage
     });
 
     await chat.save();
-    console.log("Chat saved successfully");
-
-    console.log("=== CHAT REQUEST END ===");
+    
     
     res.json({
       message: aiMessage,
@@ -560,113 +555,7 @@ app.delete("/messages/:id", authenticateUser, async (req, res) => {
   }
 });
 
- /*import Chat from "./models/Chat.js";
-
-app.post("/api/chat", async (req, res) => {
-  try {
-    const user = req.user || null;
-    const { message, sessionId } = req.body;
-
-    // Hitta eller skapa chat session
-    let chat = await Chat.findOne({ sessionId });
-    if (!chat) {
-      chat = new Chat({
-        userId: user?.id || null,
-        sessionId,
-        messages: []
-      });
-    }
-
-    // Lägg till användarmeddelande
-    chat.messages.push({
-      role: "user",
-      content: message
-    });
-
-    // Hämta senaste meddelanden för kontext
-    const recentMessages = chat.messages.slice(-10).map(msg => ({
-      role: msg.role === "user" ? "user" : "assistant",
-      content: msg.content
-    }));
-
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
-      },
-      body: JSON.stringify({
-        model: "gpt-3.5-turbo",
-        messages: [
-          {
-            role: "system",
-            content: "You are Luca, a helpful coach and assistant that guides users through intention setting and SMART goal setting. Keep responses conversational and supportive."
-          },
-          ...recentMessages
-        ]
-      })
-    });
-
-    const data = await response.json();
-    const aiMessage = data.choices?.[0]?.message?.content || "Sorry, I couldn't respond.";
-
-    // Lägg till AI-svar
-    chat.messages.push({
-      role: "assistant",
-      content: aiMessage
-    });
-
-    await chat.save();
-
-    res.json({
-      message: aiMessage,
-      sessionId: chat.sessionId
-    });
-
-  } catch (error) {
-    console.error("Chat error:", error);
-    res.status(500).json({ error: "Could not process chat message" });
-  }
-});*/
-
- /*app.post("/api/chat", async (req, res) => {
-  try {
-    // Optional user - you do not need to be logged in
-    const user = req.user || null; 
-    const userMessage = req.body.message;
-
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        //not the same as the frontend token? Check this. 
-        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
-      },
-      body: JSON.stringify({
-        model: "gpt-3.5-turbo",
-        messages: [
-          {
-            role: "system",
-            //make it more detailed, about the user message back and forth
-            content: "You are a helpful coach and assistant that guides the user through the website structure and content and with their intention setting and SMART goal setting. The user is on this webpage because they are creating and setting up their intention and SMART goal to make a change, reach a goal, create a dreamlife. They can have up to three intention + SMART goals at a time."
-          },
-          {
-            role: "user",
-            content: userMessage
-          }
-        ]
-      })
-    });
-
-    const data = await response.json();
-    res.json(data);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});*/
-
-
-
+ 
 
 // Start the server
 app.listen(port, () => {

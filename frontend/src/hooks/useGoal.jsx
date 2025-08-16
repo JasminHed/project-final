@@ -15,7 +15,16 @@ const useGoal = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        const filteredGoals = data
+        // array or data of goals?
+        const goalsArray = Array.isArray(data) ? data : data.goals;
+        if (!Array.isArray(goalsArray)) {
+          console.error("Unexpected goals data format:", data);
+          setGoals([]);
+          setLoading(false);
+          return;
+        }
+
+        const filteredGoals = goalsArray
           .filter((goal) => !goal.completed)
           .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
           .slice(0, 3);

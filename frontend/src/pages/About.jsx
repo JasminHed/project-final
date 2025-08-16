@@ -31,6 +31,7 @@ const GridWrapper = styled.div`
   display: grid;
   gap: 20px;
   margin-bottom: 20px;
+  //max-width: 250px;
 
   @media (min-width: 668px) {
     grid-template-columns: repeat(3, 1fr);
@@ -58,6 +59,14 @@ const GridBox = styled.div`
   &:hover {
     transform: translateY(-4px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+`;
+
+const Intro = styled.div`
+  max-width: 280px;
+
+  @media (min-width: 668px) {
+    max-width: none;
   }
 `;
 
@@ -98,16 +107,18 @@ const About = () => {
           </p>
         </GridBox>
       </GridWrapper>
-      <p>
-        I'm Jasmin Hedlund — the creator behind this site. I've always been
-        passionate about personal and professional growth, both in my own life
-        and in others. I regularly use tools like this myself and know how
-        powerful it can be to reflect, set clear intentions, and actually follow
-        through. With The Intention Hub, I wanted to create a platform that
-        makes that process feel simple, supported and meaningful, a space where
-        more people can discover their potential and learn how to turn it into
-        real, lasting action.
-      </p>
+      <Intro>
+        <p>
+          I'm Jasmin Hedlund — the creator behind this site. I've always been
+          passionate about personal and professional growth, both in my own life
+          and in others. I regularly use tools like this myself and know how
+          powerful it can be to reflect, set clear intentions, and actually
+          follow through. With The Intention Hub, I wanted to create a platform
+          that makes that process feel simple, supported and meaningful, a space
+          where more people can discover their potential and learn how to turn
+          it into real, lasting action.
+        </p>
+      </Intro>
     </Description>
   );
 };

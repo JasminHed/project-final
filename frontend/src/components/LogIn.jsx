@@ -2,7 +2,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useUserStore } from "../store/UserStore";
-import { ErrorDiv, Input, Label, LinkSpan, RegisterLink } from "../styling/FormStyling.jsx";
+import {
+  ErrorDiv,
+  Input,
+  Label,
+  LinkSpan,
+  RegisterLink,
+} from "../styling/FormStyling.jsx";
 
 //aria labels added + sematic html
 

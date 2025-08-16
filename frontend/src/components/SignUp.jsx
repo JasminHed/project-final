@@ -2,7 +2,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useUserStore } from "../store/UserStore";
-import { ErrorDiv, Input, Label, LinkSpan, RegisterLink } from "../styling/FormStyling.jsx";
+import {
+  ErrorDiv,
+  Input,
+  Label,
+  LinkSpan,
+  RegisterLink,
+} from "../styling/FormStyling.jsx";
 
 //semantic html + aria added
 
@@ -23,6 +29,7 @@ const SignUp = ({
   // Navigate hook for routing
   const navigate = useNavigate();
   const { login } = useUserStore();
+  const [fieldErrors, setFieldErrors] = useState({});
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -80,15 +87,37 @@ const SignUp = ({
 
   // Event handler functions
   const handleName = (e) => {
-    setFormData({ ...formData, name: e.target.value });
+    const value = e.target.value;
+    setFormData({ ...formData, name: value });
+
+    let error = "";
+    if (value.length > 0 && value.length < 3) error = "Minimum 3 characters";
+    if (value.length > 20) error = "Maximum 20 characters";
+
+    setFieldErrors((prev) => ({ ...prev, name: error }));
   };
 
   const handleEmail = (e) => {
-    setFormData({ ...formData, email: e.target.value });
+    const value = e.target.value;
+    setFormData({ ...formData, email: value });
+
+    let error = "";
+    if (value.length > 0 && !value.includes("@")) {
+      error = "Must contain @";
+    }
+
+    setFieldErrors((prev) => ({ ...prev, email: error }));
   };
 
+  //validates, checks if password is correct
   const handlePassword = (e) => {
-    setFormData({ ...formData, password: e.target.value });
+    const value = e.target.value;
+    setFormData({ ...formData, password: value });
+
+    let error = "";
+    if (value.length > 0 && value.length < 5) error = "Minimum 5 characters";
+
+    setFieldErrors((prev) => ({ ...prev, password: error }));
   };
 
   const handleShowLogin = () => {
@@ -106,9 +135,14 @@ const SignUp = ({
           name="name"
           value={formData.name}
           required
+          minLength="3"
+          maxLength="20"
           aria-describedby={error ? "signup-error" : undefined}
           aria-invalid={!!error}
         />
+        {fieldErrors.name && (
+          <ErrorDiv role="alert">{fieldErrors.name}</ErrorDiv>
+        )}
         <Label htmlFor="signup-email">Email</Label>
         <Input
           id="signup-email"
@@ -120,6 +154,9 @@ const SignUp = ({
           aria-describedby={error ? "signup-error" : undefined}
           aria-invalid={!!error}
         />
+        {fieldErrors.email && (
+          <ErrorDiv role="alert">{fieldErrors.email}</ErrorDiv>
+        )}
         <Label htmlFor="signup-password">Password</Label>
         <Input
           id="signup-password"
@@ -131,6 +168,9 @@ const SignUp = ({
           aria-describedby={error ? "signup-error" : undefined}
           aria-invalid={!!error}
         />
+        {fieldErrors.password && (
+          <ErrorDiv role="alert">{fieldErrors.password}</ErrorDiv>
+        )}
         {error && (
           <ErrorDiv id="signup-error" aria-live="polite">
             {error}

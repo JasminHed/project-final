@@ -104,16 +104,23 @@ const Dashboard = () => {
   // user-fetching
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
-    fetch(`${API_BASE_URL}/users/me`, {
-      headers: { Authorization: token },
-    })
-      .then((res) => res.json())
-      .then((userData) => setUser(userData));
-  }, []);
 
-  const handleNavigateToSetup = () => {
-    navigate("/setup");
-  };
+    if (!token) return;
+
+    fetch(`${API_BASE_URL}/users/me`, {
+      headers: {
+        Authorization: token,
+      },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        return res.json();
+      })
+      .then((data) => {
+        if (data.success) setUser(data.user);
+      })
+      .catch((err) => console.error("Error fetching user:", err));
+  }, []);
 
   //handlers
   const handleIntentionChange = (goalId) => (e) => {

@@ -39,4 +39,9 @@ export const Textarea = styled.textarea`
   &:focus {
     outline: 2px solid var(--color-focus);
   }
+  //this is to remove the default styling of the textbox
+  &:invalid {
+    border-color: var(--color-focus);
+    box-shadow: none;
+  }
 `;

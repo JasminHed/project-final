@@ -1,8 +1,6 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
 
-//not working
-//no authorization
 //add icon
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
 
@@ -107,12 +105,12 @@ const Input = styled.input`
   }
 `;
 
-//fetching from backend. No authorization
 const AIbot = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [sessionId] = useState(() => `session_${Date.now()}_${Math.random()}`);
 
   const sendMessage = () => {
     if (!input.trim()) return;
@@ -129,13 +127,14 @@ const AIbot = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ message: userInput }),
+      body: JSON.stringify({
+        message: userInput,
+        sessionId: sessionId,
+      }),
     })
       .then((response) => response.json())
       .then((data) => {
-        const aiResponse =
-          data.choices?.[0]?.message?.content || "Sorry, I couldn't respond.";
-        setMessages((prev) => [...prev, { text: aiResponse, isUser: false }]);
+        setMessages((prev) => [...prev, { text: data.message, isUser: false }]);
       })
       .catch(() => {
         setMessages([
@@ -147,7 +146,7 @@ const AIbot = () => {
         setLoading(false);
       });
   };
-  //send message w. enter
+
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       sendMessage();
@@ -164,7 +163,7 @@ const AIbot = () => {
         <MessagesContainer>
           {messages.map((msg, index) => (
             <Message key={index} $isUser={msg.isUser}>
-              <strong>{msg.isUser ? "You" : "AI"}:</strong> {msg.text}
+              <strong>{msg.isUser ? "You" : "Luca"}:</strong> {msg.text}
             </Message>
           ))}
           {loading && <Message>Luca is typing...</Message>}

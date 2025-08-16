@@ -64,6 +64,7 @@ export const Input = styled.input`
 export const ErrorDiv = styled.div`
   color: var(--color-error);
   margin-bottom: 8px;
+  min-height: 20px;
   margin-top: 4px;
   font-size: 14px;
 `;

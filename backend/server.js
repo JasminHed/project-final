@@ -457,8 +457,109 @@ app.delete("/messages/:id", authenticateUser, async (req, res) => {
  //make sure it goes to database
  // it has to be saved to database
 
+ app.post("/api/chat", async (req, res) => {
+  try {
+    console.log("=== CHAT REQUEST START ===");
+    console.log("Request body:", req.body);
+    
+    const user = req.user || null;
+    const { message, sessionId } = req.body;
 
- import Chat from "./models/Chat.js";
+    if (!message || !sessionId) {
+      console.log("Missing message or sessionId");
+      return res.status(400).json({ error: "Message and sessionId required" });
+    }
+
+    // Hitta eller skapa chat session
+    let chat = await Chat.findOne({ sessionId });
+    if (!chat) {
+      console.log("Creating new chat session:", sessionId);
+      chat = new Chat({
+        userId: user?.id || null,
+        sessionId,
+        messages: []
+      });
+    } else {
+      console.log("Found existing chat with", chat.messages.length, "messages");
+    }
+
+    // Lägg till användarmeddelande
+    chat.messages.push({
+      role: "user",
+      content: message
+    });
+
+    // Hämta senaste meddelanden för kontext
+    const recentMessages = chat.messages.slice(-10).map(msg => ({
+      role: msg.role === "user" ? "user" : "assistant",
+      content: msg.content
+    }));
+
+    console.log("Sending to OpenAI:", {
+      messageCount: recentMessages.length,
+      apiKey: process.env.OPENAI_API_KEY ? "Present" : "Missing"
+    });
+
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: "gpt-3.5-turbo",
+        messages: [
+          {
+            role: "system",
+            content: "You are Luca, a helpful coach and assistant that guides users through intention setting and SMART goal setting. Keep responses conversational and supportive."
+          },
+          ...recentMessages
+        ]
+      })
+    });
+
+    console.log("OpenAI response status:", response.status);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("OpenAI API error:", errorText);
+      throw new Error(`OpenAI API error: ${response.status} - ${errorText}`);
+    }
+
+    const data = await response.json();
+    console.log("OpenAI response data:", JSON.stringify(data, null, 2));
+
+    const aiMessage = data.choices?.[0]?.message?.content || "Sorry, I couldn't respond.";
+    
+    if (aiMessage === "Sorry, I couldn't respond.") {
+      console.error("No valid response from OpenAI:", data);
+    }
+
+    // Lägg till AI-svar
+    chat.messages.push({
+      role: "assistant",
+      content: aiMessage
+    });
+
+    await chat.save();
+    console.log("Chat saved successfully");
+
+    console.log("=== CHAT REQUEST END ===");
+    
+    res.json({
+      message: aiMessage,
+      sessionId: chat.sessionId
+    });
+    
+  } catch (error) {
+    console.error("=== CHAT ERROR ===");
+    console.error("Error details:", error);
+    console.error("Stack trace:", error.stack);
+    res.status(500).json({ error: "Could not process chat message: " + error.message });
+  }
+});
+
+ /*import Chat from "./models/Chat.js";
 
 app.post("/api/chat", async (req, res) => {
   try {
@@ -525,7 +626,7 @@ app.post("/api/chat", async (req, res) => {
     console.error("Chat error:", error);
     res.status(500).json({ error: "Could not process chat message" });
   }
-});
+});*/
 
  /*app.post("/api/chat", async (req, res) => {
   try {

@@ -9,13 +9,13 @@ const ProfileSection = styled.section`
   margin: 20px auto;
   border-radius: 16px;
   max-width: 340px;
-  min-height: 450px;
+  min-height: 400px;
   transition: all 0.3s ease;
 
   @media (min-width: 669px) {
     max-width: 400px;
     padding: 32px 24px;
-    min-height: 480px;
+    min-height: 400px;
   }
 `;
 
@@ -38,7 +38,7 @@ const UserEmail = styled.p`
 const StatusCard = styled.div`
   padding: 20px;
   border-radius: 12px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   background-color: ${({ $isPublic }) =>
     $isPublic ? "rgba(112, 101, 141, 0.1)" : "rgba(0, 77, 64, 0.1)"};
   border: 1px solid
@@ -187,3 +187,5 @@ const ProfileSetting = ({ user, onOptionSelect }) => {
 };
 
 export default ProfileSetting;
+
+//kanske kan man ha denna på mitten men som en collapsabel, ser konstigt ut på sidan, typ i mitten fast den öppnas och stängs genom att klikca på länk namn Profile Details?

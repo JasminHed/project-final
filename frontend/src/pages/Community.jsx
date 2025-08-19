@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { useUserStore } from "../store/UserStore";
+import { HeroImage } from "../styling/HeroImage.jsx";
 import { Message } from "../styling/LoadingMessage.jsx";
 
 //the old post must be able to be deleted somehow, chek on that
@@ -26,11 +27,12 @@ const Container = styled.div`
 `;
 
 const HeaderSection = styled.div`
-  margin-bottom: 32px;
-  text-align: center;
+  padding: 40px 16px 60px;
+  max-width: 800px;
+  margin: 0 auto;
 
   @media (min-width: 669px) {
-    margin-bottom: 48px;
+    padding: 60px 32px 80px;
   }
 `;
 
@@ -311,7 +313,7 @@ const Community = () => {
 
   return (
     <>
-      <Img src="/assets/Dashboard.jpg" alt="Hand with flowers" />
+      <HeroImage src="/assets/Dashboard.jpg" alt="Hand with flowers" />
       <Container>
         <main id="main-content">
           <HeaderSection>
@@ -320,18 +322,11 @@ const Community = () => {
             </header>
             <p>
               All posts you see here are public, meaning every user can view,
-              like, and comment on your intentions and goals.{" "}
-            </p>
-
-            <p>
-              The purpose of this community is to build connection along the
-              journey. We're here to cheer each other on, offer support, and
-              share in the ups and downs.{" "}
-            </p>
-
-            <p>
-              Jump in, join the energy, and remember — you're never alone on
-              your path.
+              like, and comment on your intentions and goals. The purpose of
+              this community is to build connection along the journey. We're
+              here to cheer each other on, offer support, and share in the ups
+              and downs. Jump in, join the energy, and remember — you're never
+              alone on your path.
             </p>
           </HeaderSection>
 

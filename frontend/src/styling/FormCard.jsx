@@ -9,6 +9,7 @@ export const FormCard = styled.div`
   padding: 20px;
   margin-bottom: 15px;
   box-shadow: rgba(0, 0, 0, 0.1);
+  min-height: 200px;
 
   ul {
     margin-top: 20px;

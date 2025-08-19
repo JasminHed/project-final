@@ -2,42 +2,36 @@
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyles = createGlobalStyle`
-   //Light mode (default) 
  :root {
   --color-text-primary: #000000;          
-  --color-text-link: #70658d;             
-  --color-button-bg: #004d40;            
+  --color-text-link: #6b7280;             
+  --color-button-bg: #475569;            
   --color-button-text: #FFFFFF;           
-  --color-button-hover: #aa6670;       
-  --color-focus: #e47885;                 
+  --color-button-hover: #334155;          
+  --color-focus: #64748b;                 
   --color-background: #FFFFFF;  
-  --color-error: #1565C0;    
-  --color-success: #0D6EFD; 
-  --color-chart-active: #004d40;    
-  --color-chart-completed: #e47885;  
- --color-card-background: #f9f9f9; 
-
-
+  --color-error: #3b82f6;                 
+  --color-success: #1e40af;               
+  --color-chart-active: #1e293b;          
+  --color-chart-completed: #d1d5db;       
+  --color-card-background: #f8fafc;       
 }
 
-
-  //Dark mode overrides 
 .dark {
   --color-text-primary: #FFFFFF;          
-  --color-text-link: #fac04b;            
-  --color-button-bg: #004d40;           
-  --color-button-text: #FFFFFF;           
-  --color-button-hover: #e47885;        
-  --color-focus: #fac04b;                 
+  --color-text-link: #9ca3af;             
+  --color-button-bg: #e2e8f0;             
+  --color-button-text: #1e293b;           
+  --color-button-hover: #cbd5e1;          
+  --color-focus: #94a3b8;                 
   --color-background: #000000;  
-  --color-error: #74b3ff;   
-  --color-success: #4da6ff;  
-  --color-chart-active: #004d40;
-  --color-chart-completed: #fac04b;
-  --color-card-background: #121212;
-  
-       
+  --color-error: #60a5fa;                 
+  --color-success: #3b82f6;               
+  --color-chart-active: #e2e8f0;          
+  --color-chart-completed: #4b5563;       
+  --color-card-background: #0f172a;       
 }
+
 
 
 

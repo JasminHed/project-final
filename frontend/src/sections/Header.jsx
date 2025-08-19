@@ -8,6 +8,7 @@ import { useUserStore } from "../store/UserStore";
 
 const HeaderContainer = styled.header`
   position: relative;
+  min-height: 200px;
   padding: 80px;
   background: var(--color-background);
   z-index: 100;
@@ -58,7 +59,7 @@ const MobileNav = styled.nav`
   display: flex;
   flex-direction: column;
   gap: 15px;
-  transition: top 0.3s ease;
+  transition: top 0.6s ease;
   z-index: 102;
 
   @media (min-width: 668px) {

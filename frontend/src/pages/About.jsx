@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-//about måste ha ny bild
+import { HeroImage } from "../styling/HeroImage.jsx";
 
 const Description = styled.div`
   margin: 20px auto;
@@ -17,20 +17,6 @@ const Description = styled.div`
     margin-top: 96px;
   }
 `;
-const Img = styled.img`
-  width: 95%;
-  max-height: 400px;
-  margin: 32px auto;
-  display: block;
-  object-fit: cover;
-  border-radius: 16px;
-
-  @media (min-width: 669px) {
-    width: 100%;
-    max-height: 400px;
-    margin: 48px auto;
-  }
-`;
 
 const GridWrapper = styled.div`
   display: grid;
@@ -38,7 +24,7 @@ const GridWrapper = styled.div`
   margin-bottom: 24px;
 
   @media (min-width: 668px) {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     width: 700px;
     margin-bottom: 48px;
     padding: 16px 20px;
@@ -48,7 +34,7 @@ const GridWrapper = styled.div`
 
   @media (min-width: 1024px) {
     margin: 0 auto;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     width: 1000px;
     margin-bottom: 80px;
     gap: 32px;
@@ -67,22 +53,13 @@ const GridBox = styled.div`
   }
 `;
 
-const Intro = styled.div`
-  max-width: 300px;
-  padding: 24px 20px;
-  border-radius: 16px;
-  border: 1px solid rgba(112, 101, 141, 0.12);
-
-  @media (min-width: 668px) {
-    max-width: none;
-    padding: 28px 32px;
-  }
-`;
-
 const About = () => {
   return (
     <>
-      <Img src="/assets/Dashboard.jpg" alt="Woman sitting with the stars" />
+      <HeroImage
+        src="/assets/Dashboard.jpg"
+        alt="Woman sitting with the stars"
+      />
       <Description>
         <h1>About The Intention Hub</h1>
         <GridWrapper>
@@ -116,22 +93,22 @@ const About = () => {
               what shifts.
             </p>
           </GridBox>
+          <GridBox>
+            <p>
+              I'm Jasmin Hedlund, the creator behind this site. I've always been
+              passionate about personal and professional growth, both in my own
+              life and in others. I regularly use tools like this myself and
+              know how powerful it can be to reflect, set clear intentions, and
+              actually follow through.{" "}
+            </p>
+            <p>
+              With The Intention Hub, I wanted to create a platform that makes
+              that process feel simple, supported and meaningful, a space where
+              more people can discover their potential and learn how to turn it
+              into real, lasting action.
+            </p>
+          </GridBox>
         </GridWrapper>
-        <Intro>
-          <p>
-            I'm Jasmin Hedlund, the creator behind this site. I've always been
-            passionate about personal and professional growth, both in my own
-            life and in others. I regularly use tools like this myself and know
-            how powerful it can be to reflect, set clear intentions, and
-            actually follow through.{" "}
-          </p>
-          <p>
-            With The Intention Hub, I wanted to create a platform that makes
-            that process feel simple, supported and meaningful, a space where
-            more people can discover their potential and learn how to turn it
-            into real, lasting action.
-          </p>
-        </Intro>
       </Description>
     </>
   );

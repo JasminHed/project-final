@@ -24,20 +24,25 @@ const WidgetGrid = styled.section`
 const Widget = styled.div`
   background: var(--card-color-bg);
   color: var(--color-text-primary);
-  padding: 24px 16px;
-  border-radius: 40% 20% 35% 25% / 30% 25% 35% 20%;
-  border: 2px solid rgba(0, 150, 136, 0.6);
+  padding: 16px;
+  border-radius: 12px;
   width: 260px;
   height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   opacity: ${(props) => (props.disabled ? 0.5 : 1)};
-  min-width: 200px;
-  max-width: 300px;
-  text-align: center;
-  transition: transform 0.2s;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* lite lyft-effekt */
+  transition: transform 0.2s, box-shadow 0.2s;
 
   &:hover {
     transform: ${(props) => (props.disabled ? "none" : "translateY(-3px)")};
+    box-shadow: ${(props) =>
+      props.disabled
+        ? "0 4px 10px rgba(0,0,0,0.1)"
+        : "0 8px 16px rgba(0,0,0,0.15)"};
   }
 
   h3 {
@@ -48,9 +53,11 @@ const Widget = styled.div`
 const Count = styled.p`
   margin: 4px 0;
   opacity: 0.9;
+  font-weight: 500;
 `;
 
 const ErrorMessage = styled.p`
+  min-height: 24px;
   font-size: 14px;
   margin-top: 10px;
   text-align: center;

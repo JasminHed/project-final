@@ -11,6 +11,9 @@ import GoalChart from "../components/GoalChart.jsx";
 import { Message } from "../styling/LoadingMessage.jsx";
 import useGoal from "../hooks/useGoal.jsx";
 import Widget from "../components/Widget.jsx";
+import { HeroImage } from "../styling/HeroImage.jsx";
+
+// when you ress save this goal it saves all goals on all cards you have in dahsboard, maybe just make 1 save goal button or change this
 
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
 
@@ -30,8 +33,13 @@ const Container = styled.div`
   }
 
   section[aria-label="Introduction"] {
-    text-align: center;
-    margin: 32px 0;
+    padding: 40px 16px 60px;
+    max-width: 800px;
+    margin: 0 auto;
+
+    @media (min-width: 669px) {
+      padding: 60px 32px 80px;
+    }
 
     p {
       margin-bottom: 20px;
@@ -48,20 +56,6 @@ const GoalsGrid = styled.div`
     grid-template-columns: 1fr 1fr;
     gap: 20px;
     align-items: start;
-  }
-`;
-
-const Img = styled.img`
-  width: 100%;
-  max-height: 400px;
-  margin: 32px auto;
-  display: block;
-  object-fit: cover;
-  border-radius: 16px;
-
-  @media (min-width: 669px) {
-    max-height: 400px;
-    margin: 48px auto;
   }
 `;
 
@@ -180,7 +174,7 @@ const Dashboard = () => {
   return (
     <>
       <main id="main-content">
-        <Img
+        <HeroImage
           src="/assets/Dashboard.jpg"
           alt="Woman sitting with a star shining"
         />
@@ -190,12 +184,10 @@ const Dashboard = () => {
             <p>
               Here you'll see your active goals, up to three at a time —
               designed to keep you focused and purposeful. You can add, edit,
-              and save your goals whenever you like.
-            </p>
-            <p>
-              Choose to make your profile public and your goals will be shared
-              automatically with the community — so others can cheer you on,
-              offer support, and celebrate your progress.
+              and save your goals whenever you like.Choose to make your profile
+              public and your goals will be shared automatically with the
+              community — so others can cheer you on, offer support, and
+              celebrate your progress.
             </p>
             <p>You've got this! One clear step at a time.</p>
           </section>

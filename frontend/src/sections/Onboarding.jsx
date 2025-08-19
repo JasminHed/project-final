@@ -26,19 +26,6 @@ const ModuleContainer = styled.article`
   }
 `;
 
-const Img = styled.img`
-  width: 100%;
-  max-width: 200px;
-  height: auto;
-  margin: 0 auto;
-  display: block;
-  object-fit: contain;
-
-  @media (min-width: 668px) {
-    max-width: 300px;
-  }
-`;
-
 const Content = styled.div`
   text-align: left;
 
@@ -271,7 +258,6 @@ const Onboarding = ({ goBack, signUpRef, autoStart = false }) => {
         aria-labelledby="module-title"
         aria-describedby="module-content"
       >
-        <Img src="/assets/9.png" alt="Graphic image showing a thinking mind" />
         <h2 id="module-title">{currentModule.title}</h2>
         <Content id="module-content">{currentModule.content}</Content>
       </ModuleContainer>

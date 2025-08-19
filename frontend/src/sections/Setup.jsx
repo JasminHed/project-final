@@ -2,22 +2,29 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-//arialabels added and html semantic form
-//Set up måste ha ny bild!
+//varför hoppar allt när error message kommer upp?
 
 import { FormCard, Textarea } from "../styling/FormCard.jsx";
+import { HeroImage } from "../styling/HeroImage.jsx";
 
 // API base
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
 
 const Container = styled.div`
   padding: 40px 16px 60px;
-  width: 100%;
+  max-width: 800px;
   margin: 0 auto;
 
   @media (min-width: 669px) {
-    width: 700px;
     padding: 60px 32px 80px;
+  }
+`;
+
+const Title = styled.h1`
+  margin-bottom: 24px;
+
+  @media (min-width: 669px) {
+    margin-bottom: 40px;
   }
 `;
 
@@ -61,22 +68,8 @@ const Label = styled.label`
   }
 `;
 
-const Img = styled.img`
-  width: 95%;
-  max-height: 400px;
-  margin: 32px auto;
-  display: block;
-  object-fit: cover;
-  border-radius: 16px;
-
-  @media (min-width: 669px) {
-    width: 100%;
-    max-height: 400px;
-    margin: 48px auto;
-  }
-`;
-
 const ErrorMessage = styled.p`
+  min-height: 24px;
   color: var(--color-error);
   margin-bottom: 4px;
   margin-top: 4px;
@@ -177,9 +170,14 @@ const Setup = () => {
 
   return (
     <main id="main-content">
-      <Img src="/assets/Dashboard.jpg" alt="Woman sitting with the stars" />
+      <HeroImage
+        src="/assets/Dashboard.jpg"
+        alt="Woman sitting with the stars"
+      />
       <Container>
-        <h1>Ready to set your intentions and goals? Let's make it happen!</h1>
+        <Title>
+          Ready to set your intentions and goals? Let's make it happen!
+        </Title>
         <p>
           This is your space to pause and get clear. Start by reflecting on what
           truly matters to you — your priorities, dreams, and the milestones you

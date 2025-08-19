@@ -5,6 +5,7 @@ import AuthForm from "../components/AuthForm";
 import Taglines from "../components/Tagline.jsx";
 import Onboarding from "../sections/Onboarding.jsx";
 import { useUserStore } from "../store/UserStore.jsx";
+import { HeroImage } from "../styling/HeroImage.jsx";
 import { Message } from "../styling/LoadingMessage.jsx";
 
 //box 2 and 3 should be clickable when logged in
@@ -19,65 +20,36 @@ const MainBox = styled.div`
 `;
 
 const Box = styled.div`
-  //padding: 48px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 200px;
+  padding: 48px 32px;
+  border: 1px solid var(--color-focus);
   margin-top: 16px;
   margin-bottom: 16px;
   border-radius: 16px;
   text-align: center;
   cursor: pointer;
-  transition: all 0.3s ease;
   font-size: 18px;
-  line-height: 1.5;
   font-weight: 500;
+
+  &:hover {
+    opacity: 1;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  }
 
   ${(props) =>
     props.disabled &&
     `
-    pointer-events: none;
-    opacity: 0.4;
-    cursor: not-allowed;
-  `}
-
-  img {
-    width: 280px;
-    height: 60px;
-    margin: 0 auto;
-    border-radius: 40px;
-    object-fit: cover;
-    margin-bottom: 20px;
-    display: block;
-    transition: opacity 0.3s ease;
-    opacity: 0.8;
-  }
-
-  img:hover {
-    opacity: 1;
-  }
-
-  @media (min-width: 668px) {
-    img {
-      margin: 0 auto;
-      width: 80%;
-      height: 150px;
-      border-radius: 30px;
-      margin-bottom: 20px;
-    }
-  }
-`;
-
-const Img = styled.img`
-  width: 95%;
-  max-height: 400px;
-  margin: 32px auto;
-  display: block;
-  object-fit: cover;
-  border-radius: 16px;
-
-  @media (min-width: 669px) {
-    width: 100%;
-    max-height: 400px;
-    margin: 48px auto;
-  }
+      pointer-events: none;
+      opacity: 0.4;
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    `}
 `;
 
 const SignUpButton = styled.div`
@@ -197,7 +169,10 @@ const WelcomeScreen = () => {
   return (
     <main id="main-content">
       <section role="region" aria-labelledby="about-intention-hub">
-        <Img src="/assets/Dashboard.jpg" alt="Woman sitting with the stars" />
+        <HeroImage
+          src="/assets/Dashboard.jpg"
+          alt="Woman sitting with the stars"
+        />
         <Taglines />
 
         <SignUpButton>
@@ -228,7 +203,6 @@ const WelcomeScreen = () => {
           aria-label="Learn about Intention and SMART goals here"
           onKeyDown={(e) => e.key === "Enter" && handleOnboardingClick()} //user can use enter
         >
-          <img src="/assets/Community1.jpg" alt="Hand with flowers" />
           Learn about Intention & SMART goals
         </Box>
         <Box
@@ -240,7 +214,6 @@ const WelcomeScreen = () => {
           aria-label="Set your intention and goals with clarity and purpose here"
           onKeyDown={(e) => e.key === "Enter" && handleSetupClick()}
         >
-          <img src="/assets/Setup.jpg" alt="Abstract background in color" />
           Set your intention and goals with clarity and purpose
         </Box>
         <Box
@@ -252,7 +225,6 @@ const WelcomeScreen = () => {
           aria-label="Track your journey here"
           onKeyDown={(e) => e.key === "Enter" && handleDashboardClick()}
         >
-          <img src="/assets/Dashboard.jpg" alt="Woman sitting with stars" />
           Track your journey
         </Box>
       </MainBox>

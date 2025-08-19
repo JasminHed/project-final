@@ -72,7 +72,7 @@ const SignUpButton = styled.div`
 
   button {
     width: 100%;
-    max-width: 300px;
+    max-width: 280px;
     padding: 24px 48px;
     font-size: 17px;
     font-weight: 500;

@@ -8,58 +8,111 @@ import styled from "styled-components";
 //<dd> = definition description (the explanation)
 
 const Container = styled.section`
-  padding: 80px 20px 100px;
+  padding: 40px 16px 60px;
   max-width: 100%;
   margin: 0 auto;
 
   @media (min-width: 669px) {
-    max-width: 800px;
+    max-width: 700px;
+    padding: 60px 32px 80px;
   }
 `;
 
 const ModuleContainer = styled.article`
-  margin-bottom: 40px;
+  margin-bottom: 32px;
+
+  @media (min-width: 669px) {
+    margin-bottom: 40px;
+  }
 `;
 
 const Img = styled.img`
   width: 100%;
-  max-width: 300px;
+  max-width: 200px;
   height: auto;
   margin: 0 auto;
   display: block;
   object-fit: contain;
 
   @media (min-width: 668px) {
-    max-width: 500px;
+    max-width: 300px;
   }
 `;
 
 const Content = styled.div`
   text-align: left;
-  line-height: 1.6;
 
   p {
-    margin: 10px 0 25px 0;
+    margin: 8px 0 16px 0;
+    opacity: 0.9;
+
+    @media (min-width: 669px) {
+      margin: 10px 0 20px 0;
+    }
   }
 
-  strong {
-    font-weight: bold;
+  dl {
+    margin: 0;
+  }
+
+  dt {
+    margin-top: 12px;
+    margin-bottom: 4px;
+
+    @media (min-width: 669px) {
+      margin-top: 16px;
+      margin-bottom: 6px;
+    }
+  }
+
+  dd {
+    margin: 0 0 8px 0;
+    opacity: 0.8;
+
+    @media (min-width: 669px) {
+      margin-bottom: 12px;
+    }
   }
 `;
 
 const ButtonContainer = styled.nav`
   display: flex;
-  gap: 15px;
+  gap: 8px;
   justify-content: center;
-  margin-top: 30px;
+  margin-top: 24px;
+  flex-direction: column;
+
+  button {
+    padding: 14px 20px;
+    border-radius: 6px;
+    transition: opacity 0.2s ease;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  @media (min-width: 669px) {
+    gap: 12px;
+    margin-top: 30px;
+    flex-direction: row;
+
+    button {
+      padding: 16px 28px;
+      border-radius: 8px;
+    }
+  }
 `;
 
 const ErrorMessage = styled.p`
   color: var(--color-error);
   margin-bottom: 4px;
-  margin-top: 4px;
+  margin-top: 8px;
   margin-right: 5px;
-  font-size: 14px;
+  text-align: center;
+
+  @media (min-width: 669px) {
+  }
 `;
 
 //Track module to know where user is, to show next slide

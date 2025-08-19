@@ -33,7 +33,7 @@ const GoalsGrid = styled.div`
 
   @media (min-width: 669px) and (max-width: 1600px) {
     display: grid;
-    //justify-items: (props) => (props.itemCount === 1 ? "center" : "stretch")};
+
     grid-template-columns: 1fr 1fr;
     gap: 20px;
     align-items: start;

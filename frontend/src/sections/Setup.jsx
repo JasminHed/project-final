@@ -10,12 +10,13 @@ import { FormCard, Textarea } from "../styling/FormCard.jsx";
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
 
 const Container = styled.div`
-  padding: 80px 20px 100px;
+  padding: 40px 16px 60px;
   width: 100%;
   margin: 0 auto;
 
   @media (min-width: 669px) {
-    width: 800px;
+    width: 700px;
+    padding: 60px 32px 80px;
   }
 `;
 
@@ -23,34 +24,55 @@ const Fieldset = styled.fieldset`
   border: none;
   margin: 0;
   padding: 0;
-  margin-bottom: 40px;
+  margin-bottom: 32px;
+
+  @media (min-width: 669px) {
+    margin-bottom: 40px;
+  }
 `;
 
 const Legend = styled.legend`
   color: var(--color-text-primary);
-  margin-top: 24px;
-  margin-bottom: 15px;
+  margin-top: 16px;
+  margin-bottom: 12px;
   font-weight: 700;
   text-align: center;
-  font-family: "Inter", sans-serif;
-  font-weight: 600;
-  font-size: 24px;
+  font-weight: 500;
+  font-size: 18px;
+
+  @media (min-width: 669px) {
+    font-size: 22px;
+    font-weight: 600;
+    margin-top: 20px;
+    margin-bottom: 16px;
+  }
 `;
 
 const Label = styled.label`
   display: block;
-  font-weight: 500;
-  margin-bottom: 8px;
+  font-weight: 400;
+  margin-bottom: 6px;
   color: var(--color-text-primary);
+  font-size: 14px;
+
+  @media (min-width: 669px) {
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
 `;
 
 const Img = styled.img`
   width: 100%;
   height: auto;
-  max-height: 300px;
+  max-height: 200px;
   margin: 0 auto;
   display: block;
   object-fit: cover;
+
+  @media (min-width: 669px) {
+    max-height: 280px;
+  }
 `;
 
 const ErrorMessage = styled.p`
@@ -59,11 +81,12 @@ const ErrorMessage = styled.p`
   margin-top: 4px;
   margin-right: 5px;
   font-size: 14px;
+  font-weight: 400;
 `;
 
 const ButtonGroup = styled.div`
   display: flex;
-  gap: 12px;
+  gap: 8px;
   flex-wrap: wrap;
 `;
 

@@ -19,10 +19,9 @@ const MainBox = styled.div`
 `;
 
 const Box = styled.div`
-  padding: 48px 32px;
+  //padding: 48px 32px;
   margin-top: 16px;
   margin-bottom: 16px;
-  background: rgba(255, 255, 255, 0.02);
   border-radius: 16px;
   text-align: center;
   cursor: pointer;
@@ -40,26 +39,44 @@ const Box = styled.div`
   `}
 
   img {
-    width: 100%;
-    max-width: 240px;
-    height: auto;
-    margin: 0 auto 20px;
+    width: 280px;
+    height: 60px;
+    margin: 0 auto;
+    border-radius: 40px;
+    object-fit: cover;
+    margin-bottom: 20px;
     display: block;
-    object-fit: contain;
-    opacity: 0.8;
     transition: opacity 0.3s ease;
+    opacity: 0.8;
+  }
+
+  img:hover {
+    opacity: 1;
   }
 
   @media (min-width: 668px) {
-    padding: 56px 48px;
     img {
-      max-width: 400px;
-      margin-bottom: 24px;
+      margin: 0 auto;
+      width: 80%;
+      height: 150px;
+      border-radius: 30px;
+      margin-bottom: 20px;
     }
   }
+`;
 
-  &:hover {
-    border: 2px solid var(--color-focus);
+const Img = styled.img`
+  width: 95%;
+  max-height: 400px;
+  margin: 32px auto;
+  display: block;
+  object-fit: cover;
+  border-radius: 16px;
+
+  @media (min-width: 669px) {
+    width: 100%;
+    max-height: 400px;
+    margin: 48px auto;
   }
 `;
 
@@ -180,6 +197,7 @@ const WelcomeScreen = () => {
   return (
     <main id="main-content">
       <section role="region" aria-labelledby="about-intention-hub">
+        <Img src="/assets/Dashboard.jpg" alt="Woman sitting with the stars" />
         <Taglines />
 
         <SignUpButton>
@@ -210,10 +228,7 @@ const WelcomeScreen = () => {
           aria-label="Learn about Intention and SMART goals here"
           onKeyDown={(e) => e.key === "Enter" && handleOnboardingClick()} //user can use enter
         >
-          <img
-            src="/assets/9.png"
-            alt="An graphic image showing a thinking mind"
-          />
+          <img src="/assets/Community1.jpg" alt="Hand with flowers" />
           Learn about Intention & SMART goals
         </Box>
         <Box
@@ -225,10 +240,7 @@ const WelcomeScreen = () => {
           aria-label="Set your intention and goals with clarity and purpose here"
           onKeyDown={(e) => e.key === "Enter" && handleSetupClick()}
         >
-          <img
-            src="/assets/10.png"
-            alt="A graphic image showing a a thinking mind in creativity mode"
-          />
+          <img src="/assets/Setup.jpg" alt="Abstract background in color" />
           Set your intention and goals with clarity and purpose
         </Box>
         <Box
@@ -240,10 +252,7 @@ const WelcomeScreen = () => {
           aria-label="Track your journey here"
           onKeyDown={(e) => e.key === "Enter" && handleDashboardClick()}
         >
-          <img
-            src="/assets/12.png"
-            alt="A graphic image showing a thinking mind working"
-          />
+          <img src="/assets/Dashboard.jpg" alt="Woman sitting with stars" />
           Track your journey
         </Box>
       </MainBox>

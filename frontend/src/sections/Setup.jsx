@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 //arialabels added and html semantic form
+//Set up måste ha ny bild!
 
 import { FormCard, Textarea } from "../styling/FormCard.jsx";
 
@@ -53,25 +54,25 @@ const Label = styled.label`
   font-weight: 400;
   margin-bottom: 6px;
   color: var(--color-text-primary);
-  font-size: 14px;
 
   @media (min-width: 669px) {
-    font-size: 15px;
     font-weight: 500;
     margin-bottom: 8px;
   }
 `;
 
 const Img = styled.img`
-  width: 100%;
-  height: auto;
-  max-height: 200px;
-  margin: 0 auto;
+  width: 95%;
+  max-height: 400px;
+  margin: 32px auto;
   display: block;
   object-fit: cover;
+  border-radius: 16px;
 
   @media (min-width: 669px) {
-    max-height: 280px;
+    width: 100%;
+    max-height: 400px;
+    margin: 48px auto;
   }
 `;
 
@@ -176,6 +177,7 @@ const Setup = () => {
 
   return (
     <main id="main-content">
+      <Img src="/assets/Dashboard.jpg" alt="Woman sitting with the stars" />
       <Container>
         <h1>Ready to set your intentions and goals? Let's make it happen!</h1>
         <p>
@@ -190,10 +192,6 @@ const Setup = () => {
         </p>
       </Container>
 
-      <Img
-        src="/assets/10.png"
-        alt="A graphic image showing a thinking mind, a place where flowers are growing"
-      />
       <Container>
         <form onSubmit={handleSubmit} noValidate>
           <Fieldset>

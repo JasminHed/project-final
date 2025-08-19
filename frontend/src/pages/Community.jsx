@@ -56,8 +56,6 @@ const PostContainer = styled.article`
   padding: 24px 20px;
   margin-bottom: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border: 2px solid #ddd;
-  background: var(--color-card-background);
 
   &:hover {
     transform: translateY(-2px);
@@ -68,12 +66,13 @@ const PostContainer = styled.article`
 
     p {
       font-style: italic;
+      font-size: 14px;
+      font-weight: normal;
     }
   }
 
   p {
     margin-top: 8px;
-    font-weight: 400;
   }
 `;
 
@@ -89,13 +88,13 @@ const CommentsSection = styled.section`
 `;
 
 const CommentTextarea = styled.textarea`
-  background: rgba(255, 255, 255, 0.9);
   width: 100%;
   padding: 16px;
   border-radius: 12px;
   resize: none;
   min-height: 80px;
   margin-bottom: 10px;
+
   &:focus {
     outline: none;
     border-color: var(--color-focus);
@@ -119,7 +118,6 @@ const CommentButton = styled.button`
 `;
 
 const CommentItem = styled.div`
-  background-color: rgba(245, 245, 245, 0.8);
   border-radius: 12px;
   padding: 16px;
   margin-bottom: 10px;
@@ -131,18 +129,18 @@ const CommentItem = styled.div`
     font-size: 12px;
   }
 `;
-
 const Img = styled.img`
-  width: 100%;
-  height: auto;
-  max-height: 240px;
-  margin: 24px auto;
+  width: 95%;
+  max-height: 400px;
+  margin: 32px auto;
   display: block;
   object-fit: cover;
   border-radius: 16px;
 
   @media (min-width: 669px) {
-    max-height: 300px;
+    width: 100%;
+    max-height: 400px;
+    margin: 48px auto;
   }
 `;
 //Community → fetches all posts →
@@ -312,40 +310,39 @@ const Community = () => {
   }
 
   return (
-    <Container>
-      <main id="main-content">
-        <HeaderSection>
-          <header>
-            <h1>Welcome to the Community</h1>
-          </header>
-          <p>
-            All posts you see here are public, meaning every user can view,
-            like, and comment on your intentions and goals.{" "}
-          </p>
+    <>
+      <Img src="/assets/Dashboard.jpg" alt="Hand with flowers" />
+      <Container>
+        <main id="main-content">
+          <HeaderSection>
+            <header>
+              <h1>Welcome to the Community</h1>
+            </header>
+            <p>
+              All posts you see here are public, meaning every user can view,
+              like, and comment on your intentions and goals.{" "}
+            </p>
 
-          <p>
-            The purpose of this community is to build connection along the
-            journey. We're here to cheer each other on, offer support, and share
-            in the ups and downs.{" "}
-          </p>
+            <p>
+              The purpose of this community is to build connection along the
+              journey. We're here to cheer each other on, offer support, and
+              share in the ups and downs.{" "}
+            </p>
 
-          <p>
-            Jump in, join the energy, and remember — you're never alone on your
-            path.
-          </p>
+            <p>
+              Jump in, join the energy, and remember — you're never alone on
+              your path.
+            </p>
+          </HeaderSection>
 
-          <Img
-            src="/assets/13.png"
-            alt="A graphic image showing two hearts hugging"
-          />
-        </HeaderSection>
-        <PostsGrid>
-          {posts.map((post) => (
-            <CommunityPost key={post._id} post={post} />
-          ))}
-        </PostsGrid>
-      </main>
-    </Container>
+          <PostsGrid>
+            {posts.map((post) => (
+              <CommunityPost key={post._id} post={post} />
+            ))}
+          </PostsGrid>
+        </main>
+      </Container>
+    </>
   );
 };
 

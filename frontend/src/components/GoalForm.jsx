@@ -1,26 +1,14 @@
 import React from "react";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
 
 import { FormCard, Textarea } from "../styling/FormCard.jsx";
-
-//Add more taglabels, style different
 
 const Fieldset = styled.fieldset`
   border: none;
   margin: 0;
   padding: 0;
   margin-bottom: 40px;
-`;
-
-const Legend = styled.legend`
-  color: var(--color-text-primary);
-  margin-top: 24px;
-  margin-bottom: 24px;
-  font-weight: 700;
-  text-align: center;
-  font-family: "Inter", sans-serif;
-  font-weight: 600;
-  font-size: 24px;
 `;
 
 const Label = styled.label`
@@ -62,6 +50,11 @@ const SMART_FIELDS = [
   "timebound",
 ];
 
+const tagPool = [
+  { id: "personal", label: "Personal" },
+  { id: "professional", label: "Professional" },
+];
+
 const GoalForm = ({
   goal,
   onIntentionChange,
@@ -72,75 +65,133 @@ const GoalForm = ({
   successMessage,
   shareSuccessMessage,
 }) => {
+  const handleDragEnd = (result) => {
+    const { draggableId, destination } = result;
+    if (!destination) return;
+
+    if (destination.droppableId === goal._id) {
+      onFieldChange(goal._id, draggableId)({ target: { checked: true } });
+    }
+  };
+
   return (
-    <div aria-labelledby={`goal-title-${goal._id}`}>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          onSave(goal._id);
-        }}
-      >
-        <Fieldset>
-          <FormCard>
-            <TagLabel>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={goal.started || false}
-                  onChange={(e) => onFieldChange(goal._id, "started")(e)}
-                />
-                Started
-              </label>
-            </TagLabel>
-            <h1 id={`goal-title-${goal._id}`}>Your Intention</h1>
-            <Label htmlFor={`intention-${goal._id}`}></Label>
-            <Textarea
-              id={`intention-${goal._id}`}
-              rows={2}
-              maxLength={150}
-              value={goal.intention || ""}
-              onChange={onIntentionChange(goal._id)}
-            />
-            <p>{(goal.intention || "").length}/150</p>
-          </FormCard>
+    <DragDropContext onDragEnd={handleDragEnd}>
+      <div aria-labelledby={`goal-title-${goal._id}`}>
+        <Droppable droppableId="tags-pool" direction="horizontal">
+          {(provided) => (
+            <div
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+              style={{ display: "flex", gap: "10px", marginBottom: "20px" }}
+            >
+              {tagPool.map((tag, index) => (
+                <Draggable key={tag.id} draggableId={tag.id} index={index}>
+                  {(provided) => (
+                    <TagLabel
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      tabIndex={0}
+                      aria-label={tag.label}
+                    >
+                      {tag.label}
+                    </TagLabel>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
 
-          <FormCard>
-            <h2 id={`details-title-${goal._id}`}>Your detailed goals</h2>
-            {SMART_FIELDS.map((field) => (
-              <div key={field}>
-                <strong>
-                  {field.charAt(0).toUpperCase() + field.slice(1)}:
-                </strong>
-                <Label htmlFor={`${field}-${goal._id}`} />
-                <Textarea
-                  id={`${field}-${goal._id}`}
-                  rows={2}
-                  maxLength={150}
-                  value={goal[field] || ""}
-                  onChange={onFieldChange(goal._id, field)}
-                />
-                <p>{(goal[field] || "").length}/150</p>
-              </div>
-            ))}
-          </FormCard>
-        </Fieldset>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            onSave(goal._id);
+          }}
+        >
+          <Fieldset>
+            <FormCard>
+              <Droppable droppableId={goal._id}>
+                {(provided) => (
+                  <div ref={provided.innerRef} {...provided.droppableProps}>
+                    <TagLabel>
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={goal.started || false}
+                          onChange={(e) =>
+                            onFieldChange(goal._id, "started")(e)
+                          }
+                        />
+                        Started
+                      </label>
+                    </TagLabel>
 
-        <ButtonContainer>
-          <button type="submit">Save this goal</button>
-          <button type="button" onClick={() => onComplete(goal._id)}>
-            Mark goal as completed
-          </button>
-          <button type="button" onClick={() => onShare && onShare(goal._id)}>
-            Share to Community
-          </button>
-        </ButtonContainer>
-      </form>
+                    {["personal", "professional"].map(
+                      (tag) =>
+                        goal[tag] && (
+                          <TagLabel key={tag} tabIndex={0} aria-label={tag}>
+                            {tag.charAt(0).toUpperCase() + tag.slice(1)}
+                          </TagLabel>
+                        )
+                    )}
 
-      {successMessage && <SuccessMessage>{successMessage}</SuccessMessage>}
-      {shareSuccessMessage && (
-        <SuccessMessage>{shareSuccessMessage}</SuccessMessage>
-      )}
-    </div>
+                    {provided.placeholder}
+
+                    <h1 id={`goal-title-${goal._id}`}>Your Intention</h1>
+                    <Label htmlFor={`intention-${goal._id}`}></Label>
+                    <Textarea
+                      id={`intention-${goal._id}`}
+                      rows={2}
+                      maxLength={150}
+                      value={goal.intention || ""}
+                      onChange={onIntentionChange(goal._id)}
+                    />
+                    <p>{(goal.intention || "").length}/150</p>
+                  </div>
+                )}
+              </Droppable>
+
+              <FormCard>
+                <h2 id={`details-title-${goal._id}`}>Your detailed goals</h2>
+                {SMART_FIELDS.map((field) => (
+                  <div key={field}>
+                    <strong>
+                      {field.charAt(0).toUpperCase() + field.slice(1)}:
+                    </strong>
+                    <Label htmlFor={`${field}-${goal._id}`} />
+                    <Textarea
+                      id={`${field}-${goal._id}`}
+                      rows={2}
+                      maxLength={150}
+                      value={goal[field] || ""}
+                      onChange={onFieldChange(goal._id, field)}
+                    />
+                    <p>{(goal[field] || "").length}/150</p>
+                  </div>
+                ))}
+              </FormCard>
+            </FormCard>
+          </Fieldset>
+
+          <ButtonContainer>
+            <button type="submit">Save this goal</button>
+            <button type="button" onClick={() => onComplete(goal._id)}>
+              Mark goal as completed
+            </button>
+            <button type="button" onClick={() => onShare && onShare(goal._id)}>
+              Share to Community
+            </button>
+          </ButtonContainer>
+        </form>
+
+        {successMessage && <SuccessMessage>{successMessage}</SuccessMessage>}
+        {shareSuccessMessage && (
+          <SuccessMessage>{shareSuccessMessage}</SuccessMessage>
+        )}
+      </div>
+    </DragDropContext>
   );
 };
 

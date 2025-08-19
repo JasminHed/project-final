@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
+//about måste ha ny bild
+
 const Description = styled.div`
   margin: 20px auto;
   max-width: 90%;
@@ -15,14 +17,19 @@ const Description = styled.div`
     margin-top: 96px;
   }
 `;
-
 const Img = styled.img`
-  width: 100%;
-  height: auto;
-  max-height: 300px;
+  width: 95%;
+  max-height: 400px;
+  margin: 32px auto;
   display: block;
   object-fit: cover;
   border-radius: 16px;
+
+  @media (min-width: 669px) {
+    width: 100%;
+    max-height: 400px;
+    margin: 48px auto;
+  }
 `;
 
 const GridWrapper = styled.div`
@@ -52,7 +59,6 @@ const GridBox = styled.div`
   border: 1px solid rgba(221, 221, 221, 0.3);
   border-radius: 16px;
   padding: 24px 20px;
-  background-color: var(--color-card-background);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 
   &:hover {
@@ -64,7 +70,6 @@ const GridBox = styled.div`
 const Intro = styled.div`
   max-width: 300px;
   padding: 24px 20px;
-  background: rgba(112, 101, 141, 0.06);
   border-radius: 16px;
   border: 1px solid rgba(112, 101, 141, 0.12);
 
@@ -77,12 +82,9 @@ const Intro = styled.div`
 const About = () => {
   return (
     <>
-      <h1>About The Intention Hub</h1>
+      <Img src="/assets/Dashboard.jpg" alt="Woman sitting with the stars" />
       <Description>
-        <Img
-          src="/assets/About.png"
-          alt="A graphic image showing a heart writing notes on a desk"
-        />
+        <h1>About The Intention Hub</h1>
         <GridWrapper>
           <GridBox>
             <p>

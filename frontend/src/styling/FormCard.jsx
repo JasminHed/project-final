@@ -3,7 +3,7 @@ import styled from "styled-components";
 //This is styling for setup and dashboard
 
 export const FormCard = styled.div`
-  background: var(--color-card-background);
+  //background: var(--color-card-background);
   border: 1px solid #dddddd;
   border-radius: 8px;
   padding: 20px;

@@ -53,38 +53,17 @@ const GoalsGrid = styled.div`
 
 const Img = styled.img`
   width: 100%;
-  height: auto;
-  max-height: 240px;
+  max-height: 400px;
   margin: 32px auto;
   display: block;
   object-fit: cover;
   border-radius: 16px;
 
   @media (min-width: 669px) {
-    max-height: 300px;
+    max-height: 400px;
     margin: 48px auto;
   }
 `;
-
-/*onst ButtonContainer = styled.div`
-  display: flex;
-  gap: 16px;
-  justify-content: center;
-  margin: 32px 0;
-  flex-wrap: wrap;
-
-  @media (min-width: 669px) {
-    margin: 40px 0;
-  }
-`;*/
-
-/*const GoalCard = styled.div`
-  border: 2px solid #ddd;
-  border-radius: 10px;
-  padding: 20px;
-  margin-bottom: 30px;
-  background: #f9f9f9;
-`;*/
 
 const ErrorMessage = styled.p`
   color: var(--color-error);
@@ -201,11 +180,12 @@ const Dashboard = () => {
   return (
     <>
       <main id="main-content">
+        <Img
+          src="/assets/Dashboard.jpg"
+          alt="Woman sitting with a star shining"
+        />
         <Container>
           <h1>Welcome to your dashboard</h1>
-
-          <ProfileSetting user={user} onOptionSelect={handleUserStatus} />
-
           <section aria-label="Introduction">
             <p>
               Here you'll see your active goals, up to three at a time —
@@ -221,10 +201,8 @@ const Dashboard = () => {
           </section>
         </Container>
 
-        <Img
-          src="/assets/12.png"
-          alt="A graphic image showing a thinking mind with flowers around it for decoration"
-        />
+        <ProfileSetting user={user} onOptionSelect={handleUserStatus} />
+
         <Widget goals={goals} handleAddGoalClick={handleAddGoalClick} />
         <Container>
           <GoalsGrid>

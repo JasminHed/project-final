@@ -2,8 +2,8 @@
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyles = createGlobalStyle`
-  /* Light mode (default) */
-  :root {
+   //Light mode (default) 
+ :root {
   --color-text-primary: #000000;          
   --color-text-link: #70658d;             
   --color-button-bg: #004d40;            
@@ -15,14 +15,13 @@ const GlobalStyles = createGlobalStyle`
   --color-success: #0D6EFD; 
   --color-chart-active: #004d40;    
   --color-chart-completed: #e47885;  
-  --color-card-background: #f9f9f9; 
+ --color-card-background: #f9f9f9; 
 
-  
-   
+
 }
 
 
-  /* Dark mode overrides */
+  //Dark mode overrides 
 .dark {
   --color-text-primary: #FFFFFF;          
   --color-text-link: #fac04b;            
@@ -51,9 +50,11 @@ const GlobalStyles = createGlobalStyle`
 
 body {
     color: var(--color-text-primary);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", sans-serif;
+    background-color: var(--color-background);
     transition: background-color 0.3s ease, color 0.3s ease;
-    letter-spacing: -0.005em;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    line-height: 1.6;
+
   }
 
   h1, h2, h3, h4 {
@@ -62,7 +63,7 @@ body {
     margin-bottom: 8px;
     font-weight: 600;
     text-align: center;
-    font-family: 'Poppins', 'Inter', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", sans-serif;
     letter-spacing: -0.015em;
   }
 
@@ -92,12 +93,10 @@ body {
   }
 
   p {
-    font-size: 16px;
     margin-top: 0;
     margin-bottom: 16px;
-    color: var(--color-text-primary);
-    line-height: 1.7;
     text-align: left;
+    
   }
 
   @media (min-width: 669px) {
@@ -119,14 +118,14 @@ body {
     h6 {
       font-size: 14px;
     }
-    p {
-      font-size: 18px;
-    }
+   
+  
   }
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1600px) {
     p {
       font-size: 20px;
+      
     }
   }
 

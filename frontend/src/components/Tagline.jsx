@@ -41,7 +41,6 @@ const FeatureList = styled.ul`
 const Tagline = styled.li`
   position: relative;
   padding-left: 24px;
-  line-height: 1.6;
   transition: transform 0.2s ease;
 
   @media (min-width: 668px) {
@@ -57,8 +56,6 @@ const Tagline = styled.li`
 
 const Description = styled.p`
   text-align: center;
-  font-size: 16px;
-  line-height: 1.5;
   margin: 0;
   max-width: 280px;
   color: var(--color-text-primary);

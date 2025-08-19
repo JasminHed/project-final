@@ -10,7 +10,7 @@ import GoalForm from "../components/GoalForm.jsx";
 import GoalChart from "../components/GoalChart.jsx";
 import { Message } from "../styling/LoadingMessage.jsx";
 import useGoal from "../hooks/useGoal.jsx";
-import CommunityWidget from "../components/CommunityWidget.jsx";
+import Widget from "../components/Widget.jsx";
 
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
 
@@ -66,7 +66,7 @@ const Img = styled.img`
   }
 `;
 
-const ButtonContainer = styled.div`
+/*onst ButtonContainer = styled.div`
   display: flex;
   gap: 16px;
   justify-content: center;
@@ -76,7 +76,7 @@ const ButtonContainer = styled.div`
   @media (min-width: 669px) {
     margin: 40px 0;
   }
-`;
+`;*/
 
 /*const GoalCard = styled.div`
   border: 2px solid #ddd;
@@ -225,28 +225,8 @@ const Dashboard = () => {
           src="/assets/12.png"
           alt="A graphic image showing a thinking mind with flowers around it for decoration"
         />
-
+        <Widget goals={goals} handleAddGoalClick={handleAddGoalClick} />
         <Container>
-          <ButtonContainer>
-            <ButtonContainer>
-              <button
-                onClick={handleAddGoalClick}
-                aria-label={
-                  goals.length >= 3
-                    ? "Maximum of 3 goals reached"
-                    : "Add new intention and goals"
-                }
-              >
-                Add new intention and goals here
-              </button>
-            </ButtonContainer>
-          </ButtonContainer>
-          {showMaxMessage && (
-            <ErrorMessage>
-              There is a maximum of 3 saved intention and goal cards. It's to
-              help you stay focused and not feel overwhelmed.
-            </ErrorMessage>
-          )}
           <GoalsGrid>
             {goals.length > 0 ? (
               goals.map((goal) => (
@@ -269,7 +249,6 @@ const Dashboard = () => {
           <GoalChart goals={goals} />
         </Container>
       </main>
-      <CommunityWidget />
     </>
   );
 };

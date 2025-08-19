@@ -16,6 +16,7 @@ const GlobalStyles = createGlobalStyle`
   --color-chart-active: #004d40;    
   --color-chart-completed: #e47885;  
   --color-card-background: #f9f9f9; 
+
   
    
 }
@@ -35,6 +36,7 @@ const GlobalStyles = createGlobalStyle`
   --color-chart-active: #004d40;
   --color-chart-completed: #fac04b;
   --color-card-background: #121212;
+  
        
 }
 

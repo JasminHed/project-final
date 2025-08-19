@@ -7,9 +7,7 @@ const ProfileSection = styled.section`
   align-items: center;
   padding: 24px 20px;
   margin: 20px auto;
-  background-color: var(--color-card-background);
   border-radius: 16px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   max-width: 340px;
   min-height: 450px;
   transition: all 0.3s ease;

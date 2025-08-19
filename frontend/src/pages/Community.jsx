@@ -10,101 +10,140 @@ import { Message } from "../styling/LoadingMessage.jsx";
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
 
 const Container = styled.div`
-  padding: 80px 20px 100px;
+  padding: 24px 16px 32px;
   max-width: 100%;
   margin: 0 auto;
 
   @media (min-width: 669px) {
+    padding: 48px 24px 64px;
     max-width: 1200px;
   }
 
   @media (min-width: 1025px) {
+    padding: 64px 32px 80px;
     max-width: 1400px;
   }
 `;
 
 const HeaderSection = styled.div`
-  margin-bottom: 40px;
+  margin-bottom: 32px;
+  text-align: center;
+
+  @media (min-width: 669px) {
+    margin-bottom: 48px;
+  }
 `;
 
 const PostsGrid = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
   @media (min-width: 669px) {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    gap: 28px;
   }
 
   @media (min-width: 1025px) {
-    gap: 20px;
+    gap: 32px;
   }
 `;
 
 const PostContainer = styled.article`
   border: 2px solid var(--color-focus);
-  border-radius: 15px;
-  padding: 20px;
+  border-radius: 20px;
+  padding: 24px 20px;
   margin-bottom: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border: 2px solid #ddd;
   background: var(--color-card-background);
 
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  header h2 {
+    margin-bottom: 12px;
+
+    p {
+      font-style: italic;
+    }
+  }
+
   p {
-    margin-top: 15px;
-    margin-bottom: 15px;
+    margin-top: 8px;
+    font-weight: 400;
   }
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
-  gap: 10px;
-  margin-top: 15px;
+  gap: 12px;
+  margin-top: 20px;
 `;
 
 const CommentsSection = styled.section`
-  margin-top: 15px;
-  border-top: 1px solid #ddd;
-  padding-top: 15px;
+  margin-top: 20px;
+  padding-top: 20px;
 `;
 
 const CommentTextarea = styled.textarea`
+  background: rgba(255, 255, 255, 0.9);
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+  padding: 16px;
+  border-radius: 12px;
   resize: none;
   min-height: 80px;
   margin-bottom: 10px;
+  &:focus {
+    outline: none;
+    border-color: var(--color-focus);
+  }
 `;
 
 const CommentButton = styled.button`
   background-color: var(--color-focus);
   border: none;
-  border-radius: 5px;
-  padding: 8px 10px;
+  border-radius: 8px;
+  padding: 10px 16px;
   cursor: pointer;
-  margin-right: 10px;
-  margin-top: 5px;
-  margin-bottom: 5px;
+  margin-right: 8px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  font-weight: 500;
 
   &:hover {
-    opacity: 0.8;
+    transform: translateY(-1px);
   }
 `;
 
 const CommentItem = styled.div`
-  background-color: #f5f5f5;
-  border-radius: 8px;
-  padding: 10px;
+  background-color: rgba(245, 245, 245, 0.8);
+  border-radius: 12px;
+  padding: 16px;
   margin-bottom: 10px;
+  p {
+    margin-bottom: 8px;
+  }
+
+  small {
+    font-size: 12px;
+  }
 `;
 
 const Img = styled.img`
   width: 100%;
   height: auto;
-  max-height: 300px;
-  margin: 0 auto;
+  max-height: 240px;
+  margin: 24px auto;
   display: block;
   object-fit: cover;
+  border-radius: 16px;
+
+  @media (min-width: 669px) {
+    max-height: 300px;
+  }
 `;
 //Community → fetches all posts →
 //loops through posts and passes each post to CommunityPost

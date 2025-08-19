@@ -15,16 +15,27 @@ import CommunityWidget from "../components/CommunityWidget.jsx";
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
 
 const Container = styled.div`
-  padding: 80px 20px 100px;
+  padding: 24px 16px 32px;
   max-width: 100%;
   margin: 0 auto;
 
   @media (min-width: 669px) {
+    padding: 48px 24px 64px;
     max-width: 1200px;
   }
 
   @media (min-width: 1025px) {
+    padding: 64px 32px 80px;
     max-width: 1400px;
+  }
+
+  section[aria-label="Introduction"] {
+    text-align: center;
+    margin: 32px 0;
+
+    p {
+      margin-bottom: 20px;
+    }
   }
 `;
 
@@ -43,33 +54,44 @@ const GoalsGrid = styled.div`
 const Img = styled.img`
   width: 100%;
   height: auto;
-  max-height: 300px;
-  margin: 0 auto;
+  max-height: 240px;
+  margin: 32px auto;
   display: block;
   object-fit: cover;
+  border-radius: 16px;
+
+  @media (min-width: 669px) {
+    max-height: 300px;
+    margin: 48px auto;
+  }
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
-  gap: 15px;
+  gap: 16px;
   justify-content: center;
-  margin: 30px 0;
+  margin: 32px 0;
   flex-wrap: wrap;
+
+  @media (min-width: 669px) {
+    margin: 40px 0;
+  }
 `;
 
-const GoalCard = styled.div`
+/*const GoalCard = styled.div`
   border: 2px solid #ddd;
   border-radius: 10px;
   padding: 20px;
   margin-bottom: 30px;
   background: #f9f9f9;
-`;
+`;*/
 
 const ErrorMessage = styled.p`
   color: var(--color-error);
-  font-size: 14px;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
   text-align: center;
+  padding: 16px 20px;
+  font-weight: 500;
 `;
 
 const Dashboard = () => {

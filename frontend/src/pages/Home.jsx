@@ -7,52 +7,59 @@ import Onboarding from "../sections/Onboarding.jsx";
 import { useUserStore } from "../store/UserStore.jsx";
 import { Message } from "../styling/LoadingMessage.jsx";
 
-//arialabels check + semantic html
 //box 2 and 3 should be clickable when logged in
 
 const MainBox = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  padding: 0 20px;
-  margin-top: 60px;
-  margin-bottom: 60px;
+  gap: 24px;
+  padding: 0 24px;
+  margin-top: 80px;
+  margin-bottom: 80px;
 `;
 
 const Box = styled.div`
-  padding: 40px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  border: 2px solid #ddd;
-  border-radius: 8px;
+  padding: 48px 32px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 16px;
   text-align: center;
   cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 18px;
+  line-height: 1.5;
+  font-weight: 500;
 
   ${(props) =>
     props.disabled &&
     `
     pointer-events: none;
-    opacity: 0.5;
+    opacity: 0.4;
     cursor: not-allowed;
   `}
 
   img {
     width: 100%;
-    max-width: 300px;
+    max-width: 240px;
     height: auto;
-    margin: 0 auto;
+    margin: 0 auto 20px;
     display: block;
     object-fit: contain;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
   }
 
   @media (min-width: 668px) {
+    padding: 56px 48px;
     img {
-      max-width: 500px;
+      max-width: 400px;
+      margin-bottom: 24px;
     }
   }
 
   &:hover {
-    background: var(--color-button-hover);
+    border: 2px solid var(--color-focus);
   }
 `;
 
@@ -61,22 +68,26 @@ const SignUpButton = styled.div`
   justify-content: center;
   gap: 10px;
   margin-left: auto;
-  margin-top: 15px;
+  margin-top: 24px;
 
   button {
     width: 100%;
     max-width: 300px;
-    padding: 20px 40px;
-    font-size: 16px;
+    padding: 24px 48px;
+    font-size: 17px;
+    font-weight: 500;
+    border-radius: 12px;
+    transition: all 0.2s ease;
   }
 `;
 
 const ErrorMessage = styled.p`
   color: var(--color-error);
-  font-size: 14px;
-  margin-bottom: 4px;
-  margin-top: 4px;
-  margin-left: 18px;
+  font-size: 15px;
+  margin-bottom: 8px;
+  margin-top: 8px;
+  margin-left: 24px;
+  font-weight: 400;
 `;
 
 // Local state to track if user is logged in (why not global, because only affects this components behavior)

@@ -131,7 +131,7 @@ app.get("/users/me", authenticateUser, async (req, res) => {
 
 app.patch("/goals/:goalId/share", authenticateUser, async (req, res) => {
   const { goalId } = req.params;
-  const { shareToCommunityy } = req.body; // true eller false
+  const { shareToCommunity } = req.body; // true eller false
 
   try {
     const goal = await Goal.findOne({ _id: goalId, userId: req.user._id });
@@ -139,7 +139,7 @@ app.patch("/goals/:goalId/share", authenticateUser, async (req, res) => {
       return res.status(404).json({ success: false, message: "Goal not found" });
     }
 
-    if (shareToCommuntiy) {
+    if (shareToCommunity) {
      
       const existingPost = await CommunityPost.findOne({ goalId: goal._id });
       
@@ -162,7 +162,7 @@ app.patch("/goals/:goalId/share", authenticateUser, async (req, res) => {
       }
 
      
-      goal.shareToCommuntiy = true;
+      goal.shareToCommunity = true;
       await goal.save();
 
       return res.status(200).json({
@@ -176,7 +176,7 @@ app.patch("/goals/:goalId/share", authenticateUser, async (req, res) => {
       await CommunityPost.deleteOne({ goalId: goal._id });
 
     
-      goal.shareToCommuntiy = false;
+      goal.shareToCommunity = false;
       await goal.save();
 
       return res.status(200).json({
@@ -214,10 +214,10 @@ app.patch("/goals/:id", authenticateUser, async (req, res) => {
       });
     }
 
-    // TA BORT community post OM goal är completed OCH var delad
-    if (updates.completed === true && updatedGoal.shareToCommuntiy) {
+    
+    if (updates.completed === true && updatedGoal.shareToCommunity) {
       await CommunityPost.deleteOne({ goalId: updatedGoal._id });
-      updatedGoal.shareToCommuntiy = false;
+      updatedGoal.shareToCommunity = false;
       await updatedGoal.save();
     }
 

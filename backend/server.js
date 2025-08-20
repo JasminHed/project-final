@@ -130,54 +130,63 @@ app.get("/users/me", authenticateUser, async (req, res) => {
 
 
 
-// Endpoint for sharing entire dashboard to community
-app.patch("/users/share-to-community", authenticateUser, async (req, res) => {
-  const { shareToCommunity } = req.body; 
+// Endpoint for sharing a dashboard card to community
+app.post("/goals/:goalId/share", authenticateUser, async (req, res) => {
+  const { goalId } = req.params;
+  const { shared } = req.body; // boolean, true = share, false = unshare
 
   try {
-    if (shareToCommunity) {
-      
-      await CommunityPost.deleteMany({ userId: req.user._id });
 
+    const goal = await Goal.findOne({ _id: goalId, userId: req.user._id });
+    if (!goal) {
+      return res.status(404).json({ success: false, message: "Goal not found" });
+    }
+
+    if (shared) {
      
-      const goals = await Goal.find({ userId: req.user._id });
-
- 
       const communityPost = new CommunityPost({
         userId: req.user._id,
         userName: req.user.name,
-        intention: req.user.intention, 
-        goals: goals.map(goal => ({
+        intention: goal.intention, 
+        goals: [{
           intention: goal.intention,
           specific: goal.specific,
           measurable: goal.measurable,
           achievable: goal.achievable,
           relevant: goal.relevant,
           timebound: goal.timebound
-        })),
+        }],
         createdAt: new Date()
       });
 
       await communityPost.save();
 
+      
+      goal.shared = true;
+      await goal.save();
+
       return res.status(201).json({
         success: true,
-        message: "Dashboard shared to community",
+        message: "Goal shared to community",
         response: communityPost
       });
     } else {
+  
+      await CommunityPost.deleteMany({ userId: req.user._id, "goals._id": goal._id });
+
      
-      await CommunityPost.deleteMany({ userId: req.user._id });
+      goal.shared = false;
+      await goal.save();
 
       return res.status(200).json({
         success: true,
-        message: "Dashboard removed from community"
+        message: "Goal removed from community"
       });
     }
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: "Could not update community sharing",
+      message: "Could not update goal sharing",
       error
     });
   }

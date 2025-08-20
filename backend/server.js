@@ -129,65 +129,108 @@ app.get("/users/me", authenticateUser, async (req, res) => {
 });
 
 
-
-// Endpoint for sharing a dashboard card to community
-app.post("/goals/:goalId/share", authenticateUser, async (req, res) => {
+app.patch("/goals/:goalId/share", authenticateUser, async (req, res) => {
   const { goalId } = req.params;
-  const { shared } = req.body; // boolean, true = share, false = unshare
+  const { shareToCommunityy } = req.body; // true eller false
 
   try {
-
     const goal = await Goal.findOne({ _id: goalId, userId: req.user._id });
     if (!goal) {
       return res.status(404).json({ success: false, message: "Goal not found" });
     }
 
-    if (shared) {
+    if (shareToCommuntiy) {
      
-      const communityPost = new CommunityPost({
-        userId: req.user._id,
-        userName: req.user.name,
-        intention: goal.intention, 
-        goals: [{
+      const existingPost = await CommunityPost.findOne({ goalId: goal._id });
+      
+      if (!existingPost) {
+        
+        const communityPost = new CommunityPost({
+          userId: req.user._id,
+          userName: req.user.name,
+          goalId: goal._id, 
           intention: goal.intention,
           specific: goal.specific,
           measurable: goal.measurable,
           achievable: goal.achievable,
           relevant: goal.relevant,
-          timebound: goal.timebound
-        }],
-        createdAt: new Date()
-      });
+          timebound: goal.timebound,
+          createdAt: new Date()
+        });
 
-      await communityPost.save();
-
-      
-      goal.shared = true;
-      await goal.save();
-
-      return res.status(201).json({
-        success: true,
-        message: "Goal shared to community",
-        response: communityPost
-      });
-    } else {
-  
-      await CommunityPost.deleteMany({ userId: req.user._id, "goals._id": goal._id });
+        await communityPost.save();
+      }
 
      
-      goal.shared = false;
+      goal.shareToCommuntiy = true;
       await goal.save();
 
       return res.status(200).json({
         success: true,
-        message: "Goal removed from community"
+        message: "Goal shared to community",
+        goal: goal
+      });
+
+    } else {
+     
+      await CommunityPost.deleteOne({ goalId: goal._id });
+
+    
+      goal.shareToCommuntiy = false;
+      await goal.save();
+
+      return res.status(200).json({
+        success: true,
+        message: "Goal removed from community",
+        goal: goal
       });
     }
   } catch (error) {
+    console.error('Share error:', error);
     return res.status(500).json({
       success: false,
       message: "Could not update goal sharing",
-      error
+      error: error.message
+    });
+  }
+});
+
+
+app.patch("/goals/:id", authenticateUser, async (req, res) => {
+  const { id } = req.params;
+  const updates = req.body;
+
+  try {
+    const updatedGoal = await Goal.findOneAndUpdate(
+      { _id: id, userId: req.user._id },
+      updates,
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedGoal) {
+      return res.status(404).json({
+        success: false,
+        message: "Goal not found. Try again."
+      });
+    }
+
+    // TA BORT community post OM goal är completed OCH var delad
+    if (updates.completed === true && updatedGoal.shareToCommuntiy) {
+      await CommunityPost.deleteOne({ goalId: updatedGoal._id });
+      updatedGoal.shareToCommuntiy = false;
+      await updatedGoal.save();
+    }
+
+    res.status(200).json({
+      success: true,
+      response: updatedGoal,
+      message: "Goal updated successfully."
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      response: error,
+      message: "Failed to update goal. Try again."
     });
   }
 });
@@ -258,47 +301,6 @@ app.get("/goals", authenticateUser, async (req, res) => {
   }
 });
 
-//PATCH - Update goal by id, only user can edit int+goal and keeps it sync with edits, updates 
-app.patch("/goals/:id", authenticateUser, async (req, res) => {
-  const { id } = req.params;
-  const updates = req.body;
-
-  try {
-    // Update goal
-    const updatedGoal = await Goal.findOneAndUpdate(
-      { _id: id, userId: req.user._id },
-      updates,
-      { new: true, runValidators: true }
-    );
-
-    if (!updatedGoal) {
-      return res.status(404).json({
-        success: false,
-        message: "Goal not found. Try again."
-      });
-    }
-
-    // remove community post if goal is complete
-    if (updates.completed === true) {
-      await CommunityPost.deleteOne({
-        userId: req.user._id,
-        intention: updatedGoal.intention
-      });
-    }
-
-    res.status(200).json({
-      success: true,
-      response: updatedGoal,
-      message: "Goal updated successfully."
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      response: error,
-      message: "Failed to update goal. Try again."
-    });
-  }
-});
 
 
 //Community

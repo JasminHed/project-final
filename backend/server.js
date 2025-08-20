@@ -130,83 +130,58 @@ app.get("/users/me", authenticateUser, async (req, res) => {
 
 
 
-// Endpoint for private/public
-app.patch("/users/public-status", authenticateUser, async (req, res) => {
-  const { isPublic } = req.body;
+// Endpoint for sharing entire dashboard to community
+app.patch("/users/share-to-community", authenticateUser, async (req, res) => {
+  const { shareToCommunity } = req.body; 
 
   try {
-    // Update user's public status only
-    req.user.isPublic = isPublic;
-    await req.user.save();
-
-    if (!isPublic) {
-      // Remove all user's posts from community when going private
+    if (shareToCommunity) {
+      
       await CommunityPost.deleteMany({ userId: req.user._id });
-    }
 
-    res.status(200).json({ 
-      success: true, 
-      message: "Public status updated",
-      user: { isPublic: req.user.isPublic }
-    });
-  } catch (error) {
-    res.status(500).json({ 
-      success: false, 
-      message: "Could not update status" 
-    });
-  }
-});
+     
+      const goals = await Goal.find({ userId: req.user._id });
 
-//endpoint for sharing post to community when public
-app.post("/goals/:id/share", authenticateUser, async (req, res) => {
-  const { id } = req.params;
+ 
+      const communityPost = new CommunityPost({
+        userId: req.user._id,
+        userName: req.user.name,
+        intention: req.user.intention, 
+        goals: goals.map(goal => ({
+          intention: goal.intention,
+          specific: goal.specific,
+          measurable: goal.measurable,
+          achievable: goal.achievable,
+          relevant: goal.relevant,
+          timebound: goal.timebound
+        })),
+        createdAt: new Date()
+      });
 
-  try {
-    
-    if (!req.user.isPublic) {
-      return res.status(403).json({
-        success: false,
-        message: "You must have a public profile to share goals"
+      await communityPost.save();
+
+      return res.status(201).json({
+        success: true,
+        message: "Dashboard shared to community",
+        response: communityPost
+      });
+    } else {
+     
+      await CommunityPost.deleteMany({ userId: req.user._id });
+
+      return res.status(200).json({
+        success: true,
+        message: "Dashboard removed from community"
       });
     }
-
-    const goal = await Goal.findOne({ _id: id, userId: req.user._id });
-    if (!goal) {
-      return res.status(404).json({
-        success: false,
-        message: "Goal not found"
-      });
-    }
-
-    const communityPost = new CommunityPost({
-      userId: req.user._id,
-      goalId: goal._id,
-      userName: req.user.name,
-      intention: goal.intention,
-      specific: goal.specific,
-      measurable: goal.measurable,
-      achievable: goal.achievable,
-      relevant: goal.relevant,
-      timebound: goal.timebound,
-      createdAt: new Date()
-    });
-
-    await communityPost.save();
-
-    res.status(201).json({
-      success: true,
-      message: "Goal shared to community",
-      response: communityPost
-    });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
-      message: "Could not share goal",
+      message: "Could not update community sharing",
       error
     });
   }
 });
-
 
 
 //Setup

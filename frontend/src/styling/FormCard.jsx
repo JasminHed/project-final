@@ -1,15 +1,32 @@
 import styled from "styled-components";
 
-//This is styling for setup and dashboard
+//This is styling for setup
 
 export const FormCard = styled.div`
-  //background: var(--color-card-background);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
   border: 1px solid #dddddd;
-  border-radius: 8px;
-  padding: 20px;
   margin-bottom: 15px;
-  box-shadow: rgba(0, 0, 0, 0.1);
   min-height: 200px;
+  width: 100%;
+  max-width: 280px;
+
+  @media (min-width: 668px) {
+    max-width: 700px;
+    padding: 30px;
+  }
+
+  @media (min-width: 1024px) {
+    max-width: 900px;
+    padding: 40px;
+  }
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  }
 
   ul {
     margin-top: 20px;
@@ -25,7 +42,7 @@ export const FormCard = styled.div`
 /* Textarea styling */
 export const Textarea = styled.textarea`
   width: 100%;
-  border: 2px solid var(--color-focus);
+  border: 1px solid var(--color-focus);
   border-radius: 15px;
   padding: 20px;
   margin-top: 15px;
@@ -38,7 +55,7 @@ export const Textarea = styled.textarea`
   transition: outline 0.3s ease;
 
   &:focus {
-    outline: 2px solid var(--color-focus);
+    outline: 1px solid var(--color-focus);
   }
   //this is to remove the default styling of the textbox
   &:invalid {

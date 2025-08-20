@@ -48,6 +48,7 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
     font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     line-height: 1.6;
+    min-height: 100vh; //to make sure when loading footer stays put?
 
   }
 

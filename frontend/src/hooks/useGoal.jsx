@@ -38,7 +38,7 @@ const useGoal = () => {
       });
   };
 
-  const updateGoal = (goalId, goalData) => {
+  /*const updateGoal = (goalId, goalData) => {
     const token = localStorage.getItem("accessToken");
     fetch(`${API_BASE_URL}/goals/${goalId}`, {
       method: "PATCH",
@@ -55,7 +55,7 @@ const useGoal = () => {
       .catch((error) => {
         console.error("Error saving goal:", error);
       });
-  };
+  };*/
 
   const completeGoal = (goalId) => {
     const token = localStorage.getItem("accessToken");
@@ -71,34 +71,93 @@ const useGoal = () => {
     }).catch((error) => console.error("Error updating completion:", error));
   };
 
-  const updateGoalField = (goalId, field, value) => {
+  const toggleGoalStarted = (goalId, value) => {
+    // save locally for UI
     setGoals((prevGoals) =>
       prevGoals.map((goal) =>
-        goal._id === goalId ? { ...goal, [field]: value } : goal
+        goal._id === goalId ? { ...goal, started: value } : goal
       )
     );
+
+    // send to backend for persistent
+    const goalToUpdate = goals.find((goal) => goal._id === goalId) || {};
+    const updatedGoal = { ...goalToUpdate, started: value };
+
+    const token = localStorage.getItem("accessToken");
+    fetch(`${API_BASE_URL}/goals/${goalId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+      body: JSON.stringify(updatedGoal),
+    })
+      .then(() => {
+        setSuccessMessage("Goal updated!");
+        setTimeout(() => setSuccessMessage(""), 3000);
+      })
+      .catch((err) => console.error("Error updating goal:", err));
   };
 
-  const shareGoal = (goalId) => {
+  //share to community
+  const toggleShareGoal = (goalId) => {
+    const goalToUpdate = goals.find((goal) => goal._id === goalId);
+    if (!goalToUpdate) return;
+
+    const updatedShared = !goalToUpdate.shareToCommunity;
+
+    setGoals((prevGoals) =>
+      prevGoals.map((goal) =>
+        goal._id === goalId
+          ? { ...goal, shareToCommunity: updatedShared }
+          : goal
+      )
+    );
+
     const token = localStorage.getItem("accessToken");
+
     fetch(`${API_BASE_URL}/goals/${goalId}/share`, {
-      method: "POST",
-      headers: { Authorization: token },
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+      body: JSON.stringify({
+        shareToCommunity: updatedShared,
+      }),
     })
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-          setShareSuccessMessage("Goal shared to community!");
-          setTimeout(() => setShareSuccessMessage(""), 3000);
-        } else {
           setShareSuccessMessage(
-            "Failed to share goal. Make your profile public first."
+            updatedShared
+              ? "Goal shared to community!"
+              : "Goal removed from community"
           );
-          setTimeout(() => setShareSuccessMessage(""), 3000);
+        } else {
+          setGoals((prevGoals) =>
+            prevGoals.map((goal) =>
+              goal._id === goalId
+                ? { ...goal, shareToCommunity: !updatedShared }
+                : goal
+            )
+          );
+          setShareSuccessMessage("Failed to update goal sharing.");
         }
+        setTimeout(() => setShareSuccessMessage(""), 3000);
       })
-      .catch(() => {
+      .catch((error) => {
+        console.error("Share error:", error);
+
+        setGoals((prevGoals) =>
+          prevGoals.map((goal) =>
+            goal._id === goalId
+              ? { ...goal, shareToCommunity: !updatedShared }
+              : goal
+          )
+        );
         setShareSuccessMessage("Error sharing goal.");
+        setTimeout(() => setShareSuccessMessage(""), 3000);
       });
   };
 
@@ -111,10 +170,9 @@ const useGoal = () => {
     loading,
     successMessage,
     shareSuccessMessage,
-    updateGoal,
     completeGoal,
-    updateGoalField,
-    shareGoal,
+    toggleGoalStarted,
+    toggleShareGoal,
   };
 };
 

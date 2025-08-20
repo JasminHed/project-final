@@ -1,12 +1,10 @@
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { FormCard, Textarea } from "../styling/FormCard.jsx";
 
 import { useUserStore } from "../store/UserStore";
-import { HeroImage } from "../styling/HeroImage.jsx";
 import { Message } from "../styling/LoadingMessage.jsx";
-
-//the old post must be able to be deleted somehow, chek on that
 
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
 
@@ -49,32 +47,6 @@ const PostsGrid = styled.div`
 
   @media (min-width: 1025px) {
     gap: 32px;
-  }
-`;
-
-const PostContainer = styled.article`
-  border: 2px solid var(--color-focus);
-  border-radius: 20px;
-  padding: 24px 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-
-  &:hover {
-    transform: translateY(-2px);
-  }
-
-  header h2 {
-    margin-bottom: 12px;
-
-    p {
-      font-style: italic;
-      font-size: 14px;
-      font-weight: normal;
-    }
-  }
-
-  p {
-    margin-top: 8px;
   }
 `;
 
@@ -131,24 +103,18 @@ const CommentItem = styled.div`
     font-size: 12px;
   }
 `;
-const Img = styled.img`
-  width: 95%;
-  max-height: 400px;
-  margin: 32px auto;
-  display: block;
-  object-fit: cover;
-  border-radius: 16px;
 
-  @media (min-width: 669px) {
-    width: 100%;
-    max-height: 400px;
-    margin: 48px auto;
-  }
-`;
 //Community → fetches all posts →
 //loops through posts and passes each post to CommunityPost
 //CommunityPost renders a "card" with like/comment functionality
 //Delete button only for user who made the comment
+const SMART_FIELDS = [
+  "specific",
+  "measurable",
+  "achievable",
+  "relevant",
+  "timebound",
+];
 
 const CommunityPost = ({ post }) => {
   const [likes, setLikes] = useState(post.likes || 0);
@@ -218,32 +184,21 @@ const CommunityPost = ({ post }) => {
   };
 
   return (
-    <PostContainer>
-      <header>
-        <h2>
-          My intention is: <p>{post.intention}</p>
-        </h2>
-      </header>
-      <p>
-        <strong>Posted by:</strong> {post.userName || "Anonymous"}
-      </p>
-      <p>
-        <strong>Specific:</strong> {post.specific}
-      </p>
-      <p>
-        <strong>Measurable:</strong> {post.measurable}
-      </p>
-      <p>
-        <strong>Achievable:</strong> {post.achievable}
-      </p>
-      <p>
-        <strong>Relevant:</strong> {post.relevant}
-      </p>
-      <p>
-        <strong>Time-bound: </strong>
-        {post.timebound}
-      </p>
+    <FormCard>
+      {/* Intention */}
+      <h2>Your Intention</h2>
+      <Textarea rows={2} value={post.intention} readOnly />
 
+      {/* SMART Fields */}
+      <h2>Your detailed goals</h2>
+      {SMART_FIELDS.map((field) => (
+        <div key={field}>
+          <strong>{field.charAt(0).toUpperCase() + field.slice(1)}:</strong>
+          <Textarea rows={2} value={post[field]} readOnly />
+        </div>
+      ))}
+
+      {/* Like button */}
       <ButtonContainer>
         <button
           onClick={handleLike}
@@ -253,6 +208,7 @@ const CommunityPost = ({ post }) => {
         </button>
       </ButtonContainer>
 
+      {/* Comments */}
       <CommentsSection
         role="region"
         aria-live="polite"
@@ -289,7 +245,7 @@ const CommunityPost = ({ post }) => {
           ))}
         </div>
       </CommentsSection>
-    </PostContainer>
+    </FormCard>
   );
 };
 
@@ -313,7 +269,6 @@ const Community = () => {
 
   return (
     <>
-      <HeroImage src="/assets/Dashboard.jpg" alt="Hand with flowers" />
       <Container>
         <main id="main-content">
           <HeaderSection>

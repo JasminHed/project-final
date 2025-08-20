@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
+import { FaRobot } from "react-icons/fa";
 
 //add icon
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
@@ -154,7 +155,12 @@ const AIbot = () => {
 
   return (
     <>
-      <ChatIcon onClick={() => setIsOpen(!isOpen)}>✉️</ChatIcon>
+      <ChatIcon
+        onClick={() => setIsOpen(!isOpen)}
+        aria-label="Open chat with Luca"
+      >
+        <FaRobot size={28} />
+      </ChatIcon>
 
       <ChatContainer $isOpen={isOpen}>
         <h3>Luca</h3>

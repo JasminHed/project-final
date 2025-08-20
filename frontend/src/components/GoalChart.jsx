@@ -5,6 +5,8 @@ import styled from "styled-components";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
+// add a wrapper it jumps when we click save button
+
 const ChartContainer = styled.div`
   width: 150px;
   height: 150px;
@@ -31,7 +33,7 @@ const GoalChart = ({ goals }) => {
     datasets: [
       {
         data: [startedGoals, notStartedGoals],
-        backgroundColor: ["#004d40", "#e47885"],
+        backgroundColor: ["#008080", "#e48b9e"],
       },
     ],
   };

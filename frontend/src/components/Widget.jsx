@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { FaSun, FaHeart } from "react-icons/fa";
 
 const WidgetGrid = styled.section`
   display: grid;
   grid-template-columns: 1fr;
   justify-items: center;
-  gap: 20px;
+  gap: 45px;
   margin: 40px 0;
   padding: 10px;
 
@@ -22,8 +23,6 @@ const WidgetGrid = styled.section`
 `;
 
 const Widget = styled.div`
-  background: var(--card-color-bg);
-  color: var(--color-text-primary);
   padding: 16px;
   border-radius: 12px;
   width: 260px;
@@ -34,15 +33,11 @@ const Widget = styled.div`
   justify-content: center;
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   opacity: ${(props) => (props.disabled ? 0.5 : 1)};
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* lite lyft-effekt */
+
   transition: transform 0.2s, box-shadow 0.2s;
 
   &:hover {
     transform: ${(props) => (props.disabled ? "none" : "translateY(-3px)")};
-    box-shadow: ${(props) =>
-      props.disabled
-        ? "0 4px 10px rgba(0,0,0,0.1)"
-        : "0 8px 16px rgba(0,0,0,0.15)"};
   }
 
   h3 {
@@ -97,7 +92,9 @@ const Widgets = ({ goals, handleAddGoalClick }) => {
           }}
           aria-label="Go to community page"
         >
-          <h3>To Community</h3>
+          <h3>
+            <FaHeart color="#d36d92" /> Community
+          </h3>
           <Count>{communityCount} shared goals</Count>
           <Count>
             Click to explore <span aria-hidden="true">→</span>
@@ -118,8 +115,10 @@ const Widgets = ({ goals, handleAddGoalClick }) => {
           }
           aria-disabled={goals.length >= 3}
         >
-          <h3>Add new</h3>
-          <Count>Intentions & Goals here</Count>
+          <h3>
+            <FaSun color="#FFD700" /> Set new
+          </h3>
+          <Count>Intention & Goal here</Count>
           <Count>
             Click to start <span aria-hidden="true">→</span>{" "}
           </Count>

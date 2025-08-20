@@ -4,16 +4,13 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import ProfileSetting from "../components/ProfileSetting.jsx";
+
 import { useUserStore } from "../store/UserStore.jsx";
-import GoalForm from "../components/GoalForm.jsx";
+import DashboardForm from "../components/DashboardForm.jsx";
 import GoalChart from "../components/GoalChart.jsx";
 import { Message } from "../styling/LoadingMessage.jsx";
 import useGoal from "../hooks/useGoal.jsx";
 import Widget from "../components/Widget.jsx";
-import { HeroImage } from "../styling/HeroImage.jsx";
-
-// when you ress save this goal it saves all goals on all cards you have in dahsboard, maybe just make 1 save goal button or change this
 
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
 
@@ -78,8 +75,8 @@ const Dashboard = () => {
     shareSuccessMessage,
     updateGoal,
     completeGoal,
-    updateGoalField,
-    shareGoal,
+    toggleGoalStarted,
+    toggleShareGoal,
   } = useGoal();
 
   const incompleteGoals = goals.filter((goal) => !goal.completed);
@@ -118,52 +115,12 @@ const Dashboard = () => {
   }, []);
 
   //handlers
-  const handleIntentionChange = (goalId) => (e) => {
-    updateGoalField(goalId, "intention", e.target.value);
-  };
-
-  const handleFieldChange = (goalId, field) => (e) => {
-    const value = field === "started" ? e.target.checked : e.target.value;
-    updateGoalField(goalId, field, value);
-  };
-
-  const handleSaveGoal = (goalId) => {
-    const goalToSave = goals.find((goal) => goal._id === goalId);
-    updateGoal(goalId, goalToSave);
+  const handleStartToggle = (goalId) => (e) => {
+    toggleGoalStarted(goalId, e.target.checked);
   };
 
   const handleCompleteGoal = (goalId) => () => {
     completeGoal(goalId);
-  };
-
-  const handleShareGoal = (goalId) => {
-    shareGoal(goalId);
-  };
-
-  const handleUserStatus = (option) => {
-    const token = localStorage.getItem("accessToken");
-    const isPublic = option === "public";
-
-    fetch(`${API_BASE_URL}/users/public-status`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-      body: JSON.stringify({ isPublic }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to update profile status");
-        }
-        return response.json();
-      })
-      .then(() => {
-        setUser({ ...user, isPublic });
-      })
-      .catch((error) => {
-        console.error("Failed to update profile status:", error);
-      });
   };
 
   //loading message
@@ -174,12 +131,10 @@ const Dashboard = () => {
   return (
     <>
       <main id="main-content">
-        <HeroImage
-          src="/assets/Dashboard.jpg"
-          alt="Woman sitting with a star shining"
-        />
         <Container>
-          <h1>Welcome to your dashboard</h1>
+          <h1>
+            Welcome to your dashboard {user?.name ? `, ${user.name}` : ""}!
+          </h1>
           <section aria-label="Introduction">
             <p>
               Here you'll see your active goals, up to three at a time —
@@ -193,21 +148,18 @@ const Dashboard = () => {
           </section>
         </Container>
 
-        <ProfileSetting user={user} onOptionSelect={handleUserStatus} />
-
         <Widget goals={goals} handleAddGoalClick={handleAddGoalClick} />
+
         <Container>
           <GoalsGrid>
             {goals.length > 0 ? (
               goals.map((goal) => (
-                <GoalForm
+                <DashboardForm
                   key={goal._id}
                   goal={goal}
-                  onIntentionChange={handleIntentionChange}
-                  onFieldChange={handleFieldChange}
-                  onSave={handleSaveGoal}
-                  onComplete={() => handleCompleteGoal(goal._id)()}
-                  onShare={handleShareGoal}
+                  onStartToggle={handleStartToggle(goal._id)}
+                  onComplete={handleCompleteGoal(goal._id)}
+                  onShare={() => toggleShareGoal(goal._id)}
                   successMessage={successMessage}
                   shareSuccessMessage={shareSuccessMessage}
                 />

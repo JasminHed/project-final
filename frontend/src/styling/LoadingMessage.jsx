@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const Message = styled.p`
+  min-height: 70vh;
   text-align: center;
   margin: 0 auto;
   margin-top: 20px;

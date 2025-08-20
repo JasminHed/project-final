@@ -7,6 +7,8 @@ export const HeroImage = styled.img`
   display: block;
   object-fit: cover;
   border-radius: 16px;
+  //filter: brightness(0.8) contrast(0.9);
+  mask: radial-gradient(ellipse at center, black 80%, transparent 100%);
 
   @media (min-width: 669px) {
     width: 100%;

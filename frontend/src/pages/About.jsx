@@ -1,8 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 
-import { HeroImage } from "../styling/HeroImage.jsx";
-
 const Description = styled.div`
   margin: 20px auto;
   max-width: 90%;
@@ -56,10 +54,6 @@ const GridBox = styled.div`
 const About = () => {
   return (
     <>
-      <HeroImage
-        src="/assets/Dashboard.jpg"
-        alt="Woman sitting with the stars"
-      />
       <Description>
         <h1>About The Intention Hub</h1>
         <GridWrapper>

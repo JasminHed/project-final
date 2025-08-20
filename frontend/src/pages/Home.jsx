@@ -1,14 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import AuthForm from "../components/AuthForm";
 import Taglines from "../components/Tagline.jsx";
 import Onboarding from "../sections/Onboarding.jsx";
 import { useUserStore } from "../store/UserStore.jsx";
-import { HeroImage } from "../styling/HeroImage.jsx";
 import { Message } from "../styling/LoadingMessage.jsx";
 
-//box 2 and 3 should be clickable when logged in
+//box 2 and 3 should be clickable when logged in- FIXED!
 
 const MainBox = styled.div`
   display: flex;
@@ -86,6 +86,7 @@ const WelcomeScreen = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [AutoStartLearn, setAutoStartLearn] = useState(false);
+  const navigate = useNavigate();
 
   // Ref for onboarding and signup
   const onboardingRef = useRef(null);
@@ -126,7 +127,7 @@ const WelcomeScreen = () => {
       setShowError("You must be logged in and finish the onboarding section");
       return;
     }
-    setShowError("");
+    navigate("/setup");
   };
 
   const handleDashboardClick = () => {
@@ -134,7 +135,7 @@ const WelcomeScreen = () => {
       setShowError("You must be logged in and finish the setup section");
       return;
     }
-    setShowError("");
+    navigate("/dashboard");
   };
 
   const handleGoBack = () => {
@@ -169,10 +170,6 @@ const WelcomeScreen = () => {
   return (
     <main id="main-content">
       <section role="region" aria-labelledby="about-intention-hub">
-        <HeroImage
-          src="/assets/Dashboard.jpg"
-          alt="Woman sitting with the stars"
-        />
         <Taglines />
 
         <SignUpButton>

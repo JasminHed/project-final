@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-//varför hoppar allt när error message kommer upp?
+//when error message shows up the page jumps
+//why does it come to middle and not beginnign of page? - FIXED
+// lägg till ett element runt error valideringen för att få det att sluta hoppa.
 
 import { FormCard, Textarea } from "../styling/FormCard.jsx";
-import { HeroImage } from "../styling/HeroImage.jsx";
 
 // API base
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
@@ -68,8 +69,26 @@ const Label = styled.label`
   }
 `;
 
-const ErrorMessage = styled.p`
+const CharacterCount = styled.p`
+  font-size: 12px;
+  margin: 4px 0 0 0;
+
+  @media (min-width: 668px) {
+    font-size: 13px;
+  }
+
+  @media (min-width: 1025px) {
+    font-size: 14px;
+  }
+`;
+
+const ErrorWrapper = styled.div`
   min-height: 24px;
+  display: flex;
+  align-items: flex-start;
+`;
+
+const ErrorMessage = styled.p`
   color: var(--color-error);
   margin-bottom: 4px;
   margin-top: 4px;
@@ -109,7 +128,7 @@ const Setup = () => {
   // State to show error message if fields are not filled in
   const [showError, setShowError] = useState(false);
 
-  // Hook to navigate to another page
+  // Hook to navigate to another page-dashboard
   const navigate = useNavigate();
 
   const [errors, setErrors] = useState({
@@ -136,7 +155,7 @@ const Setup = () => {
   const handleBackToDashboard = () => {
     navigate("/dashboard");
   };
-
+  //This validates, sends data, navigates to dashboard or shows error
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -170,10 +189,6 @@ const Setup = () => {
 
   return (
     <main id="main-content">
-      <HeroImage
-        src="/assets/Dashboard.jpg"
-        alt="Woman sitting with the stars"
-      />
       <Container>
         <Title>
           Ready to set your intentions and goals? Let's make it happen!
@@ -228,7 +243,9 @@ const Setup = () => {
               {errors.intention && (
                 <ErrorMessage role="alert">{errors.intention}</ErrorMessage>
               )}
-              <p aria-live="polite">{values.intention.length}/150</p>
+              <CharacterCount aria-live="polite">
+                {values.intention.length}/150
+              </CharacterCount>
             </FormCard>
           </Fieldset>
           <Fieldset>
@@ -251,7 +268,9 @@ const Setup = () => {
               {errors.specific && (
                 <ErrorMessage role="alert">{errors.specific}</ErrorMessage>
               )}
-              <p aria-live="polite">{values.specific.length}/150</p>
+              <CharacterCount aria-live="polite">
+                {values.specific.length}/150
+              </CharacterCount>
 
               <Label htmlFor="measurable">Measurable</Label>
               <Textarea
@@ -267,7 +286,9 @@ const Setup = () => {
               {errors.measurable && (
                 <ErrorMessage role="alert">{errors.measurable}</ErrorMessage>
               )}
-              <p aria-live="polite">{values.measurable.length}/150</p>
+              <CharacterCount aria-live="polite">
+                {values.measurable.length}/150
+              </CharacterCount>
 
               <Label htmlFor="achievable">Achievable</Label>
               <Textarea
@@ -283,7 +304,9 @@ const Setup = () => {
               {errors.achievable && (
                 <ErrorMessage role="alert">{errors.achievable}</ErrorMessage>
               )}
-              <p aria-live="polite">{values.achievable.length}/150</p>
+              <CharacterCount aria-live="polite">
+                {values.achievable.length}/150
+              </CharacterCount>
 
               <Label htmlFor="relevant">Relevant</Label>
               <Textarea
@@ -299,7 +322,9 @@ const Setup = () => {
               {errors.relevant && (
                 <ErrorMessage role="alert">{errors.relevant}</ErrorMessage>
               )}
-              <p aria-live="polite">{values.relevant.length}/150</p>
+              <CharacterCount aria-live="polite">
+                {values.relevant.length}/150
+              </CharacterCount>
 
               <Label htmlFor="timebound">Timebound</Label>
               <Textarea
@@ -315,15 +340,18 @@ const Setup = () => {
               {errors.timebound && (
                 <ErrorMessage role="alert">{errors.timebound}</ErrorMessage>
               )}
-              <p aria-live="polite">{values.timebound.length}/150</p>
+              <CharacterCount aria-live="polite">
+                {values.timebound.length}/150
+              </CharacterCount>
             </FormCard>
           </Fieldset>
-
-          {showError && (
-            <ErrorMessage role="alert">
-              Please fill in all fields before moving forward
-            </ErrorMessage>
-          )}
+          <ErrorWrapper>
+            {showError && (
+              <ErrorMessage role="alert">
+                Please fill in all fields before moving forward
+              </ErrorMessage>
+            )}
+          </ErrorWrapper>
 
           <ButtonGroup>
             <button type="button" onClick={handleBackToDashboard}>

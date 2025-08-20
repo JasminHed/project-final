@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import AIbot from "./components/AIbot.jsx";
 import About from "./pages/About.jsx";
@@ -10,10 +11,16 @@ import Footer from "./sections/Footer.jsx";
 import Header from "./sections/Header.jsx";
 import Setup from "./sections/Setup.jsx";
 import GlobalStyles from "./styling/GlobalStyling.jsx";
+import { HeroImage } from "./styling/HeroImage.jsx";
 
 const NotFound = () => <h2>404 - Page Not Found</h2>;
 
 export const App = () => {
+  const location = useLocation();
+  //forces page to start from top everytime
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+  }, [location.pathname]);
   return (
     <>
       <a href="#main-content" className="skip-link">
@@ -21,7 +28,12 @@ export const App = () => {
       </a>
 
       <GlobalStyles />
+
       <Header />
+      <HeroImage
+        src="/assets/Dashboard.jpg"
+        alt="Woman sitting with the stars"
+      />
       <AIbot />
       <main>
         <Routes>

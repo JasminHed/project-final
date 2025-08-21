@@ -68,6 +68,8 @@ app.post("/users", async (req, res) => {
       success: true,
       message: "User created",
       id: user._id,
+      name: user.name,       
+      email: user.email, 
       accessToken: user.accessToken,
     });
   } catch (error) {

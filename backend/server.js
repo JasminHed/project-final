@@ -465,28 +465,6 @@ app.delete("/messages/:id", authenticateUser, async (req, res) => {
       });
     } else {
     
-
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      
-      const lastCheckin = chat.lastCheckinDate ? new Date(chat.lastCheckinDate) : null;
-      if (lastCheckin) lastCheckin.setHours(0, 0, 0, 0);
-      
-      const needsCheckin = !lastCheckin || lastCheckin < today;
-  
-      // *** NYTT: Add daily check-in message if needed ***
-      if (needsCheckin && chat.messages.length > 0) {
-        const checkinMessage = "Welcome to the Intention Hub! I'm here to assist you on your journey.Yay you for starting! How can I help you today?";
-        
-        chat.messages.push({
-          role: "assistant",
-          content: checkinMessage
-        });
-        
-        chat.lastCheckinDate = new Date();
-      }
-
-
     }
 
    

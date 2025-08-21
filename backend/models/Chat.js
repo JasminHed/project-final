@@ -26,11 +26,7 @@ const chatSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  messages: [messageSchema],
-  lastCheckinDate: { //to see if check in is necessary
-    type: Date,
-    default: null
-  }
+  messages: [messageSchema]
 }, { timestamps: true });
 
 const Chat = mongoose.model("Chat", chatSchema);

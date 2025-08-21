@@ -20,6 +20,7 @@ const ChatIcon = styled.button`
   align-items: center;
   justify-content: center;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  z-index: 9999;
 
   &:hover {
     transform: scale(1.05);

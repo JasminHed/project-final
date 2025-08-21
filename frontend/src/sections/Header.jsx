@@ -103,7 +103,7 @@ const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [logoutMessage, setLogoutMessage] = useState("");
   const [darkMode, setDarkMode] = useState(false);
-  const { isLoggedIn, logout } = useUserStore();
+  const { isLoggedIn, logout, user } = useUserStore();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -167,6 +167,8 @@ const Header = () => {
 
         <DesktopNav>
           <NavLinks />
+
+          {isLoggedIn && user?.name && <span>👤 </span>}
           {isLoggedIn ? <Link onClick={handleLogout}>Logout</Link> : null}
           <Link onClick={toggleDarkMode} aria-label="Toggle dark mode">
             {darkMode ? "Light " : "Dark "}
@@ -178,6 +180,7 @@ const Header = () => {
 
       <MobileNav id="mobile-nav" $isOpen={menuOpen} aria-hidden={!menuOpen}>
         <NavLinks />
+        {isLoggedIn && user?.name && <span>👤 </span>}
         {isLoggedIn ? <Link onClick={handleLogout}>Logout</Link> : null}
         <Link onClick={toggleDarkMode} aria-label="Toggle dark mode">
           {darkMode ? "Light mode" : "Dark mode"}

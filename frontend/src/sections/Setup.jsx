@@ -150,25 +150,9 @@ const Setup = () => {
   // Hook to navigate to another page-dashboard
   const navigate = useNavigate();
 
-  const [errors, setErrors] = useState({
-    intention: "",
-    specific: "",
-    measurable: "",
-    achievable: "",
-    relevant: "",
-    timebound: "",
-  });
-
-  const validateField = (value) => {
-    if (value.trim() === "") return "This field is required";
-    if (value.trim().length < 20) return "Minimum 20 characters required";
-    return "";
-  };
-
   const handleFieldChange = (field) => (e) => {
     const value = e.target.value;
     setValues((prev) => ({ ...prev, [field]: value }));
-    setErrors((prev) => ({ ...prev, [field]: validateField(value) }));
   };
   //button back to dashboard
   const handleBackToDashboard = () => {
@@ -177,15 +161,10 @@ const Setup = () => {
   //This validates, sends data, navigates to dashboard or shows error
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    const newErrors = {};
-    Object.entries(values).forEach(([field, value]) => {
-      newErrors[field] = validateField(value);
-    });
-    setErrors(newErrors);
-
-    const hasErrors = Object.values(newErrors).some((err) => err !== "");
-    if (hasErrors) {
+    const hasEmptyFields = Object.values(values).some(
+      (value) => value.trim() === ""
+    );
+    if (hasEmptyFields) {
       setShowError(true);
       return;
     }
@@ -259,11 +238,7 @@ const Setup = () => {
                 maxLength="150"
                 required
               />
-              {errors.intention && (
-                <ErrorWrapper>
-                  <ErrorMessage role="alert">{errors.intention}</ErrorMessage>
-                </ErrorWrapper>
-              )}
+
               <CharacterCount aria-live="polite">
                 {values.intention.length}/150
               </CharacterCount>
@@ -286,9 +261,7 @@ const Setup = () => {
                 maxLength="150"
                 required
               />
-              {errors.specific && (
-                <ErrorMessage role="alert">{errors.specific}</ErrorMessage>
-              )}
+
               <CharacterCount aria-live="polite">
                 {values.specific.length}/150
               </CharacterCount>
@@ -304,9 +277,7 @@ const Setup = () => {
                 maxLength="150"
                 required
               />
-              {errors.measurable && (
-                <ErrorMessage role="alert">{errors.measurable}</ErrorMessage>
-              )}
+
               <CharacterCount aria-live="polite">
                 {values.measurable.length}/150
               </CharacterCount>
@@ -322,9 +293,7 @@ const Setup = () => {
                 maxLength="150"
                 required
               />
-              {errors.achievable && (
-                <ErrorMessage role="alert">{errors.achievable}</ErrorMessage>
-              )}
+
               <CharacterCount aria-live="polite">
                 {values.achievable.length}/150
               </CharacterCount>
@@ -340,9 +309,7 @@ const Setup = () => {
                 maxLength="150"
                 required
               />
-              {errors.relevant && (
-                <ErrorMessage role="alert">{errors.relevant}</ErrorMessage>
-              )}
+
               <CharacterCount aria-live="polite">
                 {values.relevant.length}/150
               </CharacterCount>
@@ -358,9 +325,7 @@ const Setup = () => {
                 maxLength="150"
                 required
               />
-              {errors.timebound && (
-                <ErrorMessage role="alert">{errors.timebound}</ErrorMessage>
-              )}
+
               <CharacterCount aria-live="polite">
                 {values.timebound.length}/150
               </CharacterCount>

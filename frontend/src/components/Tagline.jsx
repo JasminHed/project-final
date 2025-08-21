@@ -25,7 +25,7 @@ export const HeroImage = styled.img`
   border-radius: 5px;
   mask: radial-gradient(ellipse at center, black 70%, transparent 100%);
 
-  @media (max-width: 1023px) {
+  @media (max-width: 1000px) {
     order: -1;
     margin: 0 -20px;
     width: calc(100% + 40px);

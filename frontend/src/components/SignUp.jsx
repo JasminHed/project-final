@@ -10,8 +10,6 @@ import {
   RegisterLink,
 } from "../styling/FormStyling.jsx";
 
-//semantic html + aria added
-
 const SignUp = ({
   setShowLogin,
   setIsLoggedIn,
@@ -56,7 +54,7 @@ const SignUp = ({
           localStorage.setItem("userId", data.userId);
           localStorage.setItem("accessToken", data.accessToken);
           login(
-            { name: formData.name, email: formData.email },
+            { name: data.name, email: data.email },
             data.accessToken,
             data.userId
           );

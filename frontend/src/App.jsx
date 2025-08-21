@@ -11,7 +11,6 @@ import Footer from "./sections/Footer.jsx";
 import Header from "./sections/Header.jsx";
 import Setup from "./sections/Setup.jsx";
 import GlobalStyles from "./styling/GlobalStyling.jsx";
-import { HeroImage } from "./styling/HeroImage.jsx";
 
 const NotFound = () => <h2>404 - Page Not Found</h2>;
 
@@ -30,10 +29,7 @@ export const App = () => {
       <GlobalStyles />
 
       <Header />
-      <HeroImage
-        src="/assets/Dashboard.jpg"
-        alt="Woman sitting with the stars"
-      />
+
       <AIbot />
       <main>
         <Routes>

@@ -1,6 +1,6 @@
 import React from "react";
+import { FaBullhorn, FaRocket, FaTrophy } from "react-icons/fa";
 import styled from "styled-components";
-import { FaRocket, FaTrophy, FaBullhorn } from "react-icons/fa";
 
 import { FormCard, Textarea } from "../styling/FormCard.jsx";
 
@@ -18,19 +18,12 @@ const Label = styled.label`
   color: var(--color-text-primary);
 `;
 
-const SuccessMessage = styled.p`
-  color: var(--color-success);
-  margin-top: 8px;
-  font-size: 14px;
-`;
-
 const TagLabel = styled.label`
-  width: 200px;
+  max-width: 300px;
   display: inline-flex;
   align-items: center;
-  background-color: #e0f7fa;
-  color: black;
-  padding: 12px 16px;
+  color: var(--color-text-primary);
+  padding: 12px 12px;
   border-radius: 12px;
   font-size: 14px;
   cursor: pointer;
@@ -38,13 +31,8 @@ const TagLabel = styled.label`
   margin-bottom: 8px;
   transition: background-color 0.2s, transform 0.2s;
 
-  &:hover {
-    background-color: #b2ebf2;
-    transform: translateY(-2px);
-  }
-
   input {
-    margin-left: 8px;
+    margin-left: 6px;
     cursor: pointer;
   }
 `;
@@ -71,8 +59,6 @@ const DashboardForm = ({
   onStartToggle,
   onComplete,
   onShare,
-  successMessage,
-  shareSuccessMessage,
 }) => {
   return (
     <div aria-labelledby={`goal-title-${goal._id}`}>
@@ -85,10 +71,10 @@ const DashboardForm = ({
         <Fieldset>
           <FormCard>
             <TagLabel>
-              <Icon color="#4dabf5">
+              <Icon color="var(--color-success)">
                 <FaRocket />
               </Icon>
-              <span>Started</span>
+              <span>Set as started</span>
               <input
                 type="checkbox"
                 checked={goal.started || false}
@@ -96,46 +82,29 @@ const DashboardForm = ({
                 aria-label="Mark goal as started"
               />
             </TagLabel>
-            <TagLabel>
-              <Icon color="#ffb74d">
+            <TagLabel
+              onClick={() => onComplete(goal._id)}
+              aria-label="Mark goal as completed - goal will be removed"
+            >
+              <Icon color="var(--color-button-bg)">
                 <FaTrophy />
               </Icon>
-              <span>Completed</span>
-              <input
-                type="checkbox"
-                checked={goal.completed || false}
-                onChange={() => onComplete(goal._id)}
-                aria-label="Mark goal as completed"
-              />
+              <span>Mark as complete (will be removed)</span>
             </TagLabel>
-            <TagLabel>
-              <Icon color="#ba68c8">
+            <TagLabel onClick={() => onShare(goal._id)}>
+              <Icon color="var(--color-focus)">
                 <FaBullhorn />
               </Icon>
               <span>
                 {goal.shareToCommunity
-                  ? "Post shared to community!"
+                  ? "Unshare from community"
                   : "Share to community"}
               </span>
-              <input
-                type="checkbox"
-                checked={goal.shareToCommunity || false}
-                onChange={() => onShare(goal._id)}
-                aria-label="Share goal to community"
-              />
             </TagLabel>
-
-            {["personal", "professional"].map(
-              (tag) =>
-                goal[tag] && (
-                  <TagLabel key={tag} tabIndex={0} aria-label={tag}>
-                    {tag.charAt(0).toUpperCase() + tag.slice(1)}
-                  </TagLabel>
-                )
-            )}
 
             <h1 id={`goal-title-${goal._id}`}>Your Intention</h1>
             <Label htmlFor={`intention-${goal._id}`}></Label>
+
             <Textarea
               id={`intention-${goal._id}`}
               rows={2}
@@ -161,11 +130,6 @@ const DashboardForm = ({
           </FormCard>
         </Fieldset>
       </form>
-
-      {successMessage && <SuccessMessage>{successMessage}</SuccessMessage>}
-      {shareSuccessMessage && (
-        <SuccessMessage>{shareSuccessMessage}</SuccessMessage>
-      )}
     </div>
   );
 };

@@ -99,8 +99,27 @@ const ErrorMessage = styled.p`
 
 const ButtonGroup = styled.div`
   display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-top: 24px;
+
+  button {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: var(--color-text-primary);
+
+    &:hover {
+      border: 1px solid var(--color-focus);
+    }
+  }
+
+  span {
+    font-size: 14px;
+    color: var(--color-text);
+  }
 `;
 
 // Functions
@@ -241,7 +260,9 @@ const Setup = () => {
                 required
               />
               {errors.intention && (
-                <ErrorMessage role="alert">{errors.intention}</ErrorMessage>
+                <ErrorWrapper>
+                  <ErrorMessage role="alert">{errors.intention}</ErrorMessage>
+                </ErrorWrapper>
               )}
               <CharacterCount aria-live="polite">
                 {values.intention.length}/150
@@ -353,11 +374,21 @@ const Setup = () => {
             )}
           </ErrorWrapper>
 
-          <ButtonGroup>
-            <button type="button" onClick={handleBackToDashboard}>
-              Back to dashboard
+          <ButtonGroup role="navigation" aria-label="Dashboard navigation">
+            <button
+              type="button"
+              onClick={handleBackToDashboard}
+              aria-label="Back to dashboard"
+            >
+              &lt; Dashboard
             </button>
-            <button type="submit">Save and head to your dashboard</button>
+
+            <button
+              type="submit"
+              aria-label="Submit and head to your dashboard"
+            >
+              Submit &gt;
+            </button>
           </ButtonGroup>
         </form>
       </Container>

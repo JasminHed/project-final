@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
-import styled from "styled-components";
 import { FaRobot } from "react-icons/fa";
+import styled from "styled-components";
 
 //add icon
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
@@ -31,8 +31,8 @@ const ChatIcon = styled.button`
 const ChatContainer = styled.div`
   position: fixed;
   bottom: 100px;
-  right: 30px;
-  width: 280px;
+  right: 25px;
+  width: 290px;
   z-index: 9999;
   border-radius: 16px;
   overflow: hidden;

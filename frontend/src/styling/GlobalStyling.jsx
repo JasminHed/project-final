@@ -2,6 +2,45 @@
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyles = createGlobalStyle`
+
+//happy or calm color?
+
+ /*:root {
+  --color-text-primary: #000000;          
+  --color-text-link: #000000;            
+  --color-button-bg: #0f766e;             
+  --color-button-text: #ffffff;           
+  --color-button-hover: #134e4a;          
+  --color-focus: #14b8a6;                 
+  --color-background: #ffffff;            
+  --color-error: #ff8a80;                 
+  --color-success: #81c784;               
+  --color-chart-active: #4ecdc4;          
+  --color-chart-completed: #e8f5e8;       
+  --color-card-background: rgba(255, 255, 255, 0.8); 
+  
+}
+
+.dark {
+  --color-text-primary: #f7fafc;          
+  --color-text-link: #cbd5e0;             
+  --color-button-bg: #2d3748;            
+  --color-button-text: #4ecdc4;          
+  --color-button-hover: #4a5568;          
+  --color-focus: #68d391;                 
+  --color-background: #000000;          
+  --color-error: #fc8181;                 
+  --color-success: #68d391;               
+  --color-chart-active: #4ecdc4;          
+  --color-chart-completed: #2d3748;       
+  --color-card-background: rgba(45, 55, 72, 0.8); 
+}*/
+
+
+
+
+
+
  :root {
   --color-text-primary: #000000;          
   --color-text-link: #6b7280;             
@@ -14,7 +53,8 @@ const GlobalStyles = createGlobalStyle`
   --color-success: #1e40af;               
   --color-chart-active: #1e293b;          
   --color-chart-completed: #d1d5db;       
-  --color-card-background: #f8fafc;       
+  --color-card-background: #f8fafc;    
+   
 }
 
 .dark {
@@ -29,7 +69,8 @@ const GlobalStyles = createGlobalStyle`
   --color-success: #3b82f6;               
   --color-chart-active: #e2e8f0;          
   --color-chart-completed: #4b5563;       
-  --color-card-background: #0f172a;       
+  --color-card-background: #0f172a;  
+   
 }
 
 
@@ -138,6 +179,7 @@ body {
 
  
   button {
+   
     background-color: var(--color-button-bg);
     color: var(--color-button-text);
     font-size: 15px;

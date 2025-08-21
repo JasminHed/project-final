@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { FaHeart, FaSun } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { FaSun, FaHeart } from "react-icons/fa";
 
 const WidgetGrid = styled.section`
   display: grid;
@@ -93,7 +93,7 @@ const Widgets = ({ goals, handleAddGoalClick }) => {
           aria-label="Go to community page"
         >
           <h3>
-            <FaHeart color="#d36d92" /> Community
+            <FaHeart color="#0d9488" /> Community
           </h3>
           <Count>{communityCount} shared goals</Count>
           <Count>
@@ -116,7 +116,7 @@ const Widgets = ({ goals, handleAddGoalClick }) => {
           aria-disabled={goals.length >= 3}
         >
           <h3>
-            <FaSun color="#FFD700" /> Set new
+            <FaSun color="##15803d" /> Set new
           </h3>
           <Count>Intention & Goal here</Count>
           <Count>

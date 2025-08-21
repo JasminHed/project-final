@@ -10,6 +10,7 @@ import styled from "styled-components";
 const Container = styled.section`
   padding: 40px 16px 60px;
   max-width: 100%;
+  min-height: 80vh;
   margin: 0 auto;
 
   @media (min-width: 669px) {
@@ -64,30 +65,27 @@ const Content = styled.div`
 
 const ButtonContainer = styled.nav`
   display: flex;
-  gap: 8px;
   justify-content: center;
+  align-items: center;
+  gap: 20px;
   margin-top: 24px;
-  flex-direction: column;
 
   button {
-    padding: 14px 20px;
-    border-radius: 6px;
-    transition: opacity 0.2s ease;
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: var(--color-text-primary);
 
     &:hover {
-      opacity: 0.8;
+      opacity: 0.2;
+      border: 1 px solid var(--color-focus);
     }
   }
 
-  @media (min-width: 669px) {
-    gap: 12px;
-    margin-top: 30px;
-    flex-direction: row;
-
-    button {
-      padding: 16px 28px;
-      border-radius: 8px;
-    }
+  span {
+    font-size: 14px;
+    color: var(--color-text);
   }
 `;
 
@@ -264,9 +262,25 @@ const Onboarding = ({ goBack, signUpRef, autoStart = false }) => {
 
       <ButtonContainer role="navigation" aria-label="Onboarding navigation">
         {showPreviousButton && (
-          <button onClick={handlePrevious}>Previous</button>
+          <button onClick={handlePrevious} aria-label="Previous slide">
+            &lt;
+          </button>
         )}
-        <button onClick={handleNext}>{buttonText}</button>
+
+        <span>
+          {currentSlide + 1} / {modules.length}
+        </span>
+
+        <button
+          onClick={handleNext}
+          aria-label={
+            currentSlide < modules.length - 1
+              ? "Next slide"
+              : "Finish onboarding"
+          }
+        >
+          &gt;
+        </button>
       </ButtonContainer>
 
       {showError && <ErrorMessage role="alert">{showError}</ErrorMessage>}

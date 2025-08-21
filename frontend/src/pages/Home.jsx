@@ -8,8 +8,6 @@ import Onboarding from "../sections/Onboarding.jsx";
 import { useUserStore } from "../store/UserStore.jsx";
 import { Message } from "../styling/LoadingMessage.jsx";
 
-//box 2 and 3 should be clickable when logged in- FIXED!
-
 const MainBox = styled.div`
   display: flex;
   flex-direction: column;
@@ -24,9 +22,9 @@ const Box = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 200px;
+  height: 400px;
   padding: 48px 32px;
-  border: 1px solid var(--color-focus);
+  border: 2px solid var(--color-focus);
   margin-top: 16px;
   margin-bottom: 16px;
   border-radius: 16px;

@@ -15,7 +15,7 @@ const useGoal = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        // array or data of goals?
+        // array or data
         const goalsArray = Array.isArray(data) ? data : data.goals;
         if (!Array.isArray(goalsArray)) {
           console.error("Unexpected goals data format:", data);
@@ -37,25 +37,6 @@ const useGoal = () => {
         setLoading(false);
       });
   };
-
-  /*const updateGoal = (goalId, goalData) => {
-    const token = localStorage.getItem("accessToken");
-    fetch(`${API_BASE_URL}/goals/${goalId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-      body: JSON.stringify(goalData),
-    })
-      .then(() => {
-        setSuccessMessage("Goal saved successfully!");
-        setTimeout(() => setSuccessMessage(""), 4000);
-      })
-      .catch((error) => {
-        console.error("Error saving goal:", error);
-      });
-  };*/
 
   const completeGoal = (goalId) => {
     const token = localStorage.getItem("accessToken");

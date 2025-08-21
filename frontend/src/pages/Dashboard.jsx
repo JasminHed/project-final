@@ -29,17 +29,18 @@ const Container = styled.div`
     max-width: 1400px;
   }
 
+  //the text area
   section[aria-label="Introduction"] {
-    padding: 40px 16px 60px;
+    padding: 40px 16px 20px;
     max-width: 800px;
     margin: 0 auto;
 
     @media (min-width: 669px) {
-      padding: 60px 32px 80px;
+      padding: 60px 32px 30px;
     }
 
     p {
-      margin-bottom: 20px;
+      margin-bottom: 10px;
     }
   }
 `;

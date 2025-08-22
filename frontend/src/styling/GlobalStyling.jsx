@@ -53,7 +53,7 @@ const GlobalStyles = createGlobalStyle`
   --color-success: #1e40af;               
   --color-chart-active: #1e293b;          
   --color-chart-completed: #d1d5db;       
-  --color-card-background: #f8fafc;    
+  --color-card-background: #f1f5f9;    //new color, a bit more blue-ish
    
 }
 

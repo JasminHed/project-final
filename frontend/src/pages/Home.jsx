@@ -167,7 +167,7 @@ const WelcomeScreen = () => {
 
   return (
     <main id="main-content">
-      <section role="region" aria-labelledby="about-intention-hub">
+      <section aria-labelledby="about-intention-hub">
         <Taglines />
 
         <SignUpButton>
@@ -188,12 +188,13 @@ const WelcomeScreen = () => {
         setIsOpen={setIsOpen}
         onSignUpSuccess={handleSignUpSuccess}
       />
-      <section role="region" aria-label="Choose your next step"></section>
+      <section aria-label="Choose your next step"></section>
       <MainBox>
         <Box
           role="button"
           tabIndex={isLoggedIn ? 0 : -1}
           disabled={!isLoggedIn}
+          aria-hidden={!isLoggedIn}
           onClick={handleOnboardingClick}
           aria-label="Learn about Intention and SMART goals here"
           onKeyDown={(e) => e.key === "Enter" && handleOnboardingClick()} //user can use enter
@@ -205,6 +206,7 @@ const WelcomeScreen = () => {
           aria-disabled={!isLoggedIn}
           tabIndex={isLoggedIn ? 0 : -1} //tab when logged in
           disabled={!isLoggedIn}
+          aria-hidden={!isLoggedIn}
           onClick={handleSetupClick}
           aria-label="Set your intention and goals with clarity and purpose here"
           onKeyDown={(e) => e.key === "Enter" && handleSetupClick()}
@@ -216,6 +218,7 @@ const WelcomeScreen = () => {
           aria-disabled={!isLoggedIn}
           tabIndex={isLoggedIn ? 0 : -1} //tab when logged in
           disabled={!isLoggedIn}
+          aria-hidden={!isLoggedIn}
           onClick={handleDashboardClick}
           aria-label="Track your journey here"
           onKeyDown={(e) => e.key === "Enter" && handleDashboardClick()}

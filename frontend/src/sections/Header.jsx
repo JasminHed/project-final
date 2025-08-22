@@ -48,6 +48,7 @@ const DesktopNav = styled.nav`
 `;
 
 const MobileNav = styled.nav`
+  display: ${({ $isOpen }) => ($isOpen ? "flex" : "none")};
   position: absolute;
   top: ${({ $isOpen }) => ($isOpen ? "80px" : "-300px")};
   right: 40px;
@@ -178,7 +179,7 @@ const Header = () => {
         </DesktopNav>
       </HeaderContainer>
 
-      <MobileNav id="mobile-nav" $isOpen={menuOpen} aria-hidden={!menuOpen}>
+      <MobileNav id="mobile-nav" $isOpen={menuOpen}>
         <NavLinks />
         {isLoggedIn && user?.name && <span>👤 </span>}
         {isLoggedIn ? <Link onClick={handleLogout}>Logout</Link> : null}

@@ -7,7 +7,7 @@ export const FormCard = styled.div`
   background: linear-gradient(
     135deg,
     var(--color-card-background) 0%,
-    rgba(248, 250, 252, 0.9) 100%
+    color-mix(in srgb, var(--color-card-background) 90%, white) 100%
   );
   backdrop-filter: blur(10px);
   border-radius: 24px;

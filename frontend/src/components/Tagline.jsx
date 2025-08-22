@@ -18,7 +18,7 @@ const HeroContainer = styled.div`
 
 export const HeroImage = styled.img`
   width: 100%;
-  max-height: 400px;
+  height: 400px;
   margin: 32px auto;
   display: block;
   object-fit: cover;
@@ -33,7 +33,7 @@ export const HeroImage = styled.img`
 
   @media (min-width: 1024px) {
     width: 50%;
-    max-height: 600px;
+    height: 600px;
     margin: 0;
     margin-left: auto;
   }

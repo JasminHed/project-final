@@ -106,6 +106,11 @@ const CommentItem = styled.div`
   }
 `;
 
+const Name = styled.p`
+  text-align: center;
+  font-style: italic;
+`;
+
 //Community → fetches all posts →
 //loops through posts and passes each post to CommunityPost
 //CommunityPost renders a "card" with like/comment functionality
@@ -188,14 +193,19 @@ const CommunityPost = ({ post }) => {
   return (
     <FormCard>
       {/* Intention */}
-      <h2>Your Intention</h2>
+      <h2>My Intention</h2>
+      <Name>{post.userName || "Anonymous"}</Name>
+      <label htmlFor={`intention-${post._id}`} className="sr-only"></label>
       <Textarea rows={2} value={post.intention} readOnly />
 
       {/* SMART Fields */}
-      <h2>Your detailed goals</h2>
+      <h2>My detailed goals</h2>
       {SMART_FIELDS.map((field) => (
         <div key={field}>
           <strong>{field.charAt(0).toUpperCase() + field.slice(1)}:</strong>
+          <label htmlFor={`${field}-${post._id}`} className="sr-only">
+            {field}
+          </label>
           <Textarea rows={2} value={post[field]} readOnly />
         </div>
       ))}

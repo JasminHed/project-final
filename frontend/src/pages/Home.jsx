@@ -43,7 +43,10 @@ const Box = styled.div`
     props.disabled &&
     `
       pointer-events: none;
-      opacity: 0.4;
+      opacity: 0.5;
+      background-color: #f8f8f8;
+      color: #333333;
+      border-color: #999;
       cursor: not-allowed;
       box-shadow: none;
       transform: none;
@@ -194,7 +197,6 @@ const WelcomeScreen = () => {
           role="button"
           tabIndex={isLoggedIn ? 0 : -1}
           disabled={!isLoggedIn}
-          aria-hidden={!isLoggedIn}
           onClick={handleOnboardingClick}
           aria-label="Learn about Intention and SMART goals here"
           onKeyDown={(e) => e.key === "Enter" && handleOnboardingClick()} //user can use enter
@@ -206,7 +208,6 @@ const WelcomeScreen = () => {
           aria-disabled={!isLoggedIn}
           tabIndex={isLoggedIn ? 0 : -1} //tab when logged in
           disabled={!isLoggedIn}
-          aria-hidden={!isLoggedIn}
           onClick={handleSetupClick}
           aria-label="Set your intention and goals with clarity and purpose here"
           onKeyDown={(e) => e.key === "Enter" && handleSetupClick()}
@@ -218,7 +219,6 @@ const WelcomeScreen = () => {
           aria-disabled={!isLoggedIn}
           tabIndex={isLoggedIn ? 0 : -1} //tab when logged in
           disabled={!isLoggedIn}
-          aria-hidden={!isLoggedIn}
           onClick={handleDashboardClick}
           aria-label="Track your journey here"
           onKeyDown={(e) => e.key === "Enter" && handleDashboardClick()}

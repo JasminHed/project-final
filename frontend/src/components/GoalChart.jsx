@@ -5,8 +5,6 @@ import styled from "styled-components";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-// add a wrapper it jumps when we click save button
-
 const ChartContainer = styled.div`
   width: 150px;
   height: 150px;
@@ -52,7 +50,11 @@ const GoalChart = ({ goals }) => {
   return (
     <>
       <ChartContainer
-        aria-label={`Goal progress: ${startedGoals} started, ${notStartedGoals} not started`}
+        role="progressbar"
+        aria-valuenow={startedGoals}
+        aria-valuemin={0}
+        aria-valuemax={goals.length}
+        aria-label="Goal progress"
       >
         <Doughnut data={chartData} options={chartOptions} />
       </ChartContainer>

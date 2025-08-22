@@ -92,9 +92,9 @@ const Widgets = ({ goals, handleAddGoalClick }) => {
           }}
           aria-label="Go to community page"
         >
-          <h3>
+          <h2>
             <FaHeart color="#0d9488" /> Community
-          </h3>
+          </h2>
           <Count>{communityCount} shared goals</Count>
           <Count>
             Click to explore <span aria-hidden="true">→</span>
@@ -115,9 +115,9 @@ const Widgets = ({ goals, handleAddGoalClick }) => {
           }
           aria-disabled={goals.length >= 3}
         >
-          <h3>
+          <h2>
             <FaSun color="##15803d" /> Set new
-          </h3>
+          </h2>
           <Count>Intention & Goal here</Count>
           <Count>
             Click to start <span aria-hidden="true">→</span>{" "}

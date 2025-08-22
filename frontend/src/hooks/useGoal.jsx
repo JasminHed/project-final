@@ -15,7 +15,7 @@ const useGoal = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        // array or data
+        // array of data
         const goalsArray = Array.isArray(data) ? data : data.goals;
         if (!Array.isArray(goalsArray)) {
           console.error("Unexpected goals data format:", data);

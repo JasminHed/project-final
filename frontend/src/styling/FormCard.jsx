@@ -103,7 +103,7 @@ export const Textarea = styled.textarea`
   resize: none;
   box-sizing: border-box;
   font-family: inherit;
-  font-size: 1rem;
+  font-size: 16px;
   line-height: 1.6;
   transition: all 0.3s ease;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);

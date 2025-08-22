@@ -1,12 +1,14 @@
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { FormCard, Textarea } from "../styling/FormCard.jsx";
 
 import { useUserStore } from "../store/UserStore";
+import { FormCard, Textarea } from "../styling/FormCard.jsx";
 import { Message } from "../styling/LoadingMessage.jsx";
 
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
+
+//name on card
 
 const Container = styled.div`
   padding: 24px 16px 32px;

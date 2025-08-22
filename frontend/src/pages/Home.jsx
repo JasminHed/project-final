@@ -77,7 +77,7 @@ const ErrorMessage = styled.p`
   font-weight: 400;
 `;
 
-// Local state to track if user is logged in (why not global, because only affects this components behavior)
+//
 const WelcomeScreen = () => {
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
   const setIsLoggedIn = useUserStore((state) => state.setIsLoggedIn);

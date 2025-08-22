@@ -33,7 +33,8 @@ const ChatContainer = styled.div`
   position: fixed;
   bottom: 100px;
   right: 25px;
-  width: 290px;
+  width: 285px;
+  height: 400px;
   z-index: 9999;
   border-radius: 16px;
   overflow: hidden;
@@ -47,17 +48,26 @@ const ChatContainer = styled.div`
 
   @media (min-width: 668px) {
     width: 340px;
+    height: 500px;
   }
 `;
 
 const MessagesContainer = styled.div`
-  flex: 1;
+  //flex: 1;
   height: 250px;
   overflow-y: auto;
   padding: 15px;
   display: flex;
   flex-direction: column;
   gap: 8px;
+
+  @media (min-width: 668px) {
+    height: 400px;
+  }
+
+  @media (min-width: 1024px) {
+    height: 500px;
+  }
 `;
 
 const Message = styled.div`
@@ -103,6 +113,14 @@ const Input = styled.input`
 
   &:focus {
     border-color: var(--color-focus);
+  }
+
+  @media (min-width: 668px) {
+    padding: 12px 15px;
+  }
+
+  @media (min-width: 1024px) {
+    padding: 15px 20px;
   }
 `;
 
@@ -181,7 +199,7 @@ const AIbot = () => {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="Ask me anything..."
+            placeholder="Welcome to The Intention Hub..."
           />
           <button onClick={sendMessage} disabled={loading}>
             Send message

@@ -2,13 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useUserStore } from "../store/UserStore";
-import {
-  ErrorDiv,
-  Input,
-  Label,
-  LinkSpan,
-  RegisterLink,
-} from "../styling/FormStyling.jsx";
+import { ErrorDiv, Input, Label, LinkSpan, RegisterLink } from "../styling/FormStyling.jsx";
 
 const SignUp = ({
   setShowLogin,
@@ -202,3 +196,8 @@ const SignUp = ({
 };
 
 export default SignUp;
+
+/* ta bort dessa, // Ta bort dessa rader från SignUp också:
+localStorage.setItem("userId", data.userId); // ❌
+localStorage.setItem("accessToken", data.accessToken); // ❌
+*/

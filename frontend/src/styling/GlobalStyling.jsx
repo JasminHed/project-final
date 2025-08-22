@@ -101,6 +101,7 @@ body {
     text-align: center;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", sans-serif;
     letter-spacing: -0.015em;
+    line-height: 1.2;
   }
 
   h1 {
@@ -163,6 +164,12 @@ body {
       font-size: 20px;
       
     }
+
+    @media (min-width: 1600px) {
+  p {
+    font-size: 20px;
+  }
+}
   }
 
   

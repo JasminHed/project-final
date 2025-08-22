@@ -2,9 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-//when error message shows up the page jumps
-//why does it come to middle and not beginnign of page? - FIXED
-// lägg till ett element runt error valideringen för att få det att sluta hoppa.
+//jump?
 
 import { FormCard, Textarea } from "../styling/FormCard.jsx";
 
@@ -154,7 +152,7 @@ const Setup = () => {
     const value = e.target.value;
     setValues((prev) => ({ ...prev, [field]: value }));
   };
-  //button back to dashboard
+  //arrow back to dashboard
   const handleBackToDashboard = () => {
     navigate("/dashboard");
   };

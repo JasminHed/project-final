@@ -57,10 +57,9 @@ const MobileNav = styled.nav`
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  //display: flex;
   flex-direction: column;
   gap: 15px;
-  //transition: top 0.6s ease;
+
   z-index: 102;
 
   @media (min-width: 668px) {

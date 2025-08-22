@@ -87,6 +87,7 @@ const CommentButton = styled.button`
   margin-top: 4px;
   margin-bottom: 4px;
   font-weight: 500;
+  transition: 0.6 ease;
 
   &:hover {
     transform: translateY(-1px);
@@ -128,6 +129,7 @@ const CommunityPost = ({ post }) => {
   const [newComment, setNewComment] = useState("");
   const [comments, setComments] = useState(post.comments || []);
   const { user: currentUser } = useUserStore();
+  const [showComments, setShowComments] = useState(false);
 
   const handleLike = () => {
     fetch(`${API_BASE_URL}/community-posts/${post._id}/like`, {
@@ -196,7 +198,12 @@ const CommunityPost = ({ post }) => {
       <h2>My Intention</h2>
       <Name>{post.userName || "Anonymous"}</Name>
       <label htmlFor={`intention-${post._id}`} className="sr-only"></label>
-      <Textarea rows={2} value={post.intention} readOnly />
+      <Textarea
+        id={`intention-${post._id}`}
+        rows={2}
+        value={post.intention}
+        readOnly
+      />
 
       {/* SMART Fields */}
       <h2>My detailed goals</h2>
@@ -206,7 +213,12 @@ const CommunityPost = ({ post }) => {
           <label htmlFor={`${field}-${post._id}`} className="sr-only">
             {field}
           </label>
-          <Textarea rows={2} value={post[field]} readOnly />
+          <Textarea
+            id={`${field}-${post._id}`}
+            rows={2}
+            value={post[field]}
+            readOnly
+          />
         </div>
       ))}
 
@@ -226,36 +238,46 @@ const CommunityPost = ({ post }) => {
         aria-live="polite"
         aria-label="Comments section"
       >
-        <form onSubmit={handleAddComment}>
-          <CommentTextarea
-            aria-label="Write your comment here"
-            value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}
-            placeholder="Write your comment here"
-          />
-          <div>
-            <CommentButton type="submit">Send comment</CommentButton>
-          </div>
-        </form>
+        <CommentButton
+          type="button"
+          onClick={() => setShowComments((prev) => !prev)}
+        >
+          Comment on this post
+        </CommentButton>
 
-        <div role="log" aria-live="polite" aria-label="Comments list">
-          {comments.map((comment) => (
-            <CommentItem key={comment._id}>
-              <p>{comment.text}</p>
-              <small>{moment(comment.createdAt).fromNow()}</small>
-              {comment.userName && (
-                <p>
-                  <strong>{comment.userName}</strong>
-                </p>
-              )}
-              {comment.userName === currentUser.name && (
-                <CommentButton onClick={() => handleDeleteComment(comment._id)}>
-                  Delete comment
-                </CommentButton>
-              )}
-            </CommentItem>
-          ))}
-        </div>
+        {showComments && (
+          <form onSubmit={handleAddComment}>
+            <CommentTextarea
+              aria-label="Write your comment here"
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              placeholder="Write your comment here"
+            />
+
+            <CommentButton type="submit">Send comment</CommentButton>
+
+            <div role="log" aria-live="polite" aria-label="Comments list">
+              {comments.map((comment) => (
+                <CommentItem key={comment._id}>
+                  <p>{comment.text}</p>
+                  <small>{moment(comment.createdAt).fromNow()}</small>
+                  {comment.userName && (
+                    <p>
+                      <strong>{comment.userName}</strong>
+                    </p>
+                  )}
+                  {comment.userName === currentUser.name && (
+                    <CommentButton
+                      onClick={() => handleDeleteComment(comment._id)}
+                    >
+                      Delete comment
+                    </CommentButton>
+                  )}
+                </CommentItem>
+              ))}
+            </div>
+          </form>
+        )}
       </CommentsSection>
     </FormCard>
   );

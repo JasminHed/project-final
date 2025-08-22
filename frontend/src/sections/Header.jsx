@@ -50,17 +50,17 @@ const DesktopNav = styled.nav`
 const MobileNav = styled.nav`
   display: ${({ $isOpen }) => ($isOpen ? "flex" : "none")};
   position: absolute;
-  top: ${({ $isOpen }) => ($isOpen ? "80px" : "-300px")};
+  top: 80px;
   right: 40px;
   width: 200px;
   background: var(--color-background);
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  display: flex;
+  //display: flex;
   flex-direction: column;
   gap: 15px;
-  transition: top 0.6s ease;
+  //transition: top 0.6s ease;
   z-index: 102;
 
   @media (min-width: 668px) {

@@ -167,24 +167,22 @@ const Header = () => {
 
         <DesktopNav>
           <NavLinks />
-
-          {isLoggedIn && user?.name && <span>👤 </span>}
-          {isLoggedIn ? <Link onClick={handleLogout}>Logout</Link> : null}
           <Link onClick={toggleDarkMode} aria-label="Toggle dark mode">
             {darkMode ? "Light " : "Dark "}
           </Link>
-
+          {isLoggedIn && user?.name && <span>👤 </span>}
+          {isLoggedIn ? <Link onClick={handleLogout}>Logout</Link> : null}
           {logoutMessage && <LogoutMessage>{logoutMessage}</LogoutMessage>}
         </DesktopNav>
       </HeaderContainer>
 
       <MobileNav id="mobile-nav" $isOpen={menuOpen}>
         <NavLinks />
-        {isLoggedIn && user?.name && <span>👤 </span>}
-        {isLoggedIn ? <Link onClick={handleLogout}>Logout</Link> : null}
         <Link onClick={toggleDarkMode} aria-label="Toggle dark mode">
           {darkMode ? "Light mode" : "Dark mode"}
         </Link>
+        {isLoggedIn && user?.name && <span>👤 </span>}
+        {isLoggedIn ? <Link onClick={handleLogout}>Logout</Link> : null}
         {logoutMessage && <LogoutMessage>{logoutMessage}</LogoutMessage>}
       </MobileNav>
     </>

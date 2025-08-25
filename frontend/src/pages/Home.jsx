@@ -42,11 +42,11 @@ const Box = styled.div`
   ${(props) =>
     props.disabled &&
     `
-      pointer-events: none;
-      opacity: 0.5;
-      background-color: #f8f8f8;
+      
+      opacity: 0.3;
+      background-color: #f1f5f9;
       color: #333333;
-      border-color: #999;
+      border-color: #64748b;
       cursor: not-allowed;
       box-shadow: none;
       transform: none;
@@ -195,33 +195,75 @@ const WelcomeScreen = () => {
       <MainBox>
         <Box
           role="button"
-          tabIndex={isLoggedIn ? 0 : -1}
+          tabIndex={0}
           disabled={!isLoggedIn}
-          onClick={handleOnboardingClick}
+          onClick={() => {
+            if (!isLoggedIn) {
+              setShowError("You need to be logged in to click on this box");
+              return;
+            }
+            handleOnboardingClick();
+          }}
           aria-label="Learn about Intention and SMART goals here"
-          onKeyDown={(e) => e.key === "Enter" && handleOnboardingClick()} //user can use enter
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              if (!isLoggedIn) {
+                setShowError("You need to be logged in to click on this box");
+                return;
+              }
+              handleOnboardingClick();
+            }
+          }}
         >
           Learn about Intention & SMART goals
         </Box>
         <Box
           role="button"
-          aria-disabled={!isLoggedIn}
-          tabIndex={isLoggedIn ? 0 : -1} //tab when logged in
+          tabIndex={0}
           disabled={!isLoggedIn}
-          onClick={handleSetupClick}
+          aria-disabled={!isLoggedIn}
           aria-label="Set your intention and goals with clarity and purpose here"
-          onKeyDown={(e) => e.key === "Enter" && handleSetupClick()}
+          onClick={() => {
+            if (!isLoggedIn) {
+              setShowError("You need to be logged in to click on this box");
+              return;
+            }
+            handleSetupClick();
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              if (!isLoggedIn) {
+                setShowError("You need to be logged in to click on this box");
+                return;
+              }
+              handleSetupClick();
+            }
+          }}
         >
           Set your intention and goals with clarity and purpose
         </Box>
         <Box
           role="button"
-          aria-disabled={!isLoggedIn}
-          tabIndex={isLoggedIn ? 0 : -1} //tab when logged in
+          tabIndex={0}
           disabled={!isLoggedIn}
-          onClick={handleDashboardClick}
+          aria-disabled={!isLoggedIn}
           aria-label="Track your journey here"
-          onKeyDown={(e) => e.key === "Enter" && handleDashboardClick()}
+          onClick={() => {
+            if (!isLoggedIn) {
+              setShowError("You need to be logged in to click on this box");
+              return;
+            }
+            handleDashboardClick();
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              if (!isLoggedIn) {
+                setShowError("You need to be logged in to click on this box");
+                return;
+              }
+              handleDashboardClick();
+            }
+          }}
         >
           Track your journey
         </Box>

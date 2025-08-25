@@ -17,12 +17,12 @@ const Container = styled.div`
 
   @media (min-width: 669px) {
     padding: 48px 24px 64px;
-    max-width: 1200px;
+    //max-width: 1200px;
   }
 
   @media (min-width: 1025px) {
     padding: 64px 32px 80px;
-    max-width: 1400px;
+    //max-width: 1400px;
   }
 `;
 
@@ -87,7 +87,7 @@ const CommentButton = styled.button`
   margin-top: 4px;
   margin-bottom: 4px;
   font-weight: 500;
-  transition: 0.6 ease;
+  transition: transform 0.3s ease;
 
   &:hover {
     transform: translateY(-1px);
@@ -196,13 +196,16 @@ const CommunityPost = ({ post }) => {
     <FormCard>
       {/* Intention */}
       <h2>My Intention</h2>
+
       <Name>{post.userName || "Anonymous"}</Name>
+
       <label htmlFor={`intention-${post._id}`} className="sr-only"></label>
       <Textarea
         id={`intention-${post._id}`}
         rows={2}
         value={post.intention}
         readOnly
+        aria-label="Intention"
       />
 
       {/* SMART Fields */}
@@ -218,6 +221,7 @@ const CommunityPost = ({ post }) => {
             rows={2}
             value={post[field]}
             readOnly
+            aria-label={field.charAt(0).toUpperCase() + field.slice(1)}
           />
         </div>
       ))}

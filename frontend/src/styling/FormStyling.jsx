@@ -88,7 +88,7 @@ export const RegisterLink = styled.p`
 `;
 
 export const LinkSpan = styled.span`
-  color: #4a9eff;
+  color: var(color-text-primary);
   cursor: pointer;
   font-weight: 500;
 

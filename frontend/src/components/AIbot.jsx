@@ -2,7 +2,6 @@ import React, { useRef, useState } from "react";
 import { FaRobot } from "react-icons/fa";
 import styled from "styled-components";
 
-//add icon
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
 
 const ChatIcon = styled.button`
@@ -31,10 +30,10 @@ const ChatIcon = styled.button`
 
 const ChatContainer = styled.div`
   position: fixed;
-  bottom: 100px;
-  right: 25px;
-  width: 285px;
-  height: 400px;
+  width: 90%;
+  height: 360px;
+  bottom: 80px;
+  right: 5%;
   z-index: 9999;
   border-radius: 16px;
   overflow: hidden;
@@ -43,7 +42,7 @@ const ChatContainer = styled.div`
   border: 1px solid rgba(255, 255, 255, 0.08);
   display: ${(props) => (props.$isOpen ? "flex" : "none")};
   flex-direction: column;
-  transition: opacity 0.25s ease, transform 0.25s ease;
+  transition: opacity 0.25s ease-in-out, transform 0.25s ease-in-out;
   color: var(--color-text-primary);
 
   @media (min-width: 668px) {
@@ -53,13 +52,12 @@ const ChatContainer = styled.div`
 `;
 
 const MessagesContainer = styled.div`
-  //flex: 1;
-  height: 250px;
   overflow-y: auto;
-  padding: 15px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  height: 200px;
+  padding: 10px;
+  gap: 6px;
 
   @media (min-width: 668px) {
     height: 400px;
@@ -100,11 +98,16 @@ const InputContainer = styled.div`
   padding: 12px;
   background: var(--color-background);
   border-top: 1px solid rgba(255, 255, 255, 0.05);
+
+  button {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
 `;
 
 const Input = styled.input`
   flex: 1;
-  padding: 10px;
+  padding: 8px 10px;
   border-radius: 20px;
   border: 1px solid #ddd;
   outline: none;

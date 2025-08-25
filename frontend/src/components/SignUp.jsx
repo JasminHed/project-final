@@ -202,8 +202,3 @@ const SignUp = ({
 };
 
 export default SignUp;
-
-/* ta bort dessa, // Ta bort dessa rader från SignUp också:
-localStorage.setItem("userId", data.userId); // ❌
-localStorage.setItem("accessToken", data.accessToken); // ❌
-*/

@@ -15,12 +15,12 @@ const Container = styled.div`
 
   @media (min-width: 669px) {
     padding: 48px 24px 64px;
-    //max-width: 1200px;
+    max-width: 1200px;
   }
 
   @media (min-width: 1025px) {
     padding: 64px 32px 80px;
-    //max-width: 1400px;
+    max-width: 1400px;
   }
 `;
 

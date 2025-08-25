@@ -48,10 +48,12 @@ const Container = styled.div`
 const GoalsGrid = styled.div`
   display: block; /* default for mobile */
 
-  @media (min-width: 669px) and (max-width: 1600px) {
+  @media (min-width: 668px) and (max-width: 1600px) {
     display: grid;
-
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: ${({ count }) => (count === 1 ? "1fr" : "1fr 1fr")};
+    gap: 20px;
+    align-items: start;
+    justify-items: center;
     gap: 20px;
     align-items: start;
   }
@@ -152,7 +154,7 @@ const Dashboard = () => {
         <Widget goals={goals} handleAddGoalClick={handleAddGoalClick} />
 
         <Container>
-          <GoalsGrid>
+          <GoalsGrid count={goals.length}>
             {goals.length > 0 ? (
               goals.map((goal) => (
                 <DashboardForm

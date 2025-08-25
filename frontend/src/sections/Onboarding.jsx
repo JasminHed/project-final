@@ -79,7 +79,7 @@ const ButtonContainer = styled.nav`
     color: var(--color-text-primary);
 
     &:hover {
-      opacity: 0.2;
+      transform: scale(1.05);
       border: 1 px solid var(--color-focus);
     }
   }

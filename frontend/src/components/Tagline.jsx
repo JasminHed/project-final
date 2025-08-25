@@ -23,16 +23,16 @@ export const HeroImage = styled.img`
   display: block;
   object-fit: cover;
   border-radius: 5px;
-  mask: radial-gradient(ellipse at center, black 70%, transparent 100%);
 
   @media (max-width: 1000px) {
     order: -1;
-    margin: 0 -20px;
-    width: calc(100% + 40px);
+    margin: 0 -40px;
+    width: calc(100% + 80px);
+    border-radius: 0;
   }
 
   @media (min-width: 1024px) {
-    width: 50%;
+    width: 60%;
     height: 600px;
     margin: 0;
     margin-left: auto;

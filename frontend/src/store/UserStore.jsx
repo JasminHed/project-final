@@ -4,7 +4,7 @@ import { persist } from "zustand/middleware";
 // Used for signup and login authorization logic
 export const useUserStore = create(
   persist(
-    (set) => ({
+    (set, get) => ({
       isLoggedIn: !!localStorage.getItem("accessToken"),
       user: { name: "", email: "" },
       token: localStorage.getItem("accessToken") || null,
@@ -15,6 +15,26 @@ export const useUserStore = create(
       setUser: (userData) => set({ user: userData }),
       setToken: (token) => set({ token }),
       setUserId: (id) => set({ userId: id }),
+
+      validateToken: async () => {
+        const token = get().token;
+        if (!token) return false;
+
+        try {
+          const response = await fetch("/users/me", {
+            headers: { Authorization: token },
+          });
+
+          if (!response.ok) {
+            get().logout();
+            return false;
+          }
+          return true;
+        } catch {
+          get().logout();
+          return false;
+        }
+      },
 
       login: (userData, token, userId) => {
         localStorage.setItem("user", JSON.stringify(userData));
@@ -47,57 +67,3 @@ export const useUserStore = create(
     }
   )
 );
-
-/*dubbelkolla detta, ta bort som localstorage, // Ta bort dessa från initial state:
-isLoggedIn: !!localStorage.getItem("accessToken"), // ❌
-token: localStorage.getItem("accessToken") || null, // ❌  
-userId: localStorage.getItem("userId") || null, // ❌
-
-// Ta bort alla localStorage anrop från login():
-localStorage.setItem("user", JSON.stringify(userData)); // ❌
-localStorage.setItem("accessToken", token); // ❌
-localStorage.setItem("userId", userId); // ❌
-
-// Ta bort alla localStorage anrop från logout():
-localStorage.removeItem("user"); // ❌
-localStorage.removeItem("accessToken"); // ❌
-localStorage.removeItem("userId"); // 
-*/
-
-/*export const useUserStore = create(
-  persist(
-    (set) => ({
-      isLoggedIn: false, // Enkel initial state
-      user: { name: "", email: "" },
-      token: null,
-      userId: null,
-
-      // Actions
-      setIsLoggedIn: (value) => set({ isLoggedIn: value }),
-      setUser: (userData) => set({ user: userData }),
-      setToken: (token) => set({ token }),
-      setUserId: (id) => set({ userId: id }),
-
-      login: (userData, token, userId) => {
-        set({
-          isLoggedIn: true,
-          user: userData,
-          token,
-          userId,
-        });
-      },
-
-      logout: () => {
-        set({
-          isLoggedIn: false,
-          user: { name: "", email: "" },
-          token: null,
-          userId: null,
-        });
-      },
-    }),
-    {
-      name: "user-storage", // persist middleware hanterar localStorage
-    }
-  )
-); */

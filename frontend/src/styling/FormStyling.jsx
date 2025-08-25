@@ -7,19 +7,18 @@ export const PopUp = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.95);
   margin-top: 15px;
   left: 0;
   right: 0;
   z-index: 2000;
 
-  @media (min-width: 669px) {
+  @media (min-width: 668px) {
     margin-top: 15px;
   }
 `;
 
 export const Container = styled.div`
-  background: rgba(var(--color-background-rgb), 0.85);
+  background: var(--color-card-background);
   border: 1px solid var(--color-focus);
   border-radius: 16px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);

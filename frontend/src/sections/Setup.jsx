@@ -110,6 +110,7 @@ const ButtonGroup = styled.div`
 
     &:hover {
       border: 1px solid var(--color-focus);
+      transform: scale(1.05);
     }
   }
 

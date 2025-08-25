@@ -8,8 +8,6 @@ import { Message } from "../styling/LoadingMessage.jsx";
 
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
 
-//name on card
-
 const Container = styled.div`
   padding: 24px 16px 32px;
   max-width: 100%;

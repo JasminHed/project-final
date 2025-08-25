@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 
+import useClickOutside from "../hooks/useClickOutside";
 import { Container, PopUp } from "../styling/FormStyling.jsx";
 import LogIn from "./LogIn";
 import SignUp from "./SignUp";
@@ -12,14 +13,26 @@ const AuthForm = ({
   setIsLoggedIn,
   isOpen,
   setIsOpen,
+  buttonRef,
   onSignUpSuccess,
 }) => {
   const [showLogin, setShowLogin] = useState(false);
+  const formRef = useRef();
+
+  useClickOutside(formRef, (event) => {
+    if (buttonRef?.current && buttonRef.current.contains(event.target)) return;
+    setIsOpen(false);
+  });
 
   return (
     <>
       {isOpen && (
-        <PopUp role="dialog" aria-modal="true" aria-label="Log In or Sign Up">
+        <PopUp
+          ref={formRef}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Log In or Sign Up"
+        >
           <Container tabIndex="-1">
             {!showLogin ? (
               <SignUp

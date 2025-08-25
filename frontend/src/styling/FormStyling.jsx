@@ -3,13 +3,14 @@ import styled from "styled-components";
 //this is styling for the login/sign up form
 
 export const PopUp = styled.div`
-  margin-top: 15px;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  position: absolute;
   display: flex;
   align-items: flex-start;
   justify-content: center;
+  background: rgba(255, 255, 255, 0.95);
+  margin-top: 15px;
+  left: 0;
+  right: 0;
   z-index: 2000;
 
   @media (min-width: 669px) {

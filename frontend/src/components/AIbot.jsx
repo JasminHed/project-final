@@ -2,6 +2,8 @@ import React, { useRef, useState } from "react";
 import { FaRobot } from "react-icons/fa";
 import styled from "styled-components";
 
+import useClickOutside from "../hooks/useClickOutside";
+
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
 
 const ChatIcon = styled.button`
@@ -132,7 +134,14 @@ const AIbot = () => {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const chatRef = useRef();
+  const buttonRef = useRef();
   const [sessionId] = useState(() => `session_${Date.now()}_${Math.random()}`);
+
+  useClickOutside(chatRef, (event) => {
+    if (buttonRef.current && buttonRef.current.contains(event.target)) return;
+    setIsOpen(false);
+  });
 
   const sendMessage = () => {
     if (!input.trim()) return;
@@ -178,13 +187,14 @@ const AIbot = () => {
   return (
     <>
       <ChatIcon
+        ref={buttonRef}
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Open chat with Luca"
       >
         <FaRobot size={28} />
       </ChatIcon>
 
-      <ChatContainer $isOpen={isOpen}>
+      <ChatContainer ref={chatRef} $isOpen={isOpen}>
         <h3>Luca</h3>
 
         <MessagesContainer>

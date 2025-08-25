@@ -189,6 +189,7 @@ const WelcomeScreen = () => {
         setIsLoggedIn={setIsLoggedIn}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
+        buttonRef={signUpRef}
         onSignUpSuccess={handleSignUpSuccess}
       />
       <section aria-label="Choose your next step"></section>

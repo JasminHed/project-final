@@ -1,8 +1,7 @@
 import React, { useState } from "react";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-
-//jump?
 
 import { FormCard, Textarea } from "../styling/FormCard.jsx";
 
@@ -343,14 +342,14 @@ const Setup = () => {
               onClick={handleBackToDashboard}
               aria-label="Back to dashboard"
             >
-              &lt; Dashboard
+              <FaArrowLeft /> Dashboard
             </button>
 
             <button
               type="submit"
               aria-label="Submit and head to your dashboard"
             >
-              Submit &gt;
+              Submit <FaArrowRight />
             </button>
           </ButtonGroup>
         </form>

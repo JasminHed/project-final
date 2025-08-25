@@ -43,8 +43,8 @@ const Box = styled.div`
     props.disabled &&
     `
       
-      opacity: 0.3;
-      background-color: #f1f5f9;
+     
+      background-color: #FFFFFF;
       color: #333333;
       border-color: #64748b;
       cursor: not-allowed;
@@ -199,7 +199,7 @@ const WelcomeScreen = () => {
           disabled={!isLoggedIn}
           onClick={() => {
             if (!isLoggedIn) {
-              setShowError("You need to be logged in to click on this box");
+              setShowError("You need to be logged in to access  this content");
               return;
             }
             handleOnboardingClick();
@@ -208,7 +208,7 @@ const WelcomeScreen = () => {
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               if (!isLoggedIn) {
-                setShowError("You need to be logged in to click on this box");
+                setShowError("You need to be logged in to access this content");
                 return;
               }
               handleOnboardingClick();
@@ -225,7 +225,7 @@ const WelcomeScreen = () => {
           aria-label="Set your intention and goals with clarity and purpose here"
           onClick={() => {
             if (!isLoggedIn) {
-              setShowError("You need to be logged in to click on this box");
+              setShowError("You need to be logged in to access this content");
               return;
             }
             handleSetupClick();
@@ -233,7 +233,7 @@ const WelcomeScreen = () => {
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               if (!isLoggedIn) {
-                setShowError("You need to be logged in to click on this box");
+                setShowError("You need to be logged in to access this content");
                 return;
               }
               handleSetupClick();
@@ -250,7 +250,7 @@ const WelcomeScreen = () => {
           aria-label="Track your journey here"
           onClick={() => {
             if (!isLoggedIn) {
-              setShowError("You need to be logged in to click on this box");
+              setShowError("You need to be logged in to access this content");
               return;
             }
             handleDashboardClick();
@@ -258,7 +258,7 @@ const WelcomeScreen = () => {
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               if (!isLoggedIn) {
-                setShowError("You need to be logged in to click on this box");
+                setShowError("You need to be logged in to access this content");
                 return;
               }
               handleDashboardClick();

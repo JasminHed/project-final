@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
@@ -263,7 +264,7 @@ const Onboarding = ({ goBack, signUpRef, autoStart = false }) => {
       <ButtonContainer role="navigation" aria-label="Onboarding navigation">
         {showPreviousButton && (
           <button onClick={handlePrevious} aria-label="Previous slide">
-            &lt;
+            <FaArrowLeft />
           </button>
         )}
 
@@ -279,7 +280,7 @@ const Onboarding = ({ goBack, signUpRef, autoStart = false }) => {
               : "Finish onboarding"
           }
         >
-          &gt;
+          <FaArrowRight />
         </button>
       </ButtonContainer>
 

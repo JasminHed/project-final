@@ -31,7 +31,7 @@ const GoalChart = ({ goals }) => {
     datasets: [
       {
         data: [startedGoals, notStartedGoals],
-        backgroundColor: ["#008080", "#e48b9e"],
+        backgroundColor: ["#1e293b", "#d1d5db"],
       },
     ],
   };

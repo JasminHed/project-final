@@ -54,6 +54,7 @@ const GlobalStyles = createGlobalStyle`
   --color-chart-active: #1e293b;          
   --color-chart-completed: #d1d5db;       
   --color-card-background: #f1f5f9;    //new color, a bit more blue-ish
+  --color-card-warm: #ffe5b4;
    
 }
 
@@ -70,6 +71,7 @@ const GlobalStyles = createGlobalStyle`
   --color-chart-active: #e2e8f0;          
   --color-chart-completed: #4b5563;       
   --color-card-background: #0f172a;  
+  --color-card-warm: #663c00;
    
 }
 

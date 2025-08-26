@@ -50,7 +50,8 @@ const GoalsGrid = styled.div`
 
   @media (min-width: 668px) and (max-width: 1600px) {
     display: grid;
-    grid-template-columns: ${({ count }) => (count === 1 ? "1fr" : "1fr 1fr")};
+    grid-template-columns: ${({ $count }) =>
+      $count === 1 ? "1fr" : "1fr 1fr"};
     gap: 20px;
     align-items: start;
     justify-items: center;
@@ -63,7 +64,7 @@ const ErrorMessage = styled.p`
   color: var(--color-error);
   margin-bottom: 16px;
   text-align: center;
-  padding: 16px 20px;
+  padding: 14px 18px;
   font-weight: 500;
 `;
 
@@ -154,7 +155,7 @@ const Dashboard = () => {
         <Widget goals={goals} handleAddGoalClick={handleAddGoalClick} />
 
         <Container>
-          <GoalsGrid count={goals.length}>
+          <GoalsGrid $count={goals.length}>
             {goals.length > 0 ? (
               goals.map((goal) => (
                 <DashboardForm

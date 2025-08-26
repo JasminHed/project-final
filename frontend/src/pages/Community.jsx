@@ -1,5 +1,6 @@
 import moment from "moment";
 import React, { useEffect, useState } from "react";
+import { FaTrash } from "react-icons/fa";
 import styled from "styled-components";
 
 import { useUserStore } from "../store/UserStore";
@@ -270,9 +271,11 @@ const CommunityPost = ({ post }) => {
                   )}
                   {comment.userName === currentUser.name && (
                     <CommentButton
+                      type="button"
                       onClick={() => handleDeleteComment(comment._id)}
+                      aria-label={`Delete comment by ${comment.userName}`}
                     >
-                      Delete comment
+                      <FaTrash />
                     </CommentButton>
                   )}
                 </CommentItem>

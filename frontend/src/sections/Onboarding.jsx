@@ -3,25 +3,21 @@ import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-//arialabels added + semantic html
-//<dl> (definition list) for the SMART goals breakdown because you're literally defining terms
-//<dt> = definition term (like "Specific")
-//<dd> = definition description (the explanation)
-
 const Container = styled.section`
   padding: 40px 16px 60px;
-  max-width: 100%;
+  width: 100%;
   min-height: 80vh;
   margin: 0 auto;
 
-  @media (min-width: 669px) {
-    max-width: 700px;
+  @media (min-width: 668px) {
+    width: 700px;
     padding: 60px 32px 80px;
   }
 `;
 
 const ModuleContainer = styled.article`
   margin-bottom: 32px;
+  transition: height 0.5s ease;
 
   @media (min-width: 669px) {
     margin-bottom: 40px;
@@ -30,6 +26,8 @@ const ModuleContainer = styled.article`
 
 const Content = styled.div`
   text-align: left;
+  opacity: 1;
+  transition: opacity 0.8s ease;
 
   p {
     margin: 8px 0 16px 0;

@@ -196,6 +196,7 @@ const AIbot = () => {
 
       <ChatContainer ref={chatRef} $isOpen={isOpen}>
         <h3>Luca</h3>
+        <hr />
 
         <MessagesContainer>
           {messages.map((msg, index) => (

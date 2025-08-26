@@ -50,9 +50,15 @@ const Count = styled.p`
   opacity: 0.9;
   font-weight: 500;
 `;
+const ErrorWrapper = styled.div`
+  height: 24px;
+  max-width: 300px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+`;
 
 const ErrorMessage = styled.p`
-  min-height: 24px;
   font-size: 14px;
   margin-top: 10px;
   text-align: center;
@@ -124,13 +130,14 @@ const Widgets = ({ goals, handleAddGoalClick }) => {
           </Count>
         </Widget>
       </WidgetGrid>
-
-      {showMaxMessage && (
-        <ErrorMessage role="alert">
-          There is a maximum of 3 saved intention and goal cards. It's to help
-          you stay focused and not feel overwhelmed.
-        </ErrorMessage>
-      )}
+      <ErrorWrapper>
+        {showMaxMessage && (
+          <ErrorMessage role="alert">
+            There is a maximum of 3 saved intention and goal cards. It's to help
+            you stay focused and not feel overwhelmed.
+          </ErrorMessage>
+        )}
+      </ErrorWrapper>
     </>
   );
 };

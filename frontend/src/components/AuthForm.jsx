@@ -5,9 +5,7 @@ import { Container, PopUp } from "../styling/FormStyling.jsx";
 import LogIn from "./LogIn";
 import SignUp from "./SignUp";
 
-//aria labels + semantic html added. Should you have escape for screenreaders?
-
-// Update here: Added isOpen and setIsOpen as props to control popup visibility from parent
+// Added isOpen and setIsOpen as props to control popup visibility from parent
 const AuthForm = ({
   isLoggedIn,
   setIsLoggedIn,

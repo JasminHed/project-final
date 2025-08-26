@@ -10,8 +10,6 @@ import {
   RegisterLink,
 } from "../styling/FormStyling.jsx";
 
-//aria labels added + sematic html
-
 const LogIn = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
   const [formData, setFormData] = useState({
     email: "",
@@ -114,6 +112,7 @@ const LogIn = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
           aria-describedby={error ? "login-error" : undefined}
           aria-invalid={!!error}
         />
+
         {error && (
           <ErrorDiv id="login-error" aria-live="polite">
             {error}

@@ -18,7 +18,7 @@ const HeroContainer = styled.div`
 
 export const HeroImage = styled.img`
   width: 100%;
-  height: 400px;
+  height: 300px;
   margin: 32px auto;
   display: block;
   object-fit: cover;
@@ -32,7 +32,7 @@ export const HeroImage = styled.img`
   }
 
   @media (min-width: 1024px) {
-    width: 60%;
+    width: 50%;
     height: 600px;
     margin: 0;
     margin-left: auto;
@@ -105,7 +105,7 @@ const Description = styled.p`
   }
 `;
 
-const Taglines = () => {
+const Hero = () => {
   return (
     <HeroContainer>
       <MainSection>
@@ -155,4 +155,4 @@ const Taglines = () => {
   );
 };
 
-export default Taglines;
+export default Hero;

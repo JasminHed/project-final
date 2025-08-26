@@ -80,7 +80,7 @@ const CharacterCount = styled.p`
 `;
 
 const ErrorWrapper = styled.div`
-  min-height: 24px;
+  height: 24px;
   display: flex;
   align-items: flex-start;
 `;

@@ -3,6 +3,7 @@ import styled from "styled-components";
 //this is styling for the login/sign up form
 
 export const PopUp = styled.div`
+  min-height: 120px;
   position: absolute;
   display: flex;
   align-items: flex-start;
@@ -18,24 +19,26 @@ export const PopUp = styled.div`
 `;
 
 export const Container = styled.div`
-  background: var(--color-card-background);
+  background: var(--color-background);
   border: 1px solid var(--color-focus);
   border-radius: 16px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
   padding: 16px;
   width: 100%;
+  min-height: 300px;
   max-width: 280px;
   transition: transform 0.25s ease, opacity 0.25s ease;
 
-  @media (min-width: 669px) {
+  @media (min-width: 668px) {
     max-width: 600px;
+    min-height: 350px;
     padding: 20px;
     border-radius: 16px;
   }
 
   @media (min-width: 1024px) {
     max-width: 800px;
-    height: 450px;
+    min-height: 450px;
     font-size: 18px;
   }
 `;
@@ -53,6 +56,7 @@ export const Label = styled.label`
 
 export const Input = styled.input`
   width: 100%;
+  min-height: 40px;
   padding: 10px 12px;
   margin-bottom: 12px;
   border-radius: 8px;
@@ -76,7 +80,7 @@ export const Input = styled.input`
 export const ErrorDiv = styled.div`
   color: var(--color-error);
   margin-bottom: 8px;
-  min-height: 20px;
+  min-height: 24px;
   margin-top: 4px;
   font-size: 14px;
 `;

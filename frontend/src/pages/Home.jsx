@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import AuthForm from "../components/AuthForm";
-import Taglines from "../components/Tagline.jsx";
+import Taglines from "../components/Hero.jsx";
 import Onboarding from "../sections/Onboarding.jsx";
 import { useUserStore } from "../store/UserStore.jsx";
 import { Message } from "../styling/LoadingMessage.jsx";
@@ -24,7 +24,7 @@ const Box = styled.div`
   width: 100%;
   height: 400px;
   padding: 48px 32px;
-  border: 2px solid var(--color-focus);
+  border: 1px solid var(--color-focus);
   margin-top: 16px;
   margin-bottom: 16px;
   border-radius: 16px;
@@ -45,8 +45,8 @@ const Box = styled.div`
       
      
       background-color: #FFFFFF;
-      color: #333333;
-      border-color: #64748b;
+      color: #475569;
+      border-color: #475569;
       cursor: not-allowed;
       box-shadow: none;
       transform: none;
@@ -69,6 +69,12 @@ const SignUpButton = styled.div`
     border-radius: 12px;
     transition: all 0.2s ease;
   }
+`;
+
+const ErrorWrapper = styled.div`
+  height: 24px;
+  display: flex;
+  align-items: center;
 `;
 
 const ErrorMessage = styled.p`
@@ -270,7 +276,10 @@ const WelcomeScreen = () => {
         </Box>
       </MainBox>
 
-      {showError && <ErrorMessage role="polite">{showError}</ErrorMessage>}
+      <ErrorWrapper>
+        {" "}
+        {showError && <ErrorMessage role="polite">{showError}</ErrorMessage>}
+      </ErrorWrapper>
       {currentStep === "onboarding" && (
         <div ref={onboardingRef}>
           <Onboarding

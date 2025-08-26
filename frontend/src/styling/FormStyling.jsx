@@ -49,7 +49,7 @@ export const Label = styled.label`
   margin-top: 20px;
   color: var(--color-text-primary);
 
-  @media (min-width: 669px) {
+  @media (min-width: 668px) {
     margin-top: 20px;
   }
 `;
@@ -65,7 +65,7 @@ export const Input = styled.input`
   color: var(--color-text-primary);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
-  @media (min-width: 669px) {
+  @media (min-width: 668px) {
     margin-bottom: 15px;
     border-radius: 12px;
   }

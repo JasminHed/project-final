@@ -14,38 +14,40 @@ import Widget from "../components/Widget.jsx";
 
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
 
-const Container = styled.div`
-  padding: 24px 16px 32px;
+const Container = styled.section`
+  padding: 32px 16px;
   max-width: 100%;
   margin: 0 auto;
 
-  @media (min-width: 669px) {
-    padding: 48px 24px 64px;
+  @media (min-width: 668px) {
+    padding: 64px 24px;
     max-width: 1200px;
   }
 
-  @media (min-width: 1025px) {
-    padding: 64px 32px 80px;
+  @media (min-width: 1024px) {
+    padding: 80px 32px;
     max-width: 1400px;
   }
 
-  //the text area
   section[aria-label="Introduction"] {
     padding: 40px 16px 20px;
     max-width: 800px;
     margin: 0 auto;
 
-    @media (min-width: 669px) {
-      padding: 60px 32px 30px;
+    @media (min-width: 668px) {
+      padding: 60px 32px 50px;
     }
 
+    @media (min-width: 1024px) {
+      padding: 80px 32px 60px;
+    }
     p {
       margin-bottom: 10px;
     }
   }
 `;
 
-const GoalsGrid = styled.div`
+const GoalsGrid = styled.section`
   display: block; /* default for mobile */
 
   @media (min-width: 668px) and (max-width: 1600px) {
@@ -55,8 +57,13 @@ const GoalsGrid = styled.div`
     gap: 20px;
     align-items: start;
     justify-items: center;
-    gap: 20px;
     align-items: start;
+  }
+
+  @media (min-width: 1024px) {
+    gap: 40px;
+    margin-top: 40px;
+    margin-bottom: 40px;
   }
 `;
 
@@ -77,14 +84,14 @@ const Dashboard = () => {
     loading,
     successMessage,
     shareSuccessMessage,
-    updateGoal,
+    //updateGoal,
     completeGoal,
     toggleGoalStarted,
     toggleShareGoal,
   } = useGoal();
 
-  const incompleteGoals = goals.filter((goal) => !goal.completed);
-  const completedGoals = goals.filter((goal) => goal.completed);
+  //const incompleteGoals = goals.filter((goal) => !goal.completed);
+  //const completedGoals = goals.filter((goal) => goal.completed);
 
   //Handler for max 3 int+goals at once
   const [showMaxMessage, setShowMaxMessage] = useState(false);

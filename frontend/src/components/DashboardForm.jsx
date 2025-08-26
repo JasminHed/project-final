@@ -13,6 +13,7 @@ const Fieldset = styled.fieldset`
 
 const Label = styled.label`
   display: block;
+
   font-weight: 500;
   margin-bottom: 8px;
   color: var(--color-text-primary);
@@ -116,7 +117,8 @@ const DashboardForm = ({
             {SMART_FIELDS.map((field) => (
               <div key={field}>
                 <strong>
-                  {field.charAt(0).toUpperCase() + field.slice(1)}:
+                  {" "}
+                  {field.charAt(0).toUpperCase() + field.slice(1)}{" "}
                 </strong>
                 <Label htmlFor={`${field}-${goal._id}`} />
                 <Textarea

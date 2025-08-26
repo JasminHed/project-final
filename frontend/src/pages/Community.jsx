@@ -1,6 +1,7 @@
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
+import { FaChevronDown, FaChevronUp, FaHeart, FaLightbulb, FaPaperPlane, FaRocket } from "react-icons/fa";
 import styled from "styled-components";
 
 import { useUserStore } from "../store/UserStore";
@@ -10,17 +11,17 @@ import { Message } from "../styling/LoadingMessage.jsx";
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
 
 const Container = styled.div`
-  padding: 24px 16px 32px;
+  padding: 32px 16px;
   max-width: 100%;
   margin: 0 auto;
 
-  @media (min-width: 669px) {
-    padding: 48px 24px 64px;
+  @media (min-width: 668px) {
+    padding: 64px 24px;
     max-width: 1200px;
   }
 
-  @media (min-width: 1025px) {
-    padding: 64px 32px 80px;
+  @media (min-width: 1024px) {
+    padding: 80px 32px;
     max-width: 1400px;
   }
 `;
@@ -30,8 +31,12 @@ const HeaderSection = styled.div`
   max-width: 800px;
   margin: 0 auto;
 
-  @media (min-width: 669px) {
+  @media (min-width: 668px) {
     padding: 60px 32px 80px;
+  }
+
+  @media (min-width: 1024px) {
+    padding: 80px 32px 100px;
   }
 `;
 
@@ -39,27 +44,54 @@ const PostsGrid = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
+  margin-top: 24px;
+  margin-bottom: 24px;
 
-  @media (min-width: 669px) {
+  @media (min-width: 668px) {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 28px;
+    gap: 32px;
+    margin-top: 32px;
+    margin-bottom: 32px;
   }
 
-  @media (min-width: 1025px) {
-    gap: 32px;
+  @media (min-width: 1024px) {
+    gap: 40px;
+    margin-top: 40px;
+    margin-bottom: 40px;
   }
+`;
+
+const Label = styled.label`
+  text-transform: capitalize;
+  font-weight: bold;
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
   gap: 12px;
-  margin-top: 20px;
+  margin: 24px 0;
+
+  @media (min-width: 668px) {
+    margin: 32px 0;
+  }
+
+  @media (min-width: 1024px) {
+    margin: 40px 0;
+  }
 `;
 
 const CommentsSection = styled.section`
-  margin-top: 20px;
+  margin-top: 24px;
   padding-top: 20px;
+
+  @media (min-width: 668px) {
+  margin-top: 32px;
+}
+
+@media (min-width: 1024px) {
+  margin-top: 40px;
+}
 `;
 
 const CommentTextarea = styled.textarea`
@@ -77,14 +109,19 @@ const CommentTextarea = styled.textarea`
 `;
 
 const CommentButton = styled.button`
-  background-color: var(--color-focus);
+  background-color: ${(props) => {
+    if (props.$variant === "delete") return "var(--color-error)";
+    if (props.$variant === "send") return "var(--color-success)";
+    return "var(--color-focus)";
+  }};
+
   border: none;
   border-radius: 8px;
   padding: 10px 16px;
   cursor: pointer;
   margin-right: 8px;
   margin-top: 4px;
-  margin-bottom: 4px;
+  margin-bottom: 15px;
   font-weight: 500;
   transition: transform 0.3s ease;
 
@@ -106,9 +143,83 @@ const CommentItem = styled.div`
   }
 `;
 
+const LikeButton = styled.button`
+  background: none;
+  border: 2px solid var(--color-focus);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 20px;
+  color: var(--color-text-primary);
+  transition: transform 0.2s ease;
+
+  svg {
+    color: #e53e3e;
+  }
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &:focus {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+`;
+
 const Name = styled.p`
   text-align: center;
   font-style: italic;
+`;
+
+const Icon = styled.span`
+  display: inline-flex;
+  align-items: center;
+  margin-right: 6px;
+  font-size: 18px;
+  color: ${(props) => props.color || "currentColor"};
+`;
+
+const ToggleButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+
+  &:focus {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  @media (min-width: 668px) {
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  @media (min-width: 1024px) {
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+`;
+
+const SmartSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  @media (min-width: 668px) {
+    gap: 12px;
+  }
+
+  @media (min-width: 1024px) {
+    gap: 16px;
+  }
 `;
 
 //Community → fetches all posts →
@@ -129,6 +240,7 @@ const CommunityPost = ({ post }) => {
   const [comments, setComments] = useState(post.comments || []);
   const { user: currentUser } = useUserStore();
   const [showComments, setShowComments] = useState(false);
+  const [showSMART, setShowSMART] = useState(true);
 
   const handleLike = () => {
     fetch(`${API_BASE_URL}/community-posts/${post._id}/like`, {
@@ -194,7 +306,13 @@ const CommunityPost = ({ post }) => {
   return (
     <FormCard>
       {/* Intention */}
-      <h2>My Intention</h2>
+      <h2>
+        {" "}
+        <Icon color="#6c63ff">
+          <FaLightbulb />
+        </Icon>
+        My Intention{" "}
+      </h2>
 
       <Name>{post.userName || "Anonymous"}</Name>
 
@@ -207,32 +325,51 @@ const CommunityPost = ({ post }) => {
         aria-label="Intention"
       />
 
+      <ToggleButton
+        onClick={() => setShowSMART((prev) => !prev)}
+        aria-expanded={showSMART}
+        aria-controls={`smart-section-${post._id}`}
+      >
+        <span className="sr-only">
+          {showSMART ? "Hide Detailed Goals" : "Show Detailed Goals"}
+        </span>
+        {showSMART ? <FaChevronUp /> : <FaChevronDown />}
+      </ToggleButton>
+
       {/* SMART Fields */}
-      <h2>My detailed goals</h2>
-      {SMART_FIELDS.map((field) => (
-        <div key={field}>
-          <strong>{field.charAt(0).toUpperCase() + field.slice(1)}:</strong>
-          <label htmlFor={`${field}-${post._id}`} className="sr-only">
-            {field}
-          </label>
-          <Textarea
-            id={`${field}-${post._id}`}
-            rows={2}
-            value={post[field]}
-            readOnly
-            aria-label={field.charAt(0).toUpperCase() + field.slice(1)}
-          />
-        </div>
-      ))}
+      {showSMART && (
+        <SmartSection id={`smart-section-${post._id}`}>
+          <h2>
+            <Icon color="#ff6584">
+              <FaRocket />
+            </Icon>
+            My detailed goals
+          </h2>
+          {SMART_FIELDS.map((field) => (
+            <div key={field}>
+              <Label htmlFor={`${field}-${post._id}`} className="sr-only">
+                {field}
+              </Label>
+              <Textarea
+                id={`${field}-${post._id}`}
+                rows={2}
+                value={post[field]}
+                readOnly
+                aria-label={field.charAt(0).toUpperCase() + field.slice(1)}
+              />
+            </div>
+          ))}
+        </SmartSection>
+      )}
 
       {/* Like button */}
       <ButtonContainer>
-        <button
+        <LikeButton
           onClick={handleLike}
           aria-label={`Like this post, currently has ${likes} likes`}
         >
-          ❤️ Like {likes}
-        </button>
+          <FaHeart /> {likes}
+        </LikeButton>
       </ButtonContainer>
 
       {/* Comments */}
@@ -257,7 +394,13 @@ const CommunityPost = ({ post }) => {
               placeholder="Write your comment here"
             />
 
-            <CommentButton type="submit">Send comment</CommentButton>
+            <CommentButton
+              type="submit"
+              $variant="send"
+              aria-label="Send comment"
+            >
+              <FaPaperPlane />
+            </CommentButton>
 
             <div role="log" aria-live="polite" aria-label="Comments list">
               {comments.map((comment) => (
@@ -272,6 +415,7 @@ const CommunityPost = ({ post }) => {
                   {comment.userName === currentUser.name && (
                     <CommentButton
                       type="button"
+                      $variant="delete"
                       onClick={() => handleDeleteComment(comment._id)}
                       aria-label={`Delete comment by ${comment.userName}`}
                     >

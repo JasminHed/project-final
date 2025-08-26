@@ -9,20 +9,29 @@ import { FormCard, Textarea } from "../styling/FormCard.jsx";
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
 
 const Container = styled.div`
-  padding: 40px 16px 60px;
+  padding: 60px 16px 80px;
   max-width: 800px;
   margin: 0 auto;
 
-  @media (min-width: 669px) {
-    padding: 60px 32px 80px;
+  @media (min-width: 668px) {
+    padding: 80px 32px 100px;
+  }
+
+  @media (min-width: 1024px) {
+    max-width: 1000px;
+    padding: 100px 32px 120px;
   }
 `;
 
 const Title = styled.h1`
-  margin-bottom: 24px;
+  margin-bottom: 32px;
 
-  @media (min-width: 669px) {
-    margin-bottom: 40px;
+  @media (min-width: 668px) {
+    margin-bottom: 60px;
+  }
+
+  @media (min-width: 1024px) {
+    margin-bottom: 80px;
   }
 `;
 
@@ -30,27 +39,36 @@ const Fieldset = styled.fieldset`
   border: none;
   margin: 0;
   padding: 0;
-  margin-bottom: 32px;
+  margin-bottom: 40px;
 
-  @media (min-width: 669px) {
-    margin-bottom: 40px;
+  @media (min-width: 668px) {
+    margin-bottom: 60px;
+  }
+
+  @media (min-width: 1024px) {
+    margin-bottom: 80px;
   }
 `;
 
 const Legend = styled.legend`
   color: var(--color-text-primary);
-  margin-top: 16px;
-  margin-bottom: 12px;
   font-weight: 700;
   text-align: center;
   font-weight: 500;
+  margin-top: 20px;
+  margin-bottom: 16px;
   font-size: 18px;
 
-  @media (min-width: 669px) {
+  @media (min-width: 668px) {
     font-size: 22px;
-    font-weight: 600;
-    margin-top: 20px;
-    margin-bottom: 16px;
+    margin-top: 24px;
+    margin-bottom: 20px;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 24px;
+    margin-top: 32px;
+    margin-bottom: 24px;
   }
 `;
 
@@ -60,7 +78,7 @@ const Label = styled.label`
   margin-bottom: 6px;
   color: var(--color-text-primary);
 
-  @media (min-width: 669px) {
+  @media (min-width: 668px) {
     font-weight: 500;
     margin-bottom: 8px;
   }
@@ -74,7 +92,7 @@ const CharacterCount = styled.p`
     font-size: 13px;
   }
 
-  @media (min-width: 1025px) {
+  @media (min-width: 1024px) {
     font-size: 14px;
   }
 `;
@@ -92,6 +110,7 @@ const ErrorMessage = styled.p`
   margin-right: 5px;
   font-size: 14px;
   font-weight: 400;
+  min-height: 24px;
 `;
 
 const ButtonGroup = styled.div`
@@ -99,7 +118,15 @@ const ButtonGroup = styled.div`
   justify-content: center;
   align-items: center;
   gap: 20px;
-  margin-top: 24px;
+  margin-top: 32px;
+
+  @media (min-width: 668px) {
+    margin-top: 40px;
+  }
+
+  @media (min-width: 1024px) {
+    margin-top: 48px;
+  }
 
   button {
     background: none;
@@ -138,7 +165,9 @@ const SmartGoalField = ({ name, placeholder, values, handleFieldChange }) => {
 
   return (
     <>
-      <Label htmlFor={name}>{displayName}</Label>
+      <Label htmlFor={name}>
+        <strong>{displayName}</strong>
+      </Label>
       <Textarea
         id={name}
         name={name}
@@ -288,31 +317,31 @@ const Setup = () => {
 
               <SmartGoalField
                 name="specific"
-                placeholder="Examples:\nI will meal prep healthy lunches every Sunday\nI will save SEK500 each month\nI will read 2 books per month"
+                placeholder={`Examples:\nI will meal prep healthy lunches every Sunday\nI will save SEK500 each month\nI will read 2 books per month`}
                 values={values}
                 handleFieldChange={handleFieldChange}
               />
               <SmartGoalField
                 name="measurable"
-                placeholder="Examples:\nTrack workouts in fitness app and log weekly food diary\nUse journal to track reading progress\nMonitor savings with monthly budget spreadsheet"
+                placeholder={`Examples:\nTrack workouts in fitness app and log weekly food diary\nUse journal to track reading progress\nMonitor savings with monthly budget spreadsheet`}
                 values={values}
                 handleFieldChange={handleFieldChange}
               />
               <SmartGoalField
                 name="achievable"
-                placeholder="Examples:\nStart with 20-minute home workouts, 3x/week\nBegin with 30 pages/day during commute\nCut dining out from 4x to 2x per week"
+                placeholder={`Examples:\nStart with 20-minute home workouts, 3x/week\nBegin with 30 pages/day during commute\nCut dining out from 4x to 2x per week`}
                 values={values}
                 handleFieldChange={handleFieldChange}
               />
               <SmartGoalField
                 name="relevant"
-                placeholder="Examples:\nHealthy habits boost my energy for work and family\nReading expands my knowledge for career growth\nSavings create security and reduce stress"
+                placeholder={`Examples:\nHealthy habits boost my energy for work and family\nReading expands my knowledge for career growth\nSavings create security and reduce stress`}
                 values={values}
                 handleFieldChange={handleFieldChange}
               />
               <SmartGoalField
                 name="timebound"
-                placeholder="Examples:\nEstablish routine within 6 weeks, 3rd of November 2025\nFinish 8 books by December 2025\nReach SEK6000 savings goal by December 2025"
+                placeholder={`Examples:\nEstablish routine within 6 weeks, 3rd of November 2025\nFinish 8 books by December 2025\nReach SEK6000 savings goal by December 2025`}
                 values={values}
                 handleFieldChange={handleFieldChange}
               />

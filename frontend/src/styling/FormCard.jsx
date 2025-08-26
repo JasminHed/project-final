@@ -1,14 +1,9 @@
 import styled from "styled-components";
 
 //This is styling for setup, dashboard and community
-//too much opacity and transition?
 
 export const FormCard = styled.div`
-  background: linear-gradient(
-    135deg,
-    var(--color-card-background) 0%,
-    color-mix(in srgb, var(--color-card-background) 90%, white) 100%
-  );
+  background: var(--color-card-background);
   backdrop-filter: blur(10px);
   border-radius: 24px;
   border: 1px solid rgba(255, 255, 255, 0.4);

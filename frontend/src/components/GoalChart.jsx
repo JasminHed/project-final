@@ -10,7 +10,7 @@ const ChartContainer = styled.div`
   height: 150px;
   margin: 20px auto;
 
-  @media (min-width: 669px) {
+  @media (min-width: 668px) {
     width: 200px;
     height: 200px;
   }

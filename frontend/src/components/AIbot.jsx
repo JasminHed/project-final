@@ -4,6 +4,8 @@ import styled from "styled-components";
 
 import useClickOutside from "../hooks/useClickOutside";
 
+//this has to be chekced for semantic html!S
+
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
 
 const ChatIcon = styled.button`
@@ -30,12 +32,12 @@ const ChatIcon = styled.button`
   }
 `;
 
-const ChatContainer = styled.div`
+const ChatContainer = styled.section`
   position: fixed;
-  width: 90%;
+  width: 280px;
   height: 360px;
   bottom: 80px;
-  right: 5%;
+  right: 8%;
   z-index: 9999;
   border-radius: 16px;
   overflow: hidden;
@@ -209,6 +211,7 @@ const AIbot = () => {
 
         <InputContainer>
           <Input
+            aria-label="Type your message"
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}

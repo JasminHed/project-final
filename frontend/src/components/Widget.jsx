@@ -7,25 +7,27 @@ const WidgetGrid = styled.section`
   display: grid;
   grid-template-columns: 1fr;
   justify-items: center;
+  margin: 50px 0;
+  padding: 16px;
   gap: 45px;
-  margin: 40px 0;
-  padding: 10px;
 
   @media (min-width: 668px) {
     grid-template-columns: repeat(2, minmax(200px, 300px));
     justify-content: center;
+    gap: 50px;
   }
 
   @media (min-width: 1024px) {
     grid-template-columns: repeat(2, minmax(200px, 300px));
     justify-content: center;
+    gap: 60px;
   }
 `;
 
 const Widget = styled.div`
   padding: 16px;
   border-radius: 12px;
-  width: 260px;
+  width: 280px;
   height: 200px;
   display: flex;
   flex-direction: column;
@@ -33,8 +35,17 @@ const Widget = styled.div`
   justify-content: center;
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   opacity: ${(props) => (props.disabled ? 0.5 : 1)};
-
   transition: transform 0.2s, box-shadow 0.2s;
+
+  @media (min-width: 668px) {
+    width: 300px;
+    height: 220px;
+  }
+
+  @media (min-width: 1024px) {
+    width: 320px;
+    height: 240px;
+  }
 
   &:hover {
     transform: ${(props) => (props.disabled ? "none" : "translateY(-3px)")};
@@ -53,7 +64,7 @@ const Count = styled.p`
 const ErrorWrapper = styled.div`
   height: 24px;
   max-width: 300px;
-  margin: 0 auto;
+  margin: 20px auto 40px;
   display: flex;
   align-items: center;
 `;

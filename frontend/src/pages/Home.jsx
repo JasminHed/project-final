@@ -12,29 +12,39 @@ const MainBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
-  padding: 0 24px;
-  margin-top: 80px;
-  margin-bottom: 80px;
+  padding: 0 16px;
+  width: 100%;
+  max-width: 320px;
+  margin: 40px auto;
+
+  @media (min-width: 668px) and (max-width: 1023px) {
+    max-width: 800px;
+  }
+
+  @media (min-width: 1024px) {
+    max-width: 1200px;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+  }
 `;
 
 const Box = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 200px;
   width: 100%;
-  height: 400px;
-  padding: 48px 32px;
   border: 1px solid var(--color-focus);
-  margin-top: 16px;
-  margin-bottom: 16px;
   border-radius: 16px;
   text-align: center;
-  cursor: pointer;
   font-size: 18px;
   font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin: 16px auto;
 
   &:hover {
-    opacity: 1;
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
   }
@@ -42,8 +52,6 @@ const Box = styled.div`
   ${(props) =>
     props.disabled &&
     `
-      
-     
       background-color: #FFFFFF;
       color: #475569;
       border-color: #475569;
@@ -51,23 +59,47 @@ const Box = styled.div`
       box-shadow: none;
       transform: none;
     `}
+
+  @media (min-width: 668px) and (max-width: 1023px) {
+    width: 80%;
+  }
+
+  @media (min-width: 1024px) {
+    width: 95%;
+    height: 250px;
+  }
 `;
 
 const SignUpButton = styled.div`
   display: flex;
   justify-content: center;
-  gap: 10px;
-  margin-left: auto;
-  margin-top: 24px;
+  align-items: center;
+  margin: 24px auto;
+  width: 100%;
 
   button {
     width: 100%;
     max-width: 280px;
-    padding: 24px 48px;
+    padding: 16px 32px;
     font-size: 17px;
     font-weight: 500;
     border-radius: 12px;
+    cursor: pointer;
     transition: all 0.2s ease;
+  }
+
+  @media (min-width: 668px) {
+    button {
+      max-width: 320px;
+      padding: 20px 36px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    button {
+      max-width: 360px;
+      padding: 24px 48px;
+    }
   }
 `;
 
@@ -75,18 +107,15 @@ const ErrorWrapper = styled.div`
   height: 24px;
   display: flex;
   align-items: center;
+  justify-content: center;
 `;
 
 const ErrorMessage = styled.p`
   color: var(--color-error);
   font-size: 15px;
-  margin-bottom: 8px;
-  margin-top: 8px;
-  margin-left: 24px;
   font-weight: 400;
 `;
 
-//
 const WelcomeScreen = () => {
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
   const setIsLoggedIn = useUserStore((state) => state.setIsLoggedIn);
@@ -198,7 +227,7 @@ const WelcomeScreen = () => {
         buttonRef={signUpRef}
         onSignUpSuccess={handleSignUpSuccess}
       />
-      <section aria-label="Choose your next step"></section>
+
       <MainBox>
         <Box
           role="button"

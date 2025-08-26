@@ -73,8 +73,8 @@ const MobileNav = styled.nav`
 
 const HamburgerButton = styled.button`
   position: absolute;
-  top: 40px;
-  right: 15px;
+  top: 30px;
+  right: 23px;
   display: block;
 
   @media (min-width: 668px) {

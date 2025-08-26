@@ -4,23 +4,33 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const Container = styled.section`
-  padding: 40px 16px 60px;
+  padding: 60px 16px 80px;
   width: 100%;
   min-height: 80vh;
   margin: 0 auto;
 
   @media (min-width: 668px) {
     width: 700px;
-    padding: 60px 32px 80px;
+    padding: 80px 32px 100px;
+  }
+
+  @media (min-width: 1024px) {
+    width: 1000px;
+    padding: 100px 32px 120px;
+    margin: 0 auto;
   }
 `;
 
 const ModuleContainer = styled.article`
-  margin-bottom: 32px;
+  margin-bottom: 40px;
   transition: height 0.5s ease;
 
-  @media (min-width: 669px) {
-    margin-bottom: 40px;
+  @media (min-width: 668px) {
+    margin-bottom: 60px;
+  }
+
+  @media (min-width: 1024px) {
+    margin-bottom: 80px;
   }
 `;
 
@@ -30,11 +40,15 @@ const Content = styled.div`
   transition: opacity 0.8s ease;
 
   p {
-    margin: 8px 0 16px 0;
+    margin: 12px 0 20px 0;
     opacity: 0.9;
 
-    @media (min-width: 669px) {
-      margin: 10px 0 20px 0;
+    @media (min-width: 668px) {
+      margin: 16px 0 28px 0;
+    }
+
+    @media (min-width: 1024px) {
+      margin: 20px 0 36px 0;
     }
   }
 
@@ -56,7 +70,7 @@ const Content = styled.div`
     margin: 0 0 8px 0;
     opacity: 0.8;
 
-    @media (min-width: 669px) {
+    @media (min-width: 668px) {
       margin-bottom: 12px;
     }
   }
@@ -67,7 +81,15 @@ const ButtonContainer = styled.nav`
   justify-content: center;
   align-items: center;
   gap: 20px;
-  margin-top: 24px;
+  margin-top: 32px;
+
+  @media (min-width: 668px) {
+    margin-top: 40px;
+  }
+
+  @media (min-width: 1024px) {
+    margin-top: 48px;
+  }
 
   button {
     background: none;
@@ -78,7 +100,7 @@ const ButtonContainer = styled.nav`
 
     &:hover {
       transform: scale(1.05);
-      border: 1 px solid var(--color-focus);
+      border: 1px solid var(--color-focus);
     }
   }
 
@@ -90,13 +112,10 @@ const ButtonContainer = styled.nav`
 
 const ErrorMessage = styled.p`
   color: var(--color-error);
+  margin-top: 12px;
   margin-bottom: 4px;
-  margin-top: 8px;
   margin-right: 5px;
   text-align: center;
-
-  @media (min-width: 669px) {
-  }
 `;
 
 //Track module to know where user is, to show next slide
@@ -115,42 +134,37 @@ const Onboarding = ({ goBack, signUpRef, autoStart = false }) => {
     {
       title: "Setting your intention",
       content: (
-        <>
-          <article>
-            <p>
-              Visualizing your dream life is a powerful tool for making clear,
-              meaningful decisions. Ask yourself: What matters most in your
-              life? Whether it’s family, career, travel, or something else, your
-              answers reveal your core values.
-            </p>
-            <p>
-              Picture this dream life in detail. Where you live, what you do,
-              and who you share it with. From there, set short-term goals like
-              taking a course or planning a trip, and long-term goals like early
-              retirement or launching a passion project. Keep these visions
-              close, they will guide your journey.
-            </p>
-          </article>
-        </>
+        <article>
+          <p>
+            Visualizing your dream life is a powerful tool for making clear,
+            meaningful decisions. Ask yourself: What matters most in your life?
+            Whether it’s family, career, travel, or something else, your answers
+            reveal your core values.
+          </p>
+          <p>
+            Picture this dream life in detail. Where you live, what you do, and
+            who you share it with. From there, set short-term goals like taking
+            a course or planning a trip, and long-term goals like early
+            retirement or launching a passion project. Keep these visions close,
+            they will guide your journey.
+          </p>
+        </article>
       ),
     },
     {
       title: "Making goals SMART",
       content: (
-        <>
-          <article>
-            <p>
-              A clear, well-crafted action plan is what bridges the gap between
-              dreaming and doing and it all starts with setting focused goals.
-            </p>
-            <p>
-              There is never a “wrong time” to set new goals. With determination
-              and discipline, success is possible. Tracking progress and ticking
-              off completed goals builds momentum and keeps your motivation
-              alive.
-            </p>
-          </article>
-        </>
+        <article>
+          <p>
+            A clear, well-crafted action plan is what bridges the gap between
+            dreaming and doing and it all starts with setting focused goals.
+          </p>
+          <p>
+            There is never a “wrong time” to set new goals. With determination
+            and discipline, success is possible. Tracking progress and ticking
+            off completed goals builds momentum and keeps your motivation alive.
+          </p>
+        </article>
       ),
     },
     {

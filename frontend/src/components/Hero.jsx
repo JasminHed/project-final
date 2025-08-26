@@ -1,113 +1,101 @@
 import React from "react";
 import styled from "styled-components";
 
-//image bigger? another form?
-// overlay?
-
 const HeroContainer = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
+  gap: 20px;
+  padding: 0;
   gap: 40px;
-  padding: 20px;
-  min-height: 600px;
+  padding: 40px 0;
+  width: 100%;
 
-  @media (max-width: 1023px) {
-    flex-direction: column;
+  @media (min-width: 1024px) {
+    flex-direction: row;
+    align-items: stretch;
+    gap: 60px;
+    padding: 80px 32px;
   }
 `;
 
-export const HeroImage = styled.img`
+const HeroImage = styled.img`
   width: 100%;
-  height: 300px;
-  margin: 32px auto;
-  display: block;
+  height: auto;
   object-fit: cover;
-  border-radius: 5px;
-
-  @media (max-width: 1000px) {
-    order: -1;
-    margin: 0 -40px;
-    width: calc(100% + 80px);
-    border-radius: 0;
-  }
+  display: block;
+  margin: 20px 0;
 
   @media (min-width: 1024px) {
     width: 50%;
-    height: 600px;
+    height: auto;
+    order: 2;
     margin: 0;
-    margin-left: auto;
   }
 `;
 
 const MainSection = styled.section`
   flex: 1;
-  padding: 32px 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-
-  @media (min-width: 668px) and (max-width: 1023px) {
-    padding: 48px 40px;
-    max-width: none;
-  }
+  align-items: center;
+  padding: 20px;
+  width: 100%;
+  margin: 20px 0;
 
   @media (min-width: 1024px) {
-    padding: 64px 48px;
-    max-width: 50%;
+    align-items: flex-start;
+    width: 50%;
+    order: 1;
+    padding: 32px;
   }
 `;
+
 const FeatureList = styled.ul`
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  margin: 0 0 40px 0;
+  gap: 16px;
+  width: 100%;
   padding: 0;
   list-style: none;
 
   @media (min-width: 668px) {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 32px 48px;
-    margin-bottom: 48px;
+    gap: 24px;
   }
 
   @media (min-width: 1024px) {
-    gap: 48px 64px;
-    margin-bottom: 56px;
+    gap: 32px;
   }
 `;
 
 const Tagline = styled.li`
-  position: relative;
-  padding-left: 24px;
-  transition: transform 0.2s ease;
+  text-align: left;
 
-  @media (min-width: 668px) {
-    &:hover {
-      transform: translateX(4px);
-
-      &::before {
-        transform: translateX(4px);
-      }
-    }
+  @media (min-width: 1024px) {
+    text-align: left;
   }
 `;
 
 const Description = styled.p`
   text-align: center;
-  margin: 0;
-  max-width: 280px;
-  color: var(--color-text-primary);
-  opacity: 0.9;
+  max-width: 600px;
+  margin-top: 20px;
+  margin: 20px 0;
 
-  @media (min-width: 668px) {
-    max-width: none;
+  @media (min-width: 1024px) {
+    text-align: left;
   }
 `;
 
 const Hero = () => {
   return (
     <HeroContainer>
+      <HeroImage
+        src="/assets/Dashboard.jpg"
+        alt="Woman sitting with the stars"
+      />
+
       <MainSection>
         <FeatureList role="list">
           <Tagline>
@@ -147,10 +135,6 @@ const Hero = () => {
           to help you slow down, reflect, set intentions, define doable goals
         </Description>
       </MainSection>
-      <HeroImage
-        src="/assets/Dashboard.jpg"
-        alt="Woman sitting with the stars"
-      />
     </HeroContainer>
   );
 };

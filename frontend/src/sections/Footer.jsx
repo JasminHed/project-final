@@ -31,7 +31,7 @@ const FooterList = styled.ul`
     transition: opacity 0.2s ease;
   }
 
-  @media (min-width: 669px) {
+  @media (min-width: 668px) {
     gap: 24px;
 
     p {

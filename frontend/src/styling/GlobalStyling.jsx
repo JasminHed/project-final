@@ -53,8 +53,8 @@ const GlobalStyles = createGlobalStyle`
   --color-success: #1e40af;               
   --color-chart-active: #1e293b;          
   --color-chart-completed: #d1d5db;       
-  --color-card-background: #f1f5f9;    //new color, a bit more blue-ish
- 
+  --color-card-background: #f1f5f9;    
+  --color-card-community: #e6f0fa; 
    
 }
 
@@ -71,6 +71,8 @@ const GlobalStyles = createGlobalStyle`
   --color-chart-active: #e2e8f0;          
   --color-chart-completed: #4b5563;       
   --color-card-background: #0f172a;  
+  --color-card-community: #121e33; 
+
 
    
 }
@@ -91,7 +93,7 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
     font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     line-height: 1.6;
-    min-height: 100vh; //to make sure when loading footer stays put?
+    min-height: 100vh; //to make sure when loading footer stays put
 
   }
 
@@ -102,7 +104,7 @@ body {
     font-weight: 600;
     text-align: center;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", sans-serif;
-    letter-spacing: -0.015em;
+    //letter-spacing: -0.015em;
     line-height: 1.2;
   }
 
@@ -138,7 +140,7 @@ body {
     
   }
 
-  @media (min-width: 669px) {
+  @media (min-width: 668px) {
     h1 {
       font-size: 40px;
     }
@@ -188,7 +190,6 @@ body {
 
  
   button {
-   
     background-color: var(--color-button-bg);
     color: var(--color-button-text);
     font-size: 15px;
@@ -204,7 +205,7 @@ body {
   }
 
   button:hover {
-    background-color: var(--color-button-hover);
+    //background-color: var(--color-button-hover);
     transform: translateY(-1px);
   }
 

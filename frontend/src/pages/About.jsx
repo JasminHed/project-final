@@ -2,35 +2,31 @@ import React from "react";
 import styled from "styled-components";
 
 const Description = styled.div`
-  margin: 20px auto;
+  margin: 40px auto 60px;
   max-width: 90%;
 
   @media (min-width: 668px) {
-    margin-bottom: 60px;
-    margin-top: 60px;
+    margin: 60px auto 80px;
   }
 
   @media (min-width: 1024px) {
-    margin-bottom: 96px;
-    margin-top: 96px;
+    margin: 80px auto 120px;
   }
 `;
 const GridWrapper = styled.div`
   display: grid;
-  gap: 24px;
-  margin-bottom: 24px;
+  gap: 28px;
+  margin-bottom: 40px;
 
   @media (min-width: 668px) {
     grid-template-columns: repeat(2, 1fr);
     width: 700px;
-    margin-bottom: 48px;
-    padding: 16px 20px;
-    margin-right: 30px;
-    gap: 28px;
+    margin-bottom: 60px;
+    padding: 16px 24px;
   }
 
   @media (min-width: 1024px) {
-    margin: 0 auto;
+    margin: 0 auto 100px;
     grid-template-columns: 1.2fr 0.8fr;
     width: 1000px;
     margin-bottom: 80px;

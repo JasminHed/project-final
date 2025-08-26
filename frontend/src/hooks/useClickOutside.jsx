@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 
-//Remove?
 const useClickOutside = (ref, handler) => {
   useEffect(() => {
     const listener = (event) => {

@@ -132,6 +132,36 @@ const saveGoalToAPI = (values, token) => {
   });
 };
 
+// SmartGoalField component
+const SmartGoalField = ({ name, placeholder, values, handleFieldChange }) => {
+  const displayName = name.charAt(0).toUpperCase() + name.slice(1);
+
+  return (
+    <>
+      <Label htmlFor={name}>{displayName}</Label>
+      <Textarea
+        id={name}
+        name={name}
+        placeholder={placeholder}
+        value={values[name]}
+        onChange={handleFieldChange(name)}
+        minLength={20}
+        maxLength="150"
+        required
+      />
+      <CharacterCount aria-live="polite">
+        {values[name].length}/150
+      </CharacterCount>
+      {values[name].length < 20 && values[name].length > 0 && (
+        <ErrorWrapper>
+          {" "}
+          <ErrorMessage>Minimum 20 characters required</ErrorMessage>
+        </ErrorWrapper>
+      )}
+    </>
+  );
+};
+
 // Setup component for setting intention and SMART goals
 const Setup = () => {
   const [values, setValues] = useState({
@@ -152,10 +182,12 @@ const Setup = () => {
     const value = e.target.value;
     setValues((prev) => ({ ...prev, [field]: value }));
   };
+
   //arrow back to dashboard
   const handleBackToDashboard = () => {
     navigate("/dashboard");
   };
+
   //This validates, sends data, navigates to dashboard or shows error
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -240,95 +272,53 @@ const Setup = () => {
               <CharacterCount aria-live="polite">
                 {values.intention.length}/150
               </CharacterCount>
+              {values.intention.length < 20 && values.intention.length > 0 && (
+                <ErrorWrapper>
+                  <ErrorMessage>Minimum 20 characters required</ErrorMessage>
+                </ErrorWrapper>
+              )}
             </FormCard>
           </Fieldset>
+
           <Fieldset>
             <FormCard>
               <Legend>
                 Let's shape your SMART goals — clear, doable, and yours
               </Legend>
 
-              <Label htmlFor="specific">Specific</Label>
-              <Textarea
-                id="specific"
+              <SmartGoalField
                 name="specific"
-                placeholder={`Examples:\nI will meal prep healthy lunches every Sunday\nI will save SEK500 each month\nI will read 2 books per month`}
-                value={values.specific}
-                onChange={handleFieldChange("specific")}
-                minLength={20}
-                maxLength="150"
-                required
+                placeholder="Examples:\nI will meal prep healthy lunches every Sunday\nI will save SEK500 each month\nI will read 2 books per month"
+                values={values}
+                handleFieldChange={handleFieldChange}
               />
-
-              <CharacterCount aria-live="polite">
-                {values.specific.length}/150
-              </CharacterCount>
-
-              <Label htmlFor="measurable">Measurable</Label>
-              <Textarea
-                id="measurable"
+              <SmartGoalField
                 name="measurable"
-                placeholder={`Examples:\nTrack workouts in fitness app and log weekly food diary\nUse journal to track reading progress\nMonitor savings with monthly budget spreadsheet`}
-                value={values.measurable}
-                onChange={handleFieldChange("measurable")}
-                minLength={20}
-                maxLength="150"
-                required
+                placeholder="Examples:\nTrack workouts in fitness app and log weekly food diary\nUse journal to track reading progress\nMonitor savings with monthly budget spreadsheet"
+                values={values}
+                handleFieldChange={handleFieldChange}
               />
-
-              <CharacterCount aria-live="polite">
-                {values.measurable.length}/150
-              </CharacterCount>
-
-              <Label htmlFor="achievable">Achievable</Label>
-              <Textarea
-                id="achievable"
+              <SmartGoalField
                 name="achievable"
-                placeholder={`Examples:\nStart with 20-minute home workouts, 3x/week\nBegin with 30 pages/day during commute\nCut dining out from 4x to 2x per week`}
-                value={values.achievable}
-                onChange={handleFieldChange("achievable")}
-                minLength={20}
-                maxLength="150"
-                required
+                placeholder="Examples:\nStart with 20-minute home workouts, 3x/week\nBegin with 30 pages/day during commute\nCut dining out from 4x to 2x per week"
+                values={values}
+                handleFieldChange={handleFieldChange}
               />
-
-              <CharacterCount aria-live="polite">
-                {values.achievable.length}/150
-              </CharacterCount>
-
-              <Label htmlFor="relevant">Relevant</Label>
-              <Textarea
-                id="relevant"
+              <SmartGoalField
                 name="relevant"
-                placeholder={`Examples:\nHealthy habits boost my energy for work and family\nReading expands my knowledge for career growth\nSavings create security and reduce stress`}
-                value={values.relevant}
-                onChange={handleFieldChange("relevant")}
-                minLength={20}
-                maxLength="150"
-                required
+                placeholder="Examples:\nHealthy habits boost my energy for work and family\nReading expands my knowledge for career growth\nSavings create security and reduce stress"
+                values={values}
+                handleFieldChange={handleFieldChange}
               />
-
-              <CharacterCount aria-live="polite">
-                {values.relevant.length}/150
-              </CharacterCount>
-
-              <Label htmlFor="timebound">Timebound</Label>
-              <Textarea
-                id="timebound"
+              <SmartGoalField
                 name="timebound"
-                placeholder={`Examples:\nEstablish routine within 6 weeks, 3rd of November 2025\nFinish 8 books by December 2025\nReach SEK6000 savings goal by December 2025`}
-                value={values.timebound}
-                onChange={handleFieldChange("timebound")}
-                minLength={20}
-                maxLength="150"
-                required
+                placeholder="Examples:\nEstablish routine within 6 weeks, 3rd of November 2025\nFinish 8 books by December 2025\nReach SEK6000 savings goal by December 2025"
+                values={values}
+                handleFieldChange={handleFieldChange}
               />
-
-              <CharacterCount aria-live="polite">
-                {values.timebound.length}/150
-              </CharacterCount>
             </FormCard>
           </Fieldset>
+
           <ErrorWrapper>
             {showError && (
               <ErrorMessage role="alert">
@@ -358,4 +348,5 @@ const Setup = () => {
     </main>
   );
 };
+
 export default Setup;

@@ -440,14 +440,12 @@ app.delete("/messages/:id", authenticateUser, async (req, res) => {
 });
 
 
-
-
- //Chat
+ //Chat 
+ //creates an API endpoint for chat messages, message and sessionId, finding or creating a chat session, and adding the user's message to the conversation history.
 
  app.post("/api/chat", async (req, res) => {
   try {
    
-    
     const user = req.user || null;
     const { message, sessionId } = req.body;
 
@@ -455,7 +453,6 @@ app.delete("/messages/:id", authenticateUser, async (req, res) => {
       
       return res.status(400).json({ error: "Message and sessionId required" });
     }
-
 
     let chat = await Chat.findOne({ sessionId });
     if (!chat) {
@@ -469,23 +466,20 @@ app.delete("/messages/:id", authenticateUser, async (req, res) => {
     
     }
 
-   
     chat.messages.push({
       role: "user",
       content: message
     });
 
-    
+    //takes the last 10 messages from the chat history, formats them for OpenAI API
     const recentMessages = chat.messages.slice(-10).map(msg => ({
       role: msg.role === "user" ? "user" : "assistant",
       content: msg.content
     }));
 
-    console.log("Sending to OpenAI:", {
-      messageCount: recentMessages.length,
-      apiKey: process.env.OPENAI_API_KEY ? "Present" : "Missing"
-    });
+   
 
+    //API call to OpenAI's ChatGPT 
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -504,8 +498,7 @@ app.delete("/messages/:id", authenticateUser, async (req, res) => {
       })
     });
 
-  
-
+  //checking for errors, extracting the AI's reply, saving it to the chat history, and returning the response to the client
     if (!response.ok) {
       const errorText = await response.text();
       console.error("OpenAI API error:", errorText);

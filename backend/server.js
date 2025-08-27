@@ -441,30 +441,26 @@ app.delete("/messages/:id", authenticateUser, async (req, res) => {
 
 
  //Chat 
- //creates an API endpoint for chat messages, message and sessionId, finding or creating a chat session, and adding the user's message to the conversation history.
+ 
 
- app.post("/api/chat", async (req, res) => {
+ app.post("/api/chat", authenticateUser, async (req, res) => { 
   try {
    
-    const user = req.user || null;
+    const user = req.user 
     const { message, sessionId } = req.body;
 
     if (!message || !sessionId) {
       return res.status(400).json({ error: "Message and sessionId required" });
     }
 
-    let chat = await Chat.findOne({ sessionId });
-    if (!chat) {
-     
-      chat = new Chat({
-        userId: user?.id || null,
-        sessionId,
-        messages: []
-      });
-    } else {
-    
-    }
-
+    let chat = await Chat.findOne({ userId: user._id, sessionId });
+if (!chat) {
+  chat = new Chat({
+    userId: user._id,
+    sessionId,
+    messages: []
+  });
+}
     chat.messages.push({
       role: "user",
       content: message
@@ -518,10 +514,10 @@ app.delete("/messages/:id", authenticateUser, async (req, res) => {
       role: "assistant",
       content: aiMessage
     });
-//save to database when user is logged in
-    if (user) {
+//save to database 
+  
       await chat.save();
-    }
+    
     
     res.json({
       message: aiMessage,

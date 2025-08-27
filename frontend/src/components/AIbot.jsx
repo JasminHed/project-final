@@ -32,12 +32,14 @@ const ChatIcon = styled.button`
   }
 `;
 
-const ChatContainer = styled.section`
+const ChatContainer = styled.dialog`
   position: fixed;
+  margin: 0;
+  inset: auto;
   width: 280px;
   height: 360px;
   bottom: 80px;
-  right: 8%;
+  right: 30px;
   z-index: 9999;
   border-radius: 16px;
   overflow: hidden;
@@ -55,13 +57,31 @@ const ChatContainer = styled.section`
   }
 `;
 
-const MessagesContainer = styled.div`
+const ChatHeader = styled.header`
+  padding: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+
+  h3 {
+    margin: 0 0 8px 0;
+  }
+
+  hr {
+    margin: 0;
+    border: none;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+  }
+`;
+
+const MessagesList = styled.ul`
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   height: 200px;
   padding: 10px;
   gap: 6px;
+  list-style: none;
+  margin: 0; //removes default margin
 
   @media (min-width: 668px) {
     height: 400px;
@@ -72,7 +92,7 @@ const MessagesContainer = styled.div`
   }
 `;
 
-const Message = styled.div`
+const MessageItem = styled.li`
   align-self: ${(props) => (props.$isUser ? "flex-end" : "flex-start")};
   max-width: 80%;
   padding: 10px 14px;
@@ -96,7 +116,7 @@ const Message = styled.div`
   }
 `;
 
-const InputContainer = styled.div`
+const ChatForm = styled.form`
   display: flex;
   gap: 8px;
   padding: 12px;
@@ -180,6 +200,11 @@ const AIbot = () => {
       });
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    sendMessage();
+  };
+
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       sendMessage();
@@ -192,24 +217,26 @@ const AIbot = () => {
         ref={buttonRef}
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Open chat with Luca"
+        aria-expanded={isOpen}
       >
         <FaRobot size={28} />
       </ChatIcon>
 
-      <ChatContainer ref={chatRef} $isOpen={isOpen}>
-        <h3>Luca</h3>
-        <hr />
-
-        <MessagesContainer>
+      <ChatContainer ref={chatRef} $isOpen={isOpen} as="dialog">
+        <ChatHeader>
+          <h3>Luca</h3>
+          <hr />
+        </ChatHeader>
+        <MessagesList role="log" aria-live="polite" aria-label="Chat messages">
           {messages.map((msg, index) => (
-            <Message key={index} $isUser={msg.isUser}>
+            <MessageItem key={index} $isUser={msg.isUser}>
               <strong>{msg.isUser ? "You" : "Luca"}:</strong> {msg.text}
-            </Message>
+            </MessageItem>
           ))}
-          {loading && <Message>Luca is typing...</Message>}
-        </MessagesContainer>
+          {loading && <MessageItem>Luca is typing...</MessageItem>}
+        </MessagesList>
 
-        <InputContainer>
+        <ChatForm onSubmit={handleSubmit}>
           <Input
             aria-label="Type your message"
             type="text"
@@ -218,10 +245,10 @@ const AIbot = () => {
             onKeyPress={handleKeyPress}
             placeholder="Welcome to The Intention Hub..."
           />
-          <button onClick={sendMessage} disabled={loading}>
+          <button type="submit" disabled={loading}>
             Send message
           </button>
-        </InputContainer>
+        </ChatForm>
       </ChatContainer>
     </>
   );

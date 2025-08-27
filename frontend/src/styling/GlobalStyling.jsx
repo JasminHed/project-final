@@ -91,7 +91,7 @@ body {
     color: var(--color-text-primary);
     background-color: var(--color-background);
     transition: background-color 0.3s ease, color 0.3s ease;
-    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-family: 'Bodoni Moda', serif;
     line-height: 1.6;
     min-height: 100vh; //to make sure when loading footer stays put
 
@@ -103,7 +103,7 @@ body {
     margin-bottom: 8px;
     font-weight: 600;
     text-align: center;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", sans-serif;
+    font-family: 'Bodoni Moda', serif; 
     //letter-spacing: -0.015em;
     line-height: 1.2;
   }

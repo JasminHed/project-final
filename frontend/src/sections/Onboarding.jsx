@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 const Container = styled.section`
   //padding: 60px 16px 80px;
-  padding: 60px 4px 60px;
+  padding: 60px 4px 60px; //txt wider on small screens
   width: 100%;
   min-height: 80vh;
   margin: 0 auto;

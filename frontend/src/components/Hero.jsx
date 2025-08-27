@@ -7,8 +7,9 @@ const HeroContainer = styled.div`
   align-items: center;
   gap: 20px;
   padding: 0;
-  gap: 40px;
+  //gap: 40px;
   padding: 40px 0;
+  padding: 0;
   width: 100%;
 
   @media (min-width: 1024px) {
@@ -71,9 +72,23 @@ const FeatureList = styled.ul`
 
 const Tagline = styled.li`
   text-align: left;
+  font-size: 18px;
+  font-weight: 600px;
+  transition: transform 0.2s ease, color 0.2s ease;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--color-accent);
+    transform: translateX(5px);
+  }
+
+  @media (min-width: 668px) {
+    font-size: 20px;
+  }
 
   @media (min-width: 1024px) {
     text-align: left;
+    font-size: 22px;
   }
 `;
 

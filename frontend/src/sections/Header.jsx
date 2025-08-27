@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
+import useClickOutside from "../hooks/useClickOutside";
 import { useUserStore } from "../store/UserStore";
 
 //automatically log out after 12 hours?
@@ -106,6 +107,16 @@ const Header = () => {
   const { isLoggedIn, logout, user } = useUserStore();
   const navigate = useNavigate();
 
+  //for click outisde + button open and close
+  const mobileNavRef = useRef();
+  const hamburgerRef = useRef();
+
+  useClickOutside(mobileNavRef, (event) => {
+    if (hamburgerRef.current && hamburgerRef.current.contains(event.target))
+      return;
+    setMenuOpen(false);
+  });
+
   useEffect(() => {
     document.documentElement.classList.toggle("dark", darkMode);
   }, [darkMode]);
@@ -157,6 +168,7 @@ const Header = () => {
         <Title>Intention Hub</Title>
 
         <HamburgerButton
+          ref={hamburgerRef}
           onClick={toggleMenu}
           aria-label={menuOpen ? "Close menu" : "Open menu"}
           aria-expanded={menuOpen}
@@ -176,7 +188,7 @@ const Header = () => {
         </DesktopNav>
       </HeaderContainer>
 
-      <MobileNav id="mobile-nav" $isOpen={menuOpen}>
+      <MobileNav ref={mobileNavRef} id="mobile-nav" $isOpen={menuOpen}>
         <NavLinks />
         <Link onClick={toggleDarkMode} aria-label="Toggle dark mode">
           {darkMode ? "Light mode" : "Dark mode"}

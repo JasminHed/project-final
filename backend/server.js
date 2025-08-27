@@ -440,33 +440,29 @@ app.delete("/messages/:id", authenticateUser, async (req, res) => {
 });
 
 
- //Chat 
 
-
-
- //Chat endpoint
+ //Creates a POST endpoint - We create a POST endpoint because we send data from the frontend to the backend (the user’s message) that needs to be processed and saved. POST is used whenever we create or update data—in this case, the chat.
 app.post("/api/chat", async (req, res) => {
   try {
-    const { message, userId } = req.body; // userId finns endast om användaren är inloggad
-
+    const { message, userId } = req.body; // fetches users message and user id(if loggedin)
     if (!message) {
-      return res.status(400).json({ error: "Message required" });
+      return res.status(400).json({ error: "Message required" }); //otherwise error message
     }
 
-    // Håll chat history om user är inloggad
+    // if user is logged in, find saved chat in database and add, otherwise create new and save to userid in database
     let chat = null;
     if (userId) {
       chat = await Chat.findOne({ userId }) || new Chat({ userId, messages: [] });
       chat.messages.push({ role: "user", content: message });
     }
 
-    // Använd recentMessages för OpenAI
+    // take the last 10 messages from user and ai for context (logged in user), otherwise (guest) just create new messages
     const recentMessages = chat?.messages.slice(-10).map(msg => ({
       role: msg.role === "user" ? "user" : "assistant",
       content: msg.content
-    })) || [{ role: "user", content: message }]; // Gäster får bara senaste meddelandet
+    })) || [{ role: "user", content: message }]; 
 
-    // API call to OpenAI's ChatGPT 
+    // send message to open AI API. System messages tells how AI should work. Recent messages used to make AI remember conversation and can create context
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -484,24 +480,25 @@ app.post("/api/chat", async (req, res) => {
         ]
       })
     });
-
     if (!response.ok) {
       const errorText = await response.text();
       console.error("OpenAI API error:", errorText);
       throw new Error(`OpenAI API error: ${response.status} - ${errorText}`);
     }
 
+    //get AI response from JSON response. We do this to make sure we do not only get the object but the actual text message to show in frontend in chat. If error, fallback message. 
     const data = await response.json();
     const aiMessage = data.choices?.[0]?.message?.content || "Sorry, I couldn't respond.";
 
-    // Lägg till AI-meddelande i chat och spara om user är inloggad
+    // Add AI response in the chat window, save to database if user is logged in
     if (chat) {
       chat.messages.push({ role: "assistant", content: aiMessage });
       await chat.save();
     }
 
-    // Returnera svaret
+    // return AI response to frontend 
     res.json({ message: aiMessage });
+    //catches any error
   } catch (error) {
     console.error("=== CHAT ERROR ===");
     console.error("Error details:", error);
@@ -512,97 +509,7 @@ app.post("/api/chat", async (req, res) => {
 
  
 
- /*app.post("/api/chat", async (req, res) => {
-  try {
-    const { message, userId } = req.body; 
-    if (!message) return res.status(400).json({ error: "Message required" });
-
-    let chat = null;
-    if (userId) { 
-      chat = await Chat.findOne({ userId }) || new Chat({ userId, messages: [] });
-      chat.messages.push({ role: "user", content: message });
-    }
-
-    let chat = await Chat.findOne({ userId: user._id, sessionId });
-if (!chat) {
-  chat = new Chat({
-    userId: user._id,
-    sessionId,
-    messages: []
-  });
-}
-    chat.messages.push({
-      role: "user",
-      content: message
-    });
-
-    //takes the last 10 messages from the chat history, formats them for OpenAI API
-    const recentMessages = chat.messages.slice(-10).map(msg => ({
-      role: msg.role === "user" ? "user" : "assistant",
-      content: msg.content
-    }));
-
-   
-
-    //API call to OpenAI's ChatGPT 
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
-      },
-      body: JSON.stringify({
-        model: "gpt-3.5-turbo",
-        messages: [
-          {
-            role: "system",
-            content: "You are Luca, a helpful coach and assistant that guides users through intention setting and SMART goal setting. Keep responses conversational and supportive."
-          },
-          ...recentMessages
-        ]
-      })
-    });
-
-  //checking for errors, extracting the AI's reply, saving it to the chat history, and returning the response to the client
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("OpenAI API error:", errorText);
-      throw new Error(`OpenAI API error: ${response.status} - ${errorText}`);
-    }
-
-    const data = await response.json();
-   
-
-    const aiMessage = data.choices?.[0]?.message?.content || "Sorry, I couldn't respond.";
-    
-    if (chat) { 
-      chat.messages.push({ role: "assistant", content: aiMessage });
-      await chat.save();
-    }
-
-   //Add AI message
-    chat.messages.push({
-      role: "assistant",
-      content: aiMessage
-    });
-//save to database 
-  
-      await chat.save();
-    
-    
-    res.json({
-      message: aiMessage,
-      sessionId: chat.sessionId
-    });
-    
-  } catch (error) {
-    console.error("=== CHAT ERROR ===");
-    console.error("Error details:", error);
-    console.error("Stack trace:", error.stack);
-    res.status(500).json({ error: "Could not process chat message: " + error.message });
-  }
-});*/
-
+ 
  
 
 // Start the server

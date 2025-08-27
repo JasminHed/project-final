@@ -41,7 +41,7 @@ const ChatContainer = styled.section`
   z-index: 9999;
   border-radius: 16px;
   overflow: hidden;
-  background-color: var(--color-background);
+  background-color: var(--color-card-background);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.08);
   display: ${(props) => (props.$isOpen ? "flex" : "none")};

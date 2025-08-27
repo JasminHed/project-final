@@ -1,7 +1,14 @@
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
-import { FaChevronDown, FaChevronUp, FaHeart, FaLightbulb, FaPaperPlane, FaRocket } from "react-icons/fa";
+import {
+  FaChevronDown,
+  FaChevronUp,
+  FaHeart,
+  FaLightbulb,
+  FaPaperPlane,
+  FaRocket,
+} from "react-icons/fa";
 import styled from "styled-components";
 
 import { useUserStore } from "../store/UserStore";
@@ -86,12 +93,12 @@ const CommentsSection = styled.section`
   padding-top: 20px;
 
   @media (min-width: 668px) {
-  margin-top: 32px;
-}
+    margin-top: 32px;
+  }
 
-@media (min-width: 1024px) {
-  margin-top: 40px;
-}
+  @media (min-width: 1024px) {
+    margin-top: 40px;
+  }
 `;
 
 const CommentTextarea = styled.textarea`
@@ -150,7 +157,7 @@ const LikeButton = styled.button`
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 20px;
+  font-size: 18px;
   color: var(--color-text-primary);
   transition: transform 0.2s ease;
 

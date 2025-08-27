@@ -60,6 +60,13 @@ const Box = styled.div`
       transform: none;
     `}
 
+  ${(props) =>
+    props.hasError &&
+    `
+      border-color: #ef4444 !important;
+    `}
+
+
   @media (min-width: 668px) and (max-width: 1023px) {
     width: 80%;
   }
@@ -230,6 +237,7 @@ const WelcomeScreen = () => {
 
       <MainBox>
         <Box
+          hasError={!!showError}
           role="button"
           tabIndex={0}
           disabled={!isLoggedIn}
@@ -254,6 +262,7 @@ const WelcomeScreen = () => {
           Learn about Intention & SMART goals
         </Box>
         <Box
+          hasError={!!showError}
           role="button"
           tabIndex={0}
           disabled={!isLoggedIn}
@@ -279,6 +288,7 @@ const WelcomeScreen = () => {
           Set your intention and goals with clarity and purpose
         </Box>
         <Box
+          hasError={!!showError}
           role="button"
           tabIndex={0}
           disabled={!isLoggedIn}

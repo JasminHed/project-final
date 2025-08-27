@@ -1,14 +1,9 @@
 import { useState } from "react";
+import { FaSpinner } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 import { useUserStore } from "../store/UserStore";
-import {
-  ErrorDiv,
-  Input,
-  Label,
-  LinkSpan,
-  RegisterLink,
-} from "../styling/FormStyling.jsx";
+import { ErrorDiv, Input, Label, LinkSpan, RegisterLink } from "../styling/FormStyling.jsx";
 
 const SignUp = ({
   setShowLogin,
@@ -24,10 +19,10 @@ const SignUp = ({
   const [error, setError] = useState("");
 
   const [successMessage, setSuccessMessage] = useState("");
-  // Navigate hook for routing
   const navigate = useNavigate();
   const { login } = useUserStore();
   const [fieldErrors, setFieldErrors] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -42,6 +37,7 @@ const SignUp = ({
 
     setError("");
     setSuccessMessage("");
+    setLoading(true);
 
     fetch("https://project-final-ualo.onrender.com/users", {
       method: "POST",
@@ -50,6 +46,7 @@ const SignUp = ({
     })
       .then((res) => res.json())
       .then((data) => {
+        setLoading(false);
         if (data.success) {
           localStorage.setItem("userId", data.userId);
           localStorage.setItem("accessToken", data.accessToken);
@@ -80,6 +77,7 @@ const SignUp = ({
       .catch((err) => {
         console.error("Registration error:", err);
         setError("Network error. Please try again.");
+        setLoading(false);
       });
   };
 
@@ -121,6 +119,14 @@ const SignUp = ({
   const handleShowLogin = () => {
     setShowLogin(true);
   };
+
+  if (loading) {
+    return (
+      <div>
+        <FaSpinner />
+      </div>
+    );
+  }
 
   return (
     <>

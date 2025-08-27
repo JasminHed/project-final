@@ -105,12 +105,12 @@ const Hero = () => {
 
           <Tagline>
             <strong>Access your dashboard </strong> that contains your intention
-            and goals, progress chart and journal section for complete tracking.
+            and goals and progress chart complete tracking.
           </Tagline>
 
           <Tagline>
-            <strong> Get access to your AI Coach </strong> for motivation,
-            check-ins and support on your journey.
+            <strong> Get access to your AI Assistant </strong> for support on
+            your journey.
           </Tagline>
 
           <Tagline>

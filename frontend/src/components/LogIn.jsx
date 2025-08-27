@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FaSpinner } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 import { useUserStore } from "../store/UserStore";
@@ -21,7 +22,7 @@ const LogIn = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
   const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
   const { login } = useUserStore();
-
+  const [loading, setLoading] = useState(false);
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!formData.email || !formData.password) {
@@ -30,8 +31,8 @@ const LogIn = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
     }
 
     setError("");
-    // Clear any previous success messages
     setSuccessMessage("");
+    setLoading(true);
 
     fetch("https://project-final-ualo.onrender.com/sessions", {
       method: "POST",
@@ -40,6 +41,7 @@ const LogIn = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
     })
       .then((res) => res.json())
       .then((data) => {
+        setLoading(false);
         if (data.notFound || data.error) {
           setError("Invalid email or password");
         } else {
@@ -71,6 +73,7 @@ const LogIn = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
       .catch((err) => {
         console.error("Login error:", err);
         setError("Network error. Please try again.");
+        setLoading(false);
       });
   };
 
@@ -86,6 +89,14 @@ const LogIn = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
   const handleShowSignUp = () => {
     setShowLogin(false);
   };
+
+  if (loading) {
+    return (
+      <div>
+        <FaSpinner />
+      </div>
+    );
+  }
 
   return (
     <>

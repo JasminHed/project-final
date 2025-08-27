@@ -98,7 +98,7 @@ const CharacterCount = styled.p`
 `;
 
 const ErrorWrapper = styled.div`
-  height: 24px;
+  height: 40px;
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -109,7 +109,6 @@ const ErrorMessage = styled.p`
   margin: 0;
   font-size: 14px;
   font-weight: 400;
-  line-height: 24px;
 `;
 
 const ButtonGroup = styled.div`

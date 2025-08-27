@@ -101,6 +101,7 @@ const DashboardForm = ({
               />
             </ActionButton>
             <ActionButton
+              type="button"
               onClick={() => onComplete(goal._id)}
               aria-label="Mark goal as completed - goal will be removed"
             >
@@ -109,7 +110,7 @@ const DashboardForm = ({
               </Icon>
               <span>Mark as complete (will be removed)</span>
             </ActionButton>
-            <ActionButton onClick={() => onShare(goal._id)}>
+            <ActionButton type="button" onClick={() => onShare(goal._id)}>
               <Icon color="var(--color-focus)">
                 <FaBullhorn />
               </Icon>

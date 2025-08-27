@@ -171,6 +171,7 @@ const Dashboard = () => {
                   onStartToggle={handleStartToggle(goal._id)}
                   onComplete={handleCompleteGoal(goal._id)}
                   onShare={() => toggleShareGoal(goal._id)}
+                  onSave={() => {}}
                   successMessage={successMessage}
                   shareSuccessMessage={shareSuccessMessage}
                 />

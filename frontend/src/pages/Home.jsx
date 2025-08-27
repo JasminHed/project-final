@@ -114,6 +114,7 @@ const ErrorMessage = styled.p`
   color: var(--color-error);
   font-size: 15px;
   font-weight: 400;
+  margin-left: 8px;
 `;
 
 const WelcomeScreen = () => {

@@ -450,7 +450,6 @@ app.delete("/messages/:id", authenticateUser, async (req, res) => {
     const { message, sessionId } = req.body;
 
     if (!message || !sessionId) {
-      
       return res.status(400).json({ error: "Message and sessionId required" });
     }
 
@@ -514,14 +513,15 @@ app.delete("/messages/:id", authenticateUser, async (req, res) => {
       console.error("No valid response from OpenAI:", data);
     }
 
-   
+   //Add AI message
     chat.messages.push({
       role: "assistant",
       content: aiMessage
     });
-
-    await chat.save();
-    
+//save to database when user is logged in
+    if (user) {
+      await chat.save();
+    }
     
     res.json({
       message: aiMessage,

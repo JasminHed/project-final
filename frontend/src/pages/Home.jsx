@@ -145,6 +145,14 @@ const WelcomeScreen = () => {
     setLoading(false);
   }, []);
 
+  //makes sure onboarding slides go away when logged out
+  useEffect(() => {
+    if (!isLoggedIn) {
+      setCurrentStep("welcome");
+      setShowError("");
+    }
+  }, [isLoggedIn]);
+
   //State to hold error messages
   const [showError, setShowError] = useState("");
   //State to track which step is currently shown

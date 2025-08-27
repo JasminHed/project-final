@@ -1,10 +1,9 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaRobot } from "react-icons/fa";
 import styled from "styled-components";
 
 import useClickOutside from "../hooks/useClickOutside";
-
-//this has to be chekced for semantic html!S
+import { useUserStore } from "../store/UserStore.jsx";
 
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
 
@@ -158,7 +157,22 @@ const AIbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const chatRef = useRef();
   const buttonRef = useRef();
-  const [sessionId] = useState(() => `session_${Date.now()}_${Math.random()}`);
+  //const [sessionId] = useState(() => `session_${Date.now()}_${Math.random()}`);
+
+  const user = useUserStore((state) => state.user);
+  const isLoggedIn = useUserStore((state) => state.isLoggedIn);
+  const token = useUserStore((state) => state.token);
+
+  //chat messages removed when loggs in or loggs out from guest state
+  useEffect(() => {
+    setMessages([]);
+    if (isLoggedIn && user.userId) {
+      fetch(`${API_BASE_URL}/api/chat?userId=${user.userId}`)
+        .then((res) => res.json())
+        .then((data) => setMessages(data.messages || []))
+        .catch(() => console.log("Could not load chat"));
+    }
+  }, [isLoggedIn, user.userId]);
 
   useClickOutside(chatRef, (event) => {
     if (buttonRef.current && buttonRef.current.contains(event.target)) return;
@@ -179,10 +193,11 @@ const AIbot = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        ...(isLoggedIn && { Authorization: `Bearer ${token}` }),
       },
       body: JSON.stringify({
         message: userInput,
-        sessionId: sessionId,
+        userId: isLoggedIn ? user.userId : undefined,
       }),
     })
       .then((response) => response.json())

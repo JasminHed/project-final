@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const Description = styled.div`
+const Description = styled.section`
   margin: 40px auto 60px;
   max-width: 90%;
 
@@ -79,10 +79,10 @@ const GridBox = styled.div`
 const About = () => {
   return (
     <>
-      <Description>
+      <Description as="main" id="main-content">
         <h1>About The Intention Hub</h1>
-        <GridWrapper>
-          <GridBox>
+        <GridWrapper as="section" aria-label="About sections">
+          <GridBox as="article">
             <p>
               The Intention Hub is a digital space and personal growth tool
               designed to help you slow down, reflect, set intentions, define
@@ -92,7 +92,7 @@ const About = () => {
             </p>
           </GridBox>
 
-          <GridBox>
+          <GridBox as="article">
             <p>
               Whether you're building better habits, navigating change, or
               simply looking to live with more clarity, The Intention Hub gives
@@ -102,7 +102,7 @@ const About = () => {
             </p>
           </GridBox>
 
-          <GridBox>
+          <GridBox as="article">
             <p>
               Use it to create mindful morning routines, stay on track with
               personal projects, set boundaries, break old patterns, or commit
@@ -112,7 +112,7 @@ const About = () => {
               what shifts.
             </p>
           </GridBox>
-          <GridBox>
+          <GridBox as="aside">
             <p>
               I'm Jasmin Hedlund, the creator behind this site. I've always been
               passionate about personal and professional growth, both in my own

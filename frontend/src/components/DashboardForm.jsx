@@ -46,20 +46,37 @@ const Icon = styled.span`
   color: ${(props) => props.color || "black"};
 `;
 
+const ActionButton = styled.button`
+  max-width: 300px;
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-text-primary);
+  padding: 12px 12px;
+  border-radius: 12px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  transition: background-color 0.2s, transform 0.2s;
+  border: none;
+  background: none;
+`;
+
 const SMART_FIELDS = [
-  "specific",
-  "measurable",
-  "achievable",
-  "relevant",
-  "timebound",
+  { key: "specific", label: "Specific" },
+  { key: "measurable", label: "Measurable" },
+  { key: "achievable", label: "Achievable" },
+  { key: "relevant", label: "Relevant" },
+  { key: "timebound", label: "Time-bound" },
 ];
 
 const DashboardForm = ({
   goal,
-  onFieldChange,
+  //onFieldChange,
   onStartToggle,
   onComplete,
   onShare,
+  onSave,
 }) => {
   return (
     <div aria-labelledby={`goal-title-${goal._id}`}>
@@ -71,7 +88,7 @@ const DashboardForm = ({
       >
         <Fieldset>
           <FormCard>
-            <TagLabel>
+            <ActionButton>
               <Icon color="var(--color-success)">
                 <FaRocket />
               </Icon>
@@ -82,8 +99,8 @@ const DashboardForm = ({
                 onChange={onStartToggle}
                 aria-label="Mark goal as started"
               />
-            </TagLabel>
-            <TagLabel
+            </ActionButton>
+            <ActionButton
               onClick={() => onComplete(goal._id)}
               aria-label="Mark goal as completed - goal will be removed"
             >
@@ -91,8 +108,8 @@ const DashboardForm = ({
                 <FaTrophy />
               </Icon>
               <span>Mark as complete (will be removed)</span>
-            </TagLabel>
-            <TagLabel onClick={() => onShare(goal._id)}>
+            </ActionButton>
+            <ActionButton onClick={() => onShare(goal._id)}>
               <Icon color="var(--color-focus)">
                 <FaBullhorn />
               </Icon>
@@ -101,31 +118,28 @@ const DashboardForm = ({
                   ? "Unshare from community"
                   : "Share to community"}
               </span>
-            </TagLabel>
+            </ActionButton>
 
             <h1 id={`goal-title-${goal._id}`}>Your Intention</h1>
-            <Label htmlFor={`intention-${goal._id}`}></Label>
 
             <Textarea
               id={`intention-${goal._id}`}
               rows={2}
               value={goal.intention || ""}
               readOnly
+              aria-describedby={`goal-title-${goal._id}`}
             />
 
             <h2 id={`details-title-${goal._id}`}>Your detailed goals</h2>
-            {SMART_FIELDS.map((field) => (
-              <div key={field}>
-                <strong>
-                  {" "}
-                  {field.charAt(0).toUpperCase() + field.slice(1)}{" "}
-                </strong>
-                <Label htmlFor={`${field}-${goal._id}`} />
+            {SMART_FIELDS.map(({ key, label }) => (
+              <div key={key}>
+                <Label htmlFor={`${key}-${goal._id}`}>{label}</Label>
                 <Textarea
-                  id={`${field}-${goal._id}`}
+                  id={`${key}-${goal._id}`}
                   rows={2}
-                  value={goal[field] || ""}
+                  value={goal[key] || ""}
                   readOnly
+                  aria-describedby={`details-title-${goal._id}`}
                 />
               </div>
             ))}

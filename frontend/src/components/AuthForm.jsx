@@ -26,12 +26,14 @@ const AuthForm = ({
     <>
       {isOpen && (
         <PopUp
-          ref={formRef}
+          as="div"
           role="dialog"
+          ref={formRef}
           aria-modal="true"
           aria-label="Log In or Sign Up"
+          onKeyDown={(e) => e.key === "Escape" && setIsOpen(false)} //when user click esc pop up close
         >
-          <Container tabIndex="-1">
+          <Container>
             {!showLogin ? (
               <SignUp
                 setShowLogin={setShowLogin}

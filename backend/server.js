@@ -441,16 +441,86 @@ app.delete("/messages/:id", authenticateUser, async (req, res) => {
 
 
  //Chat 
+
+
+
+ //Chat endpoint
+app.post("/api/chat", async (req, res) => {
+  try {
+    const { message, userId } = req.body; // userId finns endast om användaren är inloggad
+
+    if (!message) {
+      return res.status(400).json({ error: "Message required" });
+    }
+
+    // Håll chat history om user är inloggad
+    let chat = null;
+    if (userId) {
+      chat = await Chat.findOne({ userId }) || new Chat({ userId, messages: [] });
+      chat.messages.push({ role: "user", content: message });
+    }
+
+    // Använd recentMessages för OpenAI
+    const recentMessages = chat?.messages.slice(-10).map(msg => ({
+      role: msg.role === "user" ? "user" : "assistant",
+      content: msg.content
+    })) || [{ role: "user", content: message }]; // Gäster får bara senaste meddelandet
+
+    // API call to OpenAI's ChatGPT 
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: "gpt-3.5-turbo",
+        messages: [
+          {
+            role: "system",
+            content: "You are Luca, a helpful coach and assistant that guides users through intention setting and SMART goal setting. Keep responses conversational and supportive."
+          },
+          ...recentMessages
+        ]
+      })
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("OpenAI API error:", errorText);
+      throw new Error(`OpenAI API error: ${response.status} - ${errorText}`);
+    }
+
+    const data = await response.json();
+    const aiMessage = data.choices?.[0]?.message?.content || "Sorry, I couldn't respond.";
+
+    // Lägg till AI-meddelande i chat och spara om user är inloggad
+    if (chat) {
+      chat.messages.push({ role: "assistant", content: aiMessage });
+      await chat.save();
+    }
+
+    // Returnera svaret
+    res.json({ message: aiMessage });
+  } catch (error) {
+    console.error("=== CHAT ERROR ===");
+    console.error("Error details:", error);
+    console.error("Stack trace:", error.stack);
+    res.status(500).json({ error: "Could not process chat message: " + error.message });
+  }
+});
+
  
 
- app.post("/api/chat", authenticateUser, async (req, res) => { 
+ /*app.post("/api/chat", async (req, res) => {
   try {
-   
-    const user = req.user 
-    const { message, sessionId } = req.body;
+    const { message, userId } = req.body; 
+    if (!message) return res.status(400).json({ error: "Message required" });
 
-    if (!message || !sessionId) {
-      return res.status(400).json({ error: "Message and sessionId required" });
+    let chat = null;
+    if (userId) { 
+      chat = await Chat.findOne({ userId }) || new Chat({ userId, messages: [] });
+      chat.messages.push({ role: "user", content: message });
     }
 
     let chat = await Chat.findOne({ userId: user._id, sessionId });
@@ -505,8 +575,9 @@ if (!chat) {
 
     const aiMessage = data.choices?.[0]?.message?.content || "Sorry, I couldn't respond.";
     
-    if (aiMessage === "Sorry, I couldn't respond.") {
-      console.error("No valid response from OpenAI:", data);
+    if (chat) { 
+      chat.messages.push({ role: "assistant", content: aiMessage });
+      await chat.save();
     }
 
    //Add AI message
@@ -530,7 +601,7 @@ if (!chat) {
     console.error("Stack trace:", error.stack);
     res.status(500).json({ error: "Could not process chat message: " + error.message });
   }
-});
+});*/
 
  
 

@@ -151,19 +151,19 @@ const Input = styled.input`
 `;
 
 const AIbot = () => {
-  const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState([]); //array of chat messages
+  const [input, setInput] = useState(""); //current text typed by user
+  const [loading, setLoading] = useState(false); //loading "luca is typing"
+  const [isOpen, setIsOpen] = useState(false); //controls chat visibility
   const chatRef = useRef();
   const buttonRef = useRef();
-  //const [sessionId] = useState(() => `session_${Date.now()}_${Math.random()}`);
 
+  //used for logged in user functions (saving chat and so on)
   const user = useUserStore((state) => state.user);
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
   const token = useUserStore((state) => state.token);
 
-  //chat messages removed when loggs in or loggs out from guest state
+  //Loads chat history for logged-in users. Clears messages if user logs out. Keeps chat state in sync with backend.
   useEffect(() => {
     setMessages([]);
     if (isLoggedIn && user.userId) {
@@ -174,11 +174,14 @@ const AIbot = () => {
     }
   }, [isLoggedIn, user.userId]);
 
+  //click outside handler, closes pop up
   useClickOutside(chatRef, (event) => {
     if (buttonRef.current && buttonRef.current.contains(event.target)) return;
     setIsOpen(false);
   });
-
+  //Adds user message to state. Sends it to backend POST /api/chat. Adds AI response to state when received.
+  //Handles errors and loading state.
+  //Connects frontend with AI backend.
   const sendMessage = () => {
     if (!input.trim()) return;
 

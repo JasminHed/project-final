@@ -100,17 +100,16 @@ const CharacterCount = styled.p`
 const ErrorWrapper = styled.div`
   height: 24px;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
+  overflow: hidden;
 `;
 
 const ErrorMessage = styled.p`
   color: var(--color-error);
-  margin-bottom: 4px;
-  margin-top: 4px;
-  margin-right: 5px;
+  margin: 0;
   font-size: 14px;
   font-weight: 400;
-  min-height: 24px;
+  line-height: 24px;
 `;
 
 const ButtonGroup = styled.div`
@@ -178,15 +177,13 @@ const SmartGoalField = ({ name, placeholder, values, handleFieldChange }) => {
         maxLength="150"
         required
       />
+
       <CharacterCount aria-live="polite">
         {values[name].length}/150
+        {values[name].length > 0 && values[name].length < 20
+          ? " – at least 20 characters"
+          : ""}
       </CharacterCount>
-      {values[name].length < 20 && values[name].length > 0 && (
-        <ErrorWrapper>
-          {" "}
-          <ErrorMessage>Minimum 20 characters required</ErrorMessage>
-        </ErrorWrapper>
-      )}
     </>
   );
 };
@@ -300,12 +297,10 @@ const Setup = () => {
 
               <CharacterCount aria-live="polite">
                 {values.intention.length}/150
+                {values.intention.length > 0 && values.intention.length < 20
+                  ? " – at least 20 characters"
+                  : ""}
               </CharacterCount>
-              {values.intention.length < 20 && values.intention.length > 0 && (
-                <ErrorWrapper>
-                  <ErrorMessage>Minimum 20 characters required</ErrorMessage>
-                </ErrorWrapper>
-              )}
             </FormCard>
           </Fieldset>
 

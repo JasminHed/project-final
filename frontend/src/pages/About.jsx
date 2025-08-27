@@ -93,6 +93,9 @@ const About = () => {
           </GridBox>
 
           <GridBox as="article">
+            <strong>
+              <p>Why use it</p>
+            </strong>
             <p>
               Whether you're building better habits, navigating change, or
               simply looking to live with more clarity, The Intention Hub gives
@@ -103,6 +106,9 @@ const About = () => {
           </GridBox>
 
           <GridBox as="article">
+            <strong>
+              <p>How to use it</p>
+            </strong>
             <p>
               Use it to create mindful morning routines, stay on track with
               personal projects, set boundaries, break old patterns, or commit
@@ -113,6 +119,9 @@ const About = () => {
             </p>
           </GridBox>
           <GridBox as="aside">
+            <strong>
+              <p>Creator</p>
+            </strong>
             <p>
               I'm Jasmin Hedlund, the creator behind this site. I've always been
               passionate about personal and professional growth, both in my own

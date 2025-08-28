@@ -25,7 +25,7 @@ export const Container = styled.div`
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
   padding: 16px;
   width: 100%;
-  min-height: 300px;
+  min-height: 400px;
   max-width: 280px;
   transition: transform 0.25s ease, opacity 0.25s ease;
 
@@ -56,17 +56,21 @@ export const Label = styled.label`
 
 export const Input = styled.input`
   width: 100%;
-  min-height: 40px;
+  min-height: 30px;
   padding: 10px 12px;
-  margin-bottom: 12px;
+  margin-bottom: 30px;
   border-radius: 8px;
   border: 1px solid var(--color-text-primary);
   background-color: rgba(var(--color-background-rgb), 0.6);
   color: var(--color-text-primary);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
+  &:last-of-type {
+    margin-bottom: 40px;
+  }
+
   @media (min-width: 668px) {
-    margin-bottom: 15px;
+    margin-bottom: 30px;
     border-radius: 12px;
   }
 
@@ -79,9 +83,10 @@ export const Input = styled.input`
 
 export const ErrorDiv = styled.div`
   color: var(--color-error);
-  //position: absolute;
-  height: 40px;
+  position: absolute;
+  height: 10px;
   font-size: 14px;
+  margin-top: -20px;
 `;
 
 export const RegisterLink = styled.p`

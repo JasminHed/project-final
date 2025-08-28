@@ -5,8 +5,6 @@ import styled from "styled-components";
 import useClickOutside from "../hooks/useClickOutside";
 import { useUserStore } from "../store/UserStore";
 
-//automatically log out after 12 hours?
-
 const HeaderContainer = styled.header`
   position: relative;
   min-height: 200px;

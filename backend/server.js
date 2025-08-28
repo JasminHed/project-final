@@ -21,10 +21,8 @@ mongoose.connect(mongoUrl);
 
 //Authenitcation middleware
 const authenticateUser = async (req, res, next) => {
-  
 
   const user = await User.findOne({ accessToken: req.header("Authorization") });
- 
 
   if (user) {
     req.user = user;
@@ -130,10 +128,10 @@ app.get("/users/me", authenticateUser, async (req, res) => {
   }
 });
 
-
+//share or unshare to community
 app.patch("/goals/:goalId/share", authenticateUser, async (req, res) => {
   const { goalId } = req.params;
-  const { shareToCommunity } = req.body; // true eller false
+  const { shareToCommunity } = req.body; // true or false
 
   try {
     const goal = await Goal.findOne({ _id: goalId, userId: req.user._id });
@@ -162,7 +160,6 @@ app.patch("/goals/:goalId/share", authenticateUser, async (req, res) => {
 
         await communityPost.save();
       }
-
      
       goal.shareToCommunity = true;
       await goal.save();
@@ -197,7 +194,7 @@ app.patch("/goals/:goalId/share", authenticateUser, async (req, res) => {
   }
 });
 
-
+//updates int+goal and remove when set as completed
 app.patch("/goals/:id", authenticateUser, async (req, res) => {
   const { id } = req.params;
   const updates = req.body;
@@ -267,7 +264,7 @@ if (existingGoal) {
 }
 
     const newGoal = new Goal({
-      userId: req.user._id, //associate each user with each goal they create
+      userId: req.user._id, //associate each user with each card they create
       intention,
       specific,
       measurable, 
@@ -441,16 +438,15 @@ app.delete("/messages/:id", authenticateUser, async (req, res) => {
 
 
 //Chat AI 
- //Creates a POST endpoint 
-
  app.post("/api/chat", async (req, res) => {
   try {
     const { message, userId } = req.body;
     if (!message) {
       return res.status(400).json({ error: "Message required" });
     }
+let chat = null;
 
-    let chat = null;
+//USER ID
     if (userId) {
       chat = await Chat.findOne({ userId });
       if (!chat) {
@@ -463,7 +459,7 @@ app.delete("/messages/:id", authenticateUser, async (req, res) => {
       }
     }
 
-    // prior messages for context
+    //  CONTEXT
     const recentMessages = chat?.messages.slice(-10).map(msg => ({
       role: msg.role,
       content: msg.content

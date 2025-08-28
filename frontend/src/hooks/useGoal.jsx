@@ -8,6 +8,7 @@ const useGoal = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [shareSuccessMessage, setShareSuccessMessage] = useState("");
 
+  //fetches the user’s goals (id), filters out completed ones, sorts by newest, limits to three
   const fetchGoals = () => {
     const token = localStorage.getItem("accessToken");
     fetch(`${API_BASE_URL}/goals`, {
@@ -37,7 +38,7 @@ const useGoal = () => {
         setLoading(false);
       });
   };
-
+  //removes a goal locally and marks it as completed on the server
   const completeGoal = (goalId) => {
     const token = localStorage.getItem("accessToken");
     setGoals((prevGoals) => prevGoals.filter((goal) => goal._id !== goalId));
@@ -51,7 +52,7 @@ const useGoal = () => {
       body: JSON.stringify({ completed: true }),
     }).catch((error) => console.error("Error updating completion:", error));
   };
-
+  //toggles a goal’s started status
   const toggleGoalStarted = (goalId, value) => {
     // save locally for UI
     setGoals((prevGoals) =>
@@ -59,7 +60,6 @@ const useGoal = () => {
         goal._id === goalId ? { ...goal, started: value } : goal
       )
     );
-
     // send to backend for persistent
     const goalToUpdate = goals.find((goal) => goal._id === goalId) || {};
     const updatedGoal = { ...goalToUpdate, started: value };
@@ -80,7 +80,7 @@ const useGoal = () => {
       .catch((err) => console.error("Error updating goal:", err));
   };
 
-  //share to community
+  //shares or unshares a goal to the community, updates the UI, and sends to server
   const toggleShareGoal = (goalId) => {
     const goalToUpdate = goals.find((goal) => goal._id === goalId);
     if (!goalToUpdate) return;

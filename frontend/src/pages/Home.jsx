@@ -124,12 +124,10 @@ const WelcomeScreen = () => {
   const [loading, setLoading] = useState(true);
   const [AutoStartLearn, setAutoStartLearn] = useState(false);
   const navigate = useNavigate();
-
-  // Ref for onboarding and signup
   const onboardingRef = useRef(null);
   const signUpRef = useRef(null);
 
-  //Checks if token is saved, then consider user logged in
+  //checks for a saved token to set the user as logged in
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     if (token) {
@@ -148,14 +146,13 @@ const WelcomeScreen = () => {
   }, [isLoggedIn]);
 
   const [showError, setShowError] = useState("");
-  //State to track which step is currently shown
   const [currentStep, setCurrentStep] = useState("welcome");
 
+  // moves the user to onboarding after signup, prevents access to setup or dashboard if not logged in, and scrolls
   const handleOnboardingClick = () => {
     setCurrentStep("onboarding");
     setShowError("");
 
-    // Scroll to onboarding section
     setTimeout(() => {
       if (onboardingRef.current) {
         onboardingRef.current.scrollIntoView({

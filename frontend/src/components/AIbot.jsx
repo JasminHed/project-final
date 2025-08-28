@@ -149,15 +149,14 @@ const AIbot = () => {
   const [input, setInput] = useState(""); //current text typed by user
   const [loading, setLoading] = useState(false); //loading "luca is typing"
   const [isOpen, setIsOpen] = useState(false); //controls chat visibility
-  const chatRef = useRef();
-  const buttonRef = useRef();
+  const chatRef = useRef(); //clickoutside
+  const buttonRef = useRef(); //close/open button
 
-  //used for logged in user functions
   const user = useUserStore((state) => state.user);
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
   const token = useUserStore((state) => state.token);
 
-  //Loads chat history for logged-in users
+  //clear and fetch logged in users chat
   useEffect(() => {
     setMessages([]);
     if (isLoggedIn && user.userId) {
@@ -167,11 +166,13 @@ const AIbot = () => {
     }
   }, [isLoggedIn, user.userId]);
 
+  //close clickoutside
   useClickOutside(chatRef, (event) => {
     if (buttonRef.current && buttonRef.current.contains(event.target)) return;
     setIsOpen(false);
   });
-  //Sends message  to backend POST /api/chat.
+
+  //adds the user’s typed message to the chat, clears the input, and sets a loading state.
   const sendMessage = () => {
     if (!input.trim()) return;
 
@@ -182,6 +183,7 @@ const AIbot = () => {
     const userInput = input;
     setInput("");
 
+    //sends the user’s message to the API, updates the chat with the response
     fetch(`${API_BASE_URL}/api/chat`, {
       method: "POST",
       headers: {
@@ -190,7 +192,7 @@ const AIbot = () => {
       },
       body: JSON.stringify({
         message: userInput,
-        userId: isLoggedIn ? user.id : null,
+        userId: isLoggedIn ? user.id : null, //HERE
       }),
     })
       .then((response) => response.json())
@@ -211,7 +213,7 @@ const AIbot = () => {
         setLoading(false);
       });
   };
-
+  //prevents reload
   const handleSubmit = (e) => {
     e.preventDefault();
     sendMessage();

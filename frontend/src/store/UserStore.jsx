@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-// Used for signup and login authorization logic
+// creates a persistent user store that tracks login status, user info, token, user ID + actions to update or validate
 export const useUserStore = create(
   persist(
     (set, get) => ({
@@ -10,7 +10,6 @@ export const useUserStore = create(
       token: localStorage.getItem("accessToken") || null,
       userId: localStorage.getItem("userId") || null,
 
-      // Actions
       setIsLoggedIn: (value) => set({ isLoggedIn: value }),
       setUser: (userData) => set({ user: userData }),
       setToken: (token) => set({ token }),
@@ -36,11 +35,12 @@ export const useUserStore = create(
         }
       },
 
+      //logs in a user by saving their info, token, and login time to localStorage + updates store
       login: (userData, token, userId) => {
         localStorage.setItem("user", JSON.stringify(userData));
         localStorage.setItem("accessToken", token);
         localStorage.setItem("userId", userId);
-        localStorage.setItem("loginTime", Date.now()); //when did user log in
+        localStorage.setItem("loginTime", Date.now());
 
         set({
           isLoggedIn: true,
@@ -50,7 +50,7 @@ export const useUserStore = create(
         });
       },
 
-      //checks if 12 hours has passed after log in, log out automatically (only frontend localstorage)
+      //automatically logs out the user if 12 hours have passed since login
       checkLoginTimeout: () => {
         const loginTime = localStorage.getItem("loginTime");
         if (loginTime && Date.now() - loginTime > 12 * 60 * 60 * 1000) {
@@ -75,7 +75,7 @@ export const useUserStore = create(
       },
     }),
     {
-      name: "user-storage", // localStorage key
+      name: "user-storage",
     }
   )
 );

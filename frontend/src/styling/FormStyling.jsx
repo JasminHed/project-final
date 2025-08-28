@@ -89,6 +89,14 @@ export const ErrorDiv = styled.div`
   margin-top: -20px;
 `;
 
+export const Error = styled.div`
+  color: var(--color-error);
+  position: absolute;
+  height: 10px;
+  font-size: 14px;
+  margin-top: -25px;
+`;
+
 export const RegisterLink = styled.p`
   font-size: 14px;
   margin-top: 12px;
@@ -107,4 +115,12 @@ export const LinkSpan = styled.span`
   @media (min-width: 1024px) {
     font-size: 16px;
   }
+`;
+
+export const Loader = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  margin-top: 60px;
 `;

@@ -1,4 +1,3 @@
-// globalstyles.jsx
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyles = createGlobalStyle`
@@ -164,7 +163,6 @@ body {
   }
 
   button:hover {
-    //background-color: var(--color-button-hover);
     transform: translateY(-1px);
   }
 

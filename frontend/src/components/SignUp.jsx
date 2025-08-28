@@ -3,8 +3,17 @@ import { FaSpinner } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 import { useUserStore } from "../store/UserStore";
-import { ErrorDiv, Input, Label, LinkSpan, RegisterLink } from "../styling/FormStyling.jsx";
+import {
+  Error,
+  ErrorDiv,
+  Input,
+  Label,
+  LinkSpan,
+  Loader,
+  RegisterLink,
+} from "../styling/FormStyling.jsx";
 
+//signup form, including its data, errors, and loading state.
 const SignUp = ({
   setShowLogin,
   setIsLoggedIn,
@@ -39,6 +48,7 @@ const SignUp = ({
     setSuccessMessage("");
     setLoading(true);
 
+    //signup data to the server, saves user info on success, and triggers post-signup actions
     fetch("https://project-final-ualo.onrender.com/users", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -58,9 +68,7 @@ const SignUp = ({
 
           setFormData({ name: "", email: "", password: "" });
 
-          setSuccessMessage(
-            "Registration successful! Redirecting to onboarding..."
-          );
+          setSuccessMessage("Successful! Redirecting to onboarding...");
           setIsLoggedIn(true);
 
           setTimeout(() => {
@@ -81,7 +89,7 @@ const SignUp = ({
       });
   };
 
-  // Event handler functions
+  // Event handler for sign up fields
   const handleName = (e) => {
     const value = e.target.value;
     setFormData({ ...formData, name: value });
@@ -105,7 +113,6 @@ const SignUp = ({
     setFieldErrors((prev) => ({ ...prev, email: error }));
   };
 
-  //validates, checks if password is correct
   const handlePassword = (e) => {
     const value = e.target.value;
     setFormData({ ...formData, password: value });
@@ -122,9 +129,9 @@ const SignUp = ({
 
   if (loading) {
     return (
-      <div>
+      <Loader>
         <FaSpinner />
-      </div>
+      </Loader>
     );
   }
 
@@ -176,15 +183,15 @@ const SignUp = ({
           <ErrorDiv role="alert">{fieldErrors.password}</ErrorDiv>
         )}
         {error && (
-          <ErrorDiv id="signup-error" aria-live="polite">
+          <Error id="signup-error" aria-live="polite">
             {error}
-          </ErrorDiv>
+          </Error>
         )}
 
         {successMessage && (
-          <ErrorDiv role="status" aria-live="polite">
+          <Error role="status" aria-live="polite">
             {successMessage}
-          </ErrorDiv>
+          </Error>
         )}
         <button type="submit" onClick={handleSubmit}>
           Sign up

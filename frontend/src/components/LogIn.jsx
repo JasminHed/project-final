@@ -4,13 +4,15 @@ import { useNavigate } from "react-router-dom";
 
 import { useUserStore } from "../store/UserStore";
 import {
-  ErrorDiv,
+  Error,
   Input,
   Label,
   LinkSpan,
+  Loader,
   RegisterLink,
 } from "../styling/FormStyling.jsx";
 
+//handles log in form, validation + submission
 const LogIn = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
   const [formData, setFormData] = useState({
     email: "",
@@ -34,6 +36,7 @@ const LogIn = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
     setSuccessMessage("");
     setLoading(true);
 
+    //sends login data to the server, saves user info on success, and redirects to the dashboard.
     fetch("https://project-final-ualo.onrender.com/sessions", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -92,9 +95,9 @@ const LogIn = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
 
   if (loading) {
     return (
-      <div>
+      <Loader>
         <FaSpinner />
-      </div>
+      </Loader>
     );
   }
 
@@ -125,15 +128,15 @@ const LogIn = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
         />
 
         {error && (
-          <ErrorDiv id="login-error" aria-live="polite">
+          <Error id="login-error" aria-live="polite">
             {error}
-          </ErrorDiv>
+          </Error>
         )}
 
         {successMessage && (
-          <ErrorDiv role="status" aria-live="polite">
+          <Error role="status" aria-live="polite">
             {successMessage}
-          </ErrorDiv>
+          </Error>
         )}
         <button type="submit" onClick={handleSubmit}>
           Log In

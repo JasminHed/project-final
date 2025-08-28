@@ -81,6 +81,7 @@ const Widgets = ({ goals, handleAddGoalClick }) => {
   const [showMaxMessage, setShowMaxMessage] = useState(false);
   const navigate = useNavigate();
 
+  //fetches the number of community posts every 5 seconds and updates the state
   useEffect(() => {
     const fetchData = () => {
       fetch("https://project-final-ualo.onrender.com/community-posts")
@@ -90,11 +91,11 @@ const Widgets = ({ goals, handleAddGoalClick }) => {
     };
 
     fetchData();
-    const interval = setInterval(fetchData, 5000); //updates ever 5 sec
+    const interval = setInterval(fetchData, 5000);
 
     return () => clearInterval(interval);
   }, []);
-
+  //adds a new int+goal or show message
   const handleAddClick = () => {
     if (goals.length >= 3) {
       setShowMaxMessage(true);

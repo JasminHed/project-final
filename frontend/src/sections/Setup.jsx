@@ -5,7 +5,6 @@ import styled from "styled-components";
 
 import { FormCard, Textarea } from "../styling/FormCard.jsx";
 
-// API base
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
 
 const Container = styled.div`
@@ -145,7 +144,7 @@ const ButtonGroup = styled.div`
   }
 `;
 
-// Functions
+//save a new int+ goal to the server and shows a field where you can edit
 const saveGoalToAPI = (values, token) => {
   return fetch(`${API_BASE_URL}/goals`, {
     method: "POST",
@@ -157,7 +156,6 @@ const saveGoalToAPI = (values, token) => {
   });
 };
 
-// SmartGoalField component
 const SmartGoalField = ({ name, placeholder, values, handleFieldChange }) => {
   const displayName = name.charAt(0).toUpperCase() + name.slice(1);
 
@@ -187,7 +185,7 @@ const SmartGoalField = ({ name, placeholder, values, handleFieldChange }) => {
   );
 };
 
-// Setup component for setting intention and SMART goals
+// store fields, handle input changes, show errors, and navigate back to the dashboard
 const Setup = () => {
   const [values, setValues] = useState({
     intention: "",
@@ -210,7 +208,7 @@ const Setup = () => {
     navigate("/dashboard");
   };
 
-  //This validates, sends data, navigates to dashboard or shows error
+  //checks that all fields are filled, saves to server, marks as complete -navigates to  dashboard
   const handleSubmit = (e) => {
     e.preventDefault();
     const hasEmptyFields = Object.values(values).some(

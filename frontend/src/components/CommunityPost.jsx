@@ -176,8 +176,8 @@ const SmartSection = styled.div`
   }
 `;
 
-//Community → fetches all posts →
-//loops through posts and passes each post to CommunityPost
+//Community → fetches all posts
+//Loops through posts and passes each post to CommunityPost
 //CommunityPost renders a "card" with like/comment functionality
 //Delete button only for user who made the comment
 const SMART_FIELDS = [
@@ -213,7 +213,6 @@ const CommunityPost = ({ post }) => {
 
   const handleAddComment = (e) => {
     e.preventDefault();
-
     if (!newComment.trim()) return;
 
     fetch(`${API_BASE_URL}/community-posts/${post._id}/comments`, {

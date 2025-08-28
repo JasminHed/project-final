@@ -89,18 +89,18 @@ const Dashboard = () => {
     toggleShareGoal,
   } = useGoal();
 
-  //Handler for max 3 int+goals at once
+  //handler max 3 cards
   const [showMaxMessage, setShowMaxMessage] = useState(false);
   const handleAddGoalClick = () => {
     if (goals.length >= 3) {
       setShowMaxMessage(true);
-      setTimeout(() => setShowMaxMessage(false), 3000); // 3 sec
+      setTimeout(() => setShowMaxMessage(false), 3000);
     } else {
       navigate("/setup");
     }
   };
 
-  // user-fetching
+  // gets the logged-in user’s info from the server and saves it in the state
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
 
@@ -130,7 +130,6 @@ const Dashboard = () => {
     completeGoal(goalId);
   };
 
-  //loading message
   if (loading) {
     return <Message>Loading your dashboard...</Message>;
   }

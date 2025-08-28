@@ -57,7 +57,7 @@ const PostsGrid = styled.div`
     margin-bottom: 40px;
   }
 `;
-//Show the first part of community page, header intro + delegates a post to postcommunity
+//displays the community page header and fetches posts from the server to page
 const Community = () => {
   const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useState([]);

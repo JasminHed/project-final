@@ -5,7 +5,7 @@ import { Container, PopUp } from "../styling/FormStyling.jsx";
 import LogIn from "./LogIn";
 import SignUp from "./SignUp";
 
-// Added isOpen and setIsOpen as props to control popup visibility from parent
+// creates a login/signup form
 const AuthForm = ({
   isLoggedIn,
   setIsLoggedIn,

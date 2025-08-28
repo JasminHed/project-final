@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-//This is styling for setup, dashboard and community
+//This is base styling for setup, dashboard and community
 
 export const FormCard = styled.div`
   background: var(--color-card-background);

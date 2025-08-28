@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const Container = styled.section`
-  //padding: 60px 16px 80px;
   padding: 60px 4px 60px; //txt wider on small screens
   width: 100%;
   min-height: 80vh;
@@ -120,7 +119,7 @@ const ErrorMessage = styled.p`
   text-align: center;
 `;
 
-//Track module to know where user is, to show next slide
+//track module to know where user is, to show next slide
 const Onboarding = ({ goBack, signUpRef, autoStart = false }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showError, setShowError] = useState("");
@@ -130,8 +129,6 @@ const Onboarding = ({ goBack, signUpRef, autoStart = false }) => {
     }
   }, [autoStart]);
   const navigate = useNavigate();
-
-  //List of onboarding modules
 
   const modules = [
     {
@@ -238,8 +235,8 @@ const Onboarding = ({ goBack, signUpRef, autoStart = false }) => {
     },
   ];
 
+  //manages current onboarding slide, navigation buttons, moves user to setup or scrolls to signup when onboarding is complete.
   const currentModule = modules[currentSlide];
-
   const buttonText =
     currentSlide < modules.length - 1
       ? `Next (${currentSlide + 1} of ${modules.length})`
@@ -265,7 +262,7 @@ const Onboarding = ({ goBack, signUpRef, autoStart = false }) => {
     const token = localStorage.getItem("accessToken");
     if (token) {
       navigate("/setup");
-    } else {
+    } /*else {
       setShowError(
         "You need to be logged in to continue. Scrolling to Sign Up button"
       );
@@ -278,7 +275,7 @@ const Onboarding = ({ goBack, signUpRef, autoStart = false }) => {
         }
         goBack();
       }, 2000);
-    }
+    }*/
   };
 
   return (

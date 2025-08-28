@@ -21,7 +21,7 @@ export const App = () => {
   useEffect(() => {
     useUserStore.getState().checkLoginTimeout();
   }, []);
-  //forces page to start from top
+
   useEffect(() => {
     window.scrollTo({ top: 0 });
   }, [location.pathname]);

@@ -440,8 +440,8 @@ app.delete("/messages/:id", authenticateUser, async (req, res) => {
 });
 
 
-
- //Creates a POST endpoint - We create a POST endpoint because we send data from the frontend to the backend (the user’s message) that needs to be processed and saved. POST is used whenever we create or update data—in this case, the chat.
+//Chat AI 
+ //Creates a POST endpoint 
 app.post("/api/chat", async (req, res) => {
   try {
     const { message, userId } = req.body; // fetches users message and user id(if loggedin)
@@ -449,20 +449,29 @@ app.post("/api/chat", async (req, res) => {
       return res.status(400).json({ error: "Message required" }); //otherwise error message
     }
 
-    // if user is logged in, find saved chat in database and add, otherwise create new and save to userid in database
+    // user handling
     let chat = null;
     if (userId) {
-      chat = await Chat.findOne({ userId }) || new Chat({ userId, messages: [] });
+      chat = await Chat.findOne({ userId }) 
+      if (!chat) {
+        chat = new Chat({
+          userId,
+          sessionId: userId.toString(),
+          messages: []
+        });
+      }
+      
+
       chat.messages.push({ role: "user", content: message });
     }
 
-    // take the last 10 messages from user and ai for context (logged in user), otherwise (guest) just create new messages
+    // context AI
     const recentMessages = chat?.messages.slice(-10).map(msg => ({
       role: msg.role === "user" ? "user" : "assistant",
       content: msg.content
     })) || [{ role: "user", content: message }]; 
 
-    // send message to open AI API. System messages tells how AI should work. Recent messages used to make AI remember conversation and can create context
+    //open AI API call
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -486,19 +495,17 @@ app.post("/api/chat", async (req, res) => {
       throw new Error(`OpenAI API error: ${response.status} - ${errorText}`);
     }
 
-    //get AI response from JSON response. We do this to make sure we do not only get the object but the actual text message to show in frontend in chat. If error, fallback message. 
+    //response and storage
     const data = await response.json();
     const aiMessage = data.choices?.[0]?.message?.content || "Sorry, I couldn't respond.";
 
-    // Add AI response in the chat window, save to database if user is logged in
+   
     if (chat) {
       chat.messages.push({ role: "assistant", content: aiMessage });
       await chat.save();
     }
-
-    // return AI response to frontend 
+    // error handling
     res.json({ message: aiMessage });
-    //catches any error
   } catch (error) {
     console.error("=== CHAT ERROR ===");
     console.error("Error details:", error);
@@ -506,8 +513,6 @@ app.post("/api/chat", async (req, res) => {
     res.status(500).json({ error: "Could not process chat message: " + error.message });
   }
 });
-
- 
 
  
  

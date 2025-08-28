@@ -147,7 +147,6 @@ const WelcomeScreen = () => {
     }
   }, [isLoggedIn]);
 
-  //State to hold error messages
   const [showError, setShowError] = useState("");
   //State to track which step is currently shown
   const [currentStep, setCurrentStep] = useState("welcome");

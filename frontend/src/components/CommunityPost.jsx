@@ -11,7 +11,6 @@ import {
 } from "react-icons/fa";
 import styled from "styled-components";
 
-import { useClickOutside } from "../hooks/useClickOutside.jsx";
 import { useUserStore } from "../store/UserStore";
 import { FormCard, Textarea } from "../styling/FormCard.jsx";
 

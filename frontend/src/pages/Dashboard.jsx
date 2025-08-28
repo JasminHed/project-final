@@ -84,14 +84,10 @@ const Dashboard = () => {
     loading,
     successMessage,
     shareSuccessMessage,
-    //updateGoal,
     completeGoal,
     toggleGoalStarted,
     toggleShareGoal,
   } = useGoal();
-
-  //const incompleteGoals = goals.filter((goal) => !goal.completed);
-  //const completedGoals = goals.filter((goal) => goal.completed);
 
   //Handler for max 3 int+goals at once
   const [showMaxMessage, setShowMaxMessage] = useState(false);

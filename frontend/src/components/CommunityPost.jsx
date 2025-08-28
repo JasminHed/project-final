@@ -11,6 +11,7 @@ import {
 } from "react-icons/fa";
 import styled from "styled-components";
 
+import { useClickOutside } from "../hooks/useClickOutside.jsx";
 import { useUserStore } from "../store/UserStore";
 import { FormCard, Textarea } from "../styling/FormCard.jsx";
 
@@ -342,6 +343,12 @@ const CommunityPost = ({ post }) => {
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
               placeholder="Write your comment here"
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  handleAddComment(e);
+                }
+              }}
             />
 
             <CommentButton

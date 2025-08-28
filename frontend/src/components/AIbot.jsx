@@ -151,30 +151,26 @@ const AIbot = () => {
   const chatRef = useRef();
   const buttonRef = useRef();
 
-  //used for logged in user functions (saving chat and so on)
+  //used for logged in user functions
   const user = useUserStore((state) => state.user);
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
   const token = useUserStore((state) => state.token);
 
-  //Loads chat history for logged-in users. Clears messages if user logs out. Keeps chat state in sync with backend.
+  //Loads chat history for logged-in users
   useEffect(() => {
     setMessages([]);
     if (isLoggedIn && user.userId) {
       fetch(`${API_BASE_URL}/api/chat?userId=${user.userId}`)
         .then((res) => res.json())
-        .then((data) => setMessages(data.messages || []))
-        .catch(() => console.log("Could not load chat"));
+        .then((data) => setMessages(data.messages || []));
     }
   }, [isLoggedIn, user.userId]);
 
-  //click outside handler, closes pop up
   useClickOutside(chatRef, (event) => {
     if (buttonRef.current && buttonRef.current.contains(event.target)) return;
     setIsOpen(false);
   });
-  //Adds user message to state. Sends it to backend POST /api/chat. Adds AI response to state when received.
-  //Handles errors and loading state.
-  //Connects frontend with AI backend.
+  //Sends message  to backend POST /api/chat.
   const sendMessage = () => {
     if (!input.trim()) return;
 

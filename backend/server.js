@@ -505,9 +505,11 @@ app.post("/api/chat", async (req, res) => {
     if (chat) {
       chat.messages.push({ role: "assistant", content: aiMessage });
 
-
+      console.log("Saving chat:", chat);
       await chat.save();
+      console.log("Chat saved successfully!");
     }
+    
     // error handling
     res.json({ message: aiMessage });
   } catch (error) {

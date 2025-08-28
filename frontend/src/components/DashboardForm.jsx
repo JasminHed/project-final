@@ -93,7 +93,7 @@ const DashboardForm = ({
               <Icon color="#ff6584">
                 <FaRocket />
               </Icon>
-              <span>{goal.started ? "Started" : "Set as started"}</span>
+              <span>{goal.started ? "Started" : "Start"}</span>
             </ActionButton>
             <ActionButton
               type="button"

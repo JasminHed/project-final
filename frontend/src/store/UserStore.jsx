@@ -40,6 +40,7 @@ export const useUserStore = create(
         localStorage.setItem("user", JSON.stringify(userData));
         localStorage.setItem("accessToken", token);
         localStorage.setItem("userId", userId);
+        localStorage.setItem("loginTime", Date.now()); //when did user log in
 
         set({
           isLoggedIn: true,
@@ -49,10 +50,21 @@ export const useUserStore = create(
         });
       },
 
+      //checks if 12 hours has passed after log in, log out automatically (only frontend localstorage)
+      checkLoginTimeout: () => {
+        const loginTime = localStorage.getItem("loginTime");
+        if (loginTime && Date.now() - loginTime > 12 * 60 * 60 * 1000) {
+          get().logout();
+          return false;
+        }
+        return true;
+      },
+
       logout: () => {
         localStorage.removeItem("user");
         localStorage.removeItem("accessToken");
         localStorage.removeItem("userId");
+        localStorage.removeItem("loginTime");
 
         set({
           isLoggedIn: false,

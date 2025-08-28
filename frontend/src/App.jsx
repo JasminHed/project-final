@@ -10,12 +10,17 @@ import Home from "./pages/Home.jsx";
 import Footer from "./sections/Footer.jsx";
 import Header from "./sections/Header.jsx";
 import Setup from "./sections/Setup.jsx";
+import { useUserStore } from "./store/UserStore.jsx";
 import GlobalStyles from "./styling/GlobalStyling.jsx";
 
 const NotFound = () => <h2>404 - Page Not Found</h2>;
 
 export const App = () => {
   const location = useLocation();
+  //checks time when user logged in
+  useEffect(() => {
+    useUserStore.getState().checkLoginTimeout();
+  }, []);
   //forces page to start from top everytime
   useEffect(() => {
     window.scrollTo({ top: 0 });

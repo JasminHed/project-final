@@ -11,12 +11,10 @@ const Container = styled.section`
   margin: 0 auto;
 
   @media (min-width: 668px) {
-    width: 700px;
     padding: 80px 32px 100px;
   }
 
   @media (min-width: 1024px) {
-    width: 1000px;
     padding: 100px 32px 120px;
     margin: 0 auto;
   }
@@ -24,23 +22,21 @@ const Container = styled.section`
 
 const ModuleContainer = styled.article`
   margin-bottom: 40px;
+  margin-top: 40px;
   transition: height 0.5s ease;
-  border-radius: 12px;
   background-color: var(--color-card-background);
   box-shadow: rgba(0, 0, 0, 0.05);
   padding: 70px;
-  min-height: 80vh; //fix this
+  min-height: 50vh;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
 
   @media (min-width: 668px) {
     margin-bottom: 60px;
-    width: 100vw;
-    margin-left: calc(-50vw + 50%);
   }
 
   @media (min-width: 1024px) {
     margin-bottom: 80px;
-    width: 100vw;
-    margin-left: calc(-50vw + 50%);
   }
 `;
 
@@ -69,9 +65,11 @@ const Content = styled.div`
   dd {
     margin: 0 0 8px 0;
     opacity: 0.8;
+    font-size: 16px;
 
     @media (min-width: 668px) {
       margin-bottom: 12px;
+      font-size: 20px;
     }
   }
 `;

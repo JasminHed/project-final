@@ -7,7 +7,6 @@ const HeroContainer = styled.div`
   align-items: center;
   gap: 20px;
   padding: 0;
-  //gap: 40px;
   padding: 40px 0;
   padding: 0;
   width: 100%;

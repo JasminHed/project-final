@@ -73,7 +73,6 @@ const SMART_FIELDS = [
 
 const DashboardForm = ({
   goal,
-  //onFieldChange,
   onStartToggle,
   onComplete,
   onShare,

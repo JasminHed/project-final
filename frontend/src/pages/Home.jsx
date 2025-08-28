@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import AuthForm from "../components/AuthForm";
-import Taglines from "../components/Hero.jsx";
+import Taglines from "../sections/Hero.jsx";
 import Onboarding from "../sections/Onboarding.jsx";
 import { useUserStore } from "../store/UserStore.jsx";
 import { Message } from "../styling/LoadingMessage.jsx";

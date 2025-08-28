@@ -63,13 +63,6 @@ const ChatHeader = styled.header`
   h3 {
     margin: 0 0 8px 0;
   }
-
-  hr {
-    margin: 0;
-    border: none;
-    height: 1px;
-    background: rgba(255, 255, 255, 0.1);
-  }
 `;
 
 const MessagesList = styled.ul`

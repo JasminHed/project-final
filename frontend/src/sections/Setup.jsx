@@ -197,10 +197,8 @@ const Setup = () => {
     relevant: "",
     timebound: "",
   });
-  // State to show error message if fields are not filled in
-  const [showError, setShowError] = useState(false);
 
-  // Hook to navigate to another page-dashboard
+  const [showError, setShowError] = useState(false);
   const navigate = useNavigate();
 
   const handleFieldChange = (field) => (e) => {
@@ -208,7 +206,6 @@ const Setup = () => {
     setValues((prev) => ({ ...prev, [field]: value }));
   };
 
-  //arrow back to dashboard
   const handleBackToDashboard = () => {
     navigate("/dashboard");
   };

@@ -105,10 +105,7 @@ const Description = styled.p`
 const Hero = () => {
   return (
     <HeroContainer>
-      <HeroImage
-        src="/assets/Dashboard.jpg"
-        alt="Woman sitting with the stars"
-      />
+      <HeroImage src="/assets/test.jpg" alt="Woman sitting with the stars" />
 
       <MainSection>
         <FeatureList role="list">

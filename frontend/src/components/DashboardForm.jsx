@@ -1,3 +1,4 @@
+import confetti from "canvas-confetti";
 import React from "react";
 import { FaBullhorn, FaRocket, FaTrophy } from "react-icons/fa";
 import styled from "styled-components";
@@ -96,13 +97,20 @@ const DashboardForm = ({
             </ActionButton>
             <ActionButton
               type="button"
-              onClick={() => onComplete(goal._id)}
+              onClick={() => {
+                onComplete(goal._id);
+                confetti({
+                  particleCount: 120,
+                  spread: 80,
+                  origin: { y: 0.6 },
+                });
+              }}
               aria-label="Mark goal as completed - goal will be removed"
             >
               <Icon color="var(--color-button-bg)">
                 <FaTrophy />
               </Icon>
-              <span>Mark as complete </span>
+              <span>Mark as complete</span>
             </ActionButton>
             <ActionButton type="button" onClick={() => onShare(goal._id)}>
               <Icon color="#6c63ff">

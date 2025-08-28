@@ -64,7 +64,6 @@ body {
     font-weight: 600;
     text-align: center;
     font-family: 'Bodoni Moda', serif; 
-    //letter-spacing: -0.015em;
     line-height: 1.2;
   }
 

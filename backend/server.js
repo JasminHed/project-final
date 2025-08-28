@@ -460,10 +460,12 @@ app.post("/api/chat", async (req, res) => {
           messages: []
         });
       }
-      
 
       chat.messages.push({ role: "user", content: message });
-    }
+    
+
+    await chat.save(); 
+}
 
     // context AI
     const recentMessages = chat?.messages.slice(-10).map(msg => ({
@@ -502,6 +504,8 @@ app.post("/api/chat", async (req, res) => {
    
     if (chat) {
       chat.messages.push({ role: "assistant", content: aiMessage });
+
+
       await chat.save();
     }
     // error handling

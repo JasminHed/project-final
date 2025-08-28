@@ -153,7 +153,6 @@ const AIbot = () => {
 
   //used for logged in user functions
   const user = useUserStore((state) => state.user);
-  console.log(user);
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
   const token = useUserStore((state) => state.token);
 
@@ -182,15 +181,6 @@ const AIbot = () => {
     const userInput = input;
     setInput("");
 
-    const payload = {
-      message: userInput,
-      userId: user._id || user.id,
-    };
-
-    console.log("Sending message to backend:", payload);
-    console.log("isLoggedIn:", isLoggedIn, "token:", token);
-    console.log("Sending message to backend:", payload);
-
     fetch(`${API_BASE_URL}/api/chat`, {
       method: "POST",
       headers: {
@@ -199,12 +189,11 @@ const AIbot = () => {
       },
       body: JSON.stringify({
         message: userInput,
-        userId: isLoggedIn ? user.Id : undefined,
+        userId: isLoggedIn ? user.id : null,
       }),
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("Response from backend:", data);
         setMessages((prev) => [...prev, { text: data.message, isUser: false }]);
         console.log("Updated messages state:", [
           ...messages,

@@ -113,6 +113,7 @@ const ChatForm = styled.form`
   gap: 8px;
   padding: 12px;
   background: var(--color-background);
+
   border-top: 1px solid rgba(255, 255, 255, 0.05);
 
   button {

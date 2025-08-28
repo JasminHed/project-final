@@ -450,9 +450,6 @@ app.delete("/messages/:id", authenticateUser, async (req, res) => {
       return res.status(400).json({ error: "Message required" });
     }
 
-    console.log("Received userId:", userId, "type:", typeof userId);
-    console.log("Received message:", message);
-
     let chat = null;
     if (userId) {
       chat = await Chat.findOne({ userId });
@@ -462,11 +459,11 @@ app.delete("/messages/:id", authenticateUser, async (req, res) => {
           sessionId: userId.toString(),
           messages: []
         });
-        console.log("Created new chat for user:", userId);
+       
       }
     }
 
-    // Hämta tidigare meddelanden för kontext
+    // prior messages for context
     const recentMessages = chat?.messages.slice(-10).map(msg => ({
       role: msg.role,
       content: msg.content
@@ -487,7 +484,7 @@ app.delete("/messages/:id", authenticateUser, async (req, res) => {
             content: "You are Luca, a helpful coach and assistant that guides users through intention setting and SMART goal setting. Keep responses conversational and supportive."
           },
           ...recentMessages,
-          { role: "user", content: message } // Lägg till nuvarande meddelande
+          { role: "user", content: message } 
         ]
       })
     });
@@ -499,14 +496,12 @@ app.delete("/messages/:id", authenticateUser, async (req, res) => {
     const data = await response.json();
     const aiMessage = data.choices?.[0]?.message?.content || "Sorry, I couldn't respond.";
 
-    // Spara BÅDA meddelandena EFTER framgångsrikt OpenAI-anrop
+    // Save messages
     if (chat) {
       chat.messages.push({ role: "user", content: message });
       chat.messages.push({ role: "assistant", content: aiMessage });
       await chat.save();
-      console.log(`Saved chat for user ${userId}. Total messages: ${chat.messages.length}`);
-    } else {
-      console.log("Guest user - not saving to database");
+      
     }
 
     res.json({ message: aiMessage });
@@ -516,88 +511,6 @@ app.delete("/messages/:id", authenticateUser, async (req, res) => {
   }
 });
 
-
-
-
-/*app.post("/api/chat", async (req, res) => {
-  try {
-    const { message, userId } = req.body; // fetches users message and user id(if loggedin)
-    if (!message) {
-      return res.status(400).json({ error: "Message required" }); 
-    }
-
-    // user handling
-    let chat = null;
-    if (userId) {
-      chat = await Chat.findOne({ userId }) 
-      if (!chat) {
-        chat = new Chat({
-          userId,
-          sessionId: userId.toString(),
-          messages: []
-        });
-      }
-
-      chat.messages.push({ role: "user", content: message });
-    
-
-    await chat.save(); 
-}
-
-    // context AI
-    const recentMessages = chat?.messages.slice(-10).map(msg => ({
-      role: msg.role === "user" ? "user" : "assistant",
-      content: msg.content
-    })) || [{ role: "user", content: message }]; 
-
-    //open AI API call
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
-      },
-      body: JSON.stringify({
-        model: "gpt-3.5-turbo",
-        messages: [
-          {
-            role: "system",
-            content: "You are Luca, a helpful coach and assistant that guides users through intention setting and SMART goal setting. Keep responses conversational and supportive."
-          },
-          ...recentMessages
-        ]
-      })
-    });
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("OpenAI API error:", errorText);
-      throw new Error(`OpenAI API error: ${response.status} - ${errorText}`);
-    }
-
-    //response and storage
-    const data = await response.json();
-    const aiMessage = data.choices?.[0]?.message?.content || "Sorry, I couldn't respond.";
-
-   
-    if (chat) {
-      chat.messages.push({ role: "assistant", content: aiMessage });
-
-    
-      await chat.save();
-     
-    }
-    
-    // error handling
-    res.json({ message: aiMessage });
-  } catch (error) {
-    console.error("=== CHAT ERROR ===");
-    console.error("Error details:", error);
-    console.error("Stack trace:", error.stack);
-    res.status(500).json({ error: "Could not process chat message: " + error.message });
-  }
-});*/
-
- 
  
 
 // Start the server

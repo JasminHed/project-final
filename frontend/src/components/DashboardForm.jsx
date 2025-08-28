@@ -42,12 +42,13 @@ const Icon = styled.span`
   display: inline-flex;
   align-items: center;
   margin-right: 8px;
-  font-size: 18px;
+  font-size: 20px;
   color: ${(props) => props.color || "black"};
 `;
 
 const ActionButton = styled.button`
   max-width: 300px;
+  width: 250px;
   display: inline-flex;
   align-items: center;
   color: var(--color-text-primary);
@@ -88,17 +89,11 @@ const DashboardForm = ({
       >
         <Fieldset>
           <FormCard>
-            <ActionButton>
-              <Icon color="var(--color-success)">
+            <ActionButton onClick={onStartToggle}>
+              <Icon color="#ff6584">
                 <FaRocket />
               </Icon>
-              <span>Set as started</span>
-              <input
-                type="checkbox"
-                checked={goal.started || false}
-                onChange={onStartToggle}
-                aria-label="Mark goal as started"
-              />
+              <span>{goal.started ? "Started" : "Set as started"}</span>
             </ActionButton>
             <ActionButton
               type="button"
@@ -108,10 +103,10 @@ const DashboardForm = ({
               <Icon color="var(--color-button-bg)">
                 <FaTrophy />
               </Icon>
-              <span>Mark as complete (will be removed)</span>
+              <span>Mark as complete </span>
             </ActionButton>
             <ActionButton type="button" onClick={() => onShare(goal._id)}>
-              <Icon color="var(--color-focus)">
+              <Icon color="#6c63ff">
                 <FaBullhorn />
               </Icon>
               <span>

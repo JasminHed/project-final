@@ -126,8 +126,8 @@ const Dashboard = () => {
   }, []);
 
   //handlers
-  const handleStartToggle = (goalId) => (e) => {
-    toggleGoalStarted(goalId, e.target.checked);
+  const handleStartToggle = (goalId) => () => {
+    toggleGoalStarted(goalId, !goals.find((g) => g._id === goalId).started);
   };
 
   const handleCompleteGoal = (goalId) => () => {

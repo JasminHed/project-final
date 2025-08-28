@@ -27,19 +27,20 @@ const ModuleContainer = styled.article`
   transition: height 0.5s ease;
   border-radius: 12px;
   background-color: var(--color-card-background);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  padding: 80px;
+  box-shadow: rgba(0, 0, 0, 0.05);
+  padding: 70px;
+  min-height: 80vh; //fix this
 
   @media (min-width: 668px) {
     margin-bottom: 60px;
-    border-radius: 50%;
-    padding: 120px;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
   }
 
   @media (min-width: 1024px) {
     margin-bottom: 80px;
-    border-radius: 50%;
-    padding: 160px;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
   }
 `;
 

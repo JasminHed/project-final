@@ -82,10 +82,17 @@ const Widgets = ({ goals, handleAddGoalClick }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("https://project-final-ualo.onrender.com/community-posts")
-      .then((res) => res.json())
-      .then((data) => setCommunityCount(data.length || 0))
-      .catch(() => setCommunityCount(0));
+    const fetchData = () => {
+      fetch("https://project-final-ualo.onrender.com/community-posts")
+        .then((res) => res.json())
+        .then((data) => setCommunityCount(data.length || 0))
+        .catch(() => setCommunityCount(0));
+    };
+
+    fetchData();
+    const interval = setInterval(fetchData, 5000); //updates ever 5 sec
+
+    return () => clearInterval(interval);
   }, []);
 
   const handleAddClick = () => {

@@ -212,16 +212,18 @@ const WelcomeScreen = () => {
     <main id="main-content">
       <section aria-labelledby="about-intention-hub">
         <Taglines />
-
-        <SignUpButton>
-          <button
-            ref={signUpRef}
-            onClick={() => setIsOpen((prev) => !prev)}
-            aria-label="Sign up to start using The Intention Hub"
-          >
-            Sign Up/Log In
-          </button>
-        </SignUpButton>
+        jsx
+        {!isLoggedIn && (
+          <SignUpButton>
+            <button
+              ref={signUpRef}
+              onClick={() => setIsOpen((prev) => !prev)}
+              aria-label="Sign up to start using The Intention Hub"
+            >
+              Sign Up/Log In
+            </button>
+          </SignUpButton>
+        )}
       </section>
 
       <AuthForm

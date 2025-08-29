@@ -191,7 +191,7 @@ const AIbot = () => {
       },
       body: JSON.stringify({
         message: userInput,
-        userId: isLoggedIn ? user.id : null, //HERE
+        userId: isLoggedIn ? user.id : null,
       }),
     })
       .then((response) => response.json())

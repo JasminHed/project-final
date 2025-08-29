@@ -501,6 +501,47 @@ app.get("/community-stats", async (req, res) => {
   }
 });
 
+//Stats for users community post (shown in dashboard)
+app.get("/my-activity-stats", authenticateUser, async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const userPosts = await CommunityPost.find({ userId });
+    
+    if (userPosts.length === 0) {
+      return res.status(200).json({
+        success: true,
+        stats: { totalLikes: 0, totalComments: 0, recentComments: 0, totalPosts: 0 }
+      });
+    }
+    
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    
+    let recentComments = 0;
+    userPosts.forEach(post => {
+      const newComments = post.comments.filter(comment => 
+        new Date(comment.createdAt) >= yesterday
+      );
+      recentComments += newComments.length;
+    });
+    
+    const totalLikes = userPosts.reduce((sum, post) => sum + post.likes, 0);
+    const totalComments = userPosts.reduce((sum, post) => sum + post.comments.length, 0);
+    
+    res.status(200).json({
+      success: true,
+      stats: { totalLikes, totalComments, totalPosts: userPosts.length, recentComments }
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch user activity stats",
+      error,
+    });
+  }
+});
+
+
 
 
 

@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { Doughnut } from "react-chartjs-2";
 import styled from "styled-components";
 
+import { Message } from "../styling/LoadingMessage.jsx";
+
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
@@ -55,7 +57,7 @@ const GoalChart = () => {
     return () => clearInterval(interval); // Cleanup
   }, []);
 
-  if (loading) return <div>Loading chart...</div>;
+  if (loading) return <Message>Loading chart...</Message>;
 
   const chartData = {
     labels: ["Started", "Not Started", "Completed"],

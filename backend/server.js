@@ -464,6 +464,44 @@ app.delete("/messages/:id", authenticateUser, async (req, res) => {
   }
 });
 
+// GET - Community Stats (last 7 days)
+app.get("/community-stats", async (req, res) => {
+  try {
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
+    // new post
+    const recentPosts = await CommunityPost.find({
+      createdAt: { $gte: oneWeekAgo },
+    });
+
+    const postsCount = recentPosts.length;
+
+    //sum of comments and likes
+    const likesCount = recentPosts.reduce((sum, post) => sum + post.likes, 0);
+    const commentsCount = recentPosts.reduce(
+      (sum, post) => sum + (post.comments?.length || 0),
+      0
+    );
+
+    res.status(200).json({
+      success: true,
+      stats: {
+        posts: postsCount,
+        likes: likesCount,
+        comments: commentsCount,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch community stats",
+      error,
+    });
+  }
+});
+
+
 
 
 

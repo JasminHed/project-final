@@ -437,22 +437,7 @@ app.delete("/messages/:id", authenticateUser, async (req, res) => {
 });
 
 
-app.get("/api/chat", async (req, res) => {
-  try {
-    const { userId } = req.query;
-    if (!userId) return res.json({ messages: [] });
-    
-    const chat = await Chat.findOne({ userId });
-    const messages = chat?.messages.map(msg => ({
-      text: msg.content,
-      isUser: msg.role === "user"
-    })) || [];
-    
-    res.json({ messages });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+
 
 //Chat AI 
  app.post("/api/chat", async (req, res) => {

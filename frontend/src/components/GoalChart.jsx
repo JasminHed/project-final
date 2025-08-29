@@ -33,7 +33,7 @@ const Medal = styled.div`
   align-items: center;
   margin-top: 15px;
   font-size: 20px;
-  color: #0891b2;
+  color: var(--color-text-primary);
 `;
 
 const MedalIcon = styled(FaMedal)`

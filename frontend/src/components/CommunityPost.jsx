@@ -1,14 +1,7 @@
 import moment from "moment";
 import React, { useState } from "react";
 import { FaTrash } from "react-icons/fa";
-import {
-  FaChevronDown,
-  FaChevronUp,
-  FaHeart,
-  FaLightbulb,
-  FaPaperPlane,
-  FaRocket,
-} from "react-icons/fa";
+import { FaChevronDown, FaChevronUp, FaHeart, FaLightbulb, FaPaperPlane, FaRocket } from "react-icons/fa";
 import styled from "styled-components";
 
 import { useUserStore } from "../store/UserStore";

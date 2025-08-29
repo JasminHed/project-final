@@ -221,7 +221,7 @@ const WelcomeScreen = () => {
     <main id="main-content">
       <section aria-labelledby="about-intention-hub">
         <Taglines />
-        jsx
+
         {!isLoggedIn && (
           <SignUpButton>
             <button

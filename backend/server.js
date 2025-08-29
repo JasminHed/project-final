@@ -300,6 +300,34 @@ app.get("/goals", authenticateUser, async (req, res) => {
   }
 });
 
+// GET - Goal completed 
+app.get("/goals/stats", authenticateUser, async (req, res) => {
+  try {
+    const userId = req.user._id;
+    
+    const started = await Goal.countDocuments({ 
+      userId, 
+      started: true, 
+      completed: { $ne: true } 
+    });
+    
+    const notStarted = await Goal.countDocuments({ 
+      userId, 
+      started: false, 
+      completed: { $ne: true } 
+    });
+    
+    const completed = await Goal.countDocuments({ 
+      userId, 
+      completed: true 
+    });
+
+    res.json({ started, notStarted, completed });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch goal stats" });
+  }
+});
+
 
 
 //Community
@@ -448,7 +476,7 @@ app.delete("/messages/:id", authenticateUser, async (req, res) => {
     }
 let chat = null;
 
-//USER ID
+//User ID-Guest
     if (userId) {
       chat = await Chat.findOne({ userId });
       if (!chat) {
@@ -461,13 +489,13 @@ let chat = null;
       }
     }
 
-    //  CONTEXT
+    //  Context
     const recentMessages = chat?.messages.slice(-10).map(msg => ({
       role: msg.role,
       content: msg.content
     })) || [];
 
-    // CUSTOM
+    // Custom
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {

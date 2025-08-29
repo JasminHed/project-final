@@ -70,11 +70,18 @@ const Content = styled.div`
       margin-bottom: 12px;
       font-size: 20px;
     }
+    @media (min-width: 1023px) {
+      margin-top: 50px;
+    }
   }
 `;
 
 const ModuleTitle = styled.h2`
   text-align: left;
+
+  @media (min-width: 1024px) {
+    margin-top: 60px;
+  }
 `;
 
 const ButtonContainer = styled.nav`
@@ -170,9 +177,11 @@ const Onboarding = ({ goBack, signUpRef, autoStart = false }) => {
         <article>
           <dl>
             <dd>
-              Avoid vague goals like “be healthier.” Instead, break them into
-              concrete, actionable steps. For example, “exercise 3 times a week”
-              or “walk 10,000 steps daily” offers clear direction.
+              Specific means your goal is clear, detailed, and leaves no room
+              for confusion. Avoid vague goals like “be healthier.” Instead,
+              break them into concrete, actionable steps. For example, “exercise
+              3 times a week” or “walk 10,000 steps daily” offers clear
+              direction.
             </dd>
           </dl>
         </article>
@@ -184,9 +193,10 @@ const Onboarding = ({ goBack, signUpRef, autoStart = false }) => {
         <article>
           <dl>
             <dd>
-              To track progress clearly, make your goal measurable. If you’re
-              aiming for a new career, try “apply to 5 positions each month.”
-              Measuring progress helps you stay on course.
+              Measurable means you can track progress with numbers or clear
+              evidence. To track progress clearly, make your goal measurable. If
+              you’re aiming for a new career, try “apply to 5 positions each
+              month.” Measuring progress helps you stay on course.
             </dd>
           </dl>
         </article>
@@ -198,9 +208,10 @@ const Onboarding = ({ goBack, signUpRef, autoStart = false }) => {
         <article>
           <dl>
             <dd>
-              Set realistic, manageable steps to keep motivated. For example,
-              start meditating for 5 minutes a day rather than an hour right
-              away.
+              Achievable means your goal is realistic given your resources and
+              situation. Set realistic, manageable steps to keep motivated. For
+              example, start meditating for 5 minutes a day rather than an hour
+              right away.
             </dd>
           </dl>
         </article>
@@ -212,9 +223,10 @@ const Onboarding = ({ goBack, signUpRef, autoStart = false }) => {
         <article>
           <dl>
             <dd>
-              Challenge yourself but keep goals attainable. Don’t expect to run
-              a marathon next month if you’re just starting out — instead, build
-              toward it step by step.
+              Relevant means your goal aligns with your values, priorities, and
+              long-term vision. Challenge yourself but keep goals attainable.
+              Don’t expect to run a marathon next month if you’re just starting
+              out — instead, build toward it step by step.
             </dd>
           </dl>
         </article>
@@ -226,8 +238,9 @@ const Onboarding = ({ goBack, signUpRef, autoStart = false }) => {
         <article>
           <dl>
             <dd>
-              Deadlines encourage focus and urgency. Decide to complete that
-              coding course in three months to stay motivated and on track.
+              Time-bound means your goal has a clear deadline or timeframe to
+              aim for. Deadlines encourage focus and urgency. Decide to complete
+              that coding course in three months to stay motivated and on track.
             </dd>
           </dl>
         </article>

@@ -176,6 +176,27 @@ const SmartSection = styled.div`
   }
 `;
 
+const EmojiRow = styled.div`
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+`;
+
+const Emoji = styled.span`
+  cursor: pointer;
+  font-size: 20px;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.3);
+  }
+
+  &:focus {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+`;
+
 //Community → fetches all posts
 //Loops through posts and passes each post to CommunityPost
 //CommunityPost renders a "card" with like/comment functionality
@@ -348,6 +369,22 @@ const CommunityPost = ({ post }) => {
                 }
               }}
             />
+            <EmojiRow>
+              {"😀 😍 👍 🎉".split(" ").map((emoji) => (
+                <Emoji
+                  key={emoji}
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => setNewComment((prev) => prev + emoji)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter")
+                      setNewComment((prev) => prev + emoji);
+                  }}
+                >
+                  {emoji}
+                </Emoji>
+              ))}
+            </EmojiRow>
 
             <CommentButton
               type="submit"

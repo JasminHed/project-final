@@ -11,6 +11,7 @@ import GoalChart from "../components/GoalChart.jsx";
 import { Message } from "../styling/LoadingMessage.jsx";
 import useGoal from "../hooks/useGoal.jsx";
 import Widget from "../components/Widget.jsx";
+import CommunityImpact from "../components/CommunityImpact.jsx";
 
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
 
@@ -155,6 +156,8 @@ const Dashboard = () => {
         </Container>
 
         <Widget goals={goals} handleAddGoalClick={handleAddGoalClick} />
+
+        <CommunityImpact />
 
         <Container>
           <GoalsGrid $count={goals.length}>

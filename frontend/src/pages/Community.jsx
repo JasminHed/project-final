@@ -79,7 +79,6 @@ const StatItem = styled.li`
   border-radius: 4px;
   font-size: 16px;
   min-width: 0;
-  //text-align: center;
 
   @media (min-width: 668px) {
     font-size: 20px;

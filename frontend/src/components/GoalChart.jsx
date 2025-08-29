@@ -112,8 +112,7 @@ const GoalChart = () => {
         {stats.completed} Completed
       </Medal>
       <ChartStats>
-        Started: {stats.started} | Not Started: {stats.notStarted} | Completed:{" "}
-        {stats.completed}
+        Started: {stats.started} | Not Started: {stats.notStarted}
       </ChartStats>
     </>
   );

@@ -57,10 +57,40 @@ const PostsGrid = styled.div`
     margin-bottom: 40px;
   }
 `;
+
+const StatsSection = styled.section`
+  padding: 1rem;
+  margin: 1rem 0;
+`;
+
+const StatsList = styled.ul`
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+`;
+
+const StatItem = styled.li`
+  padding: 0.5rem;
+  background: var(--color-background);
+  color: var(--color-primary-text);
+  border-radius: 4px;
+  font-size: 16px;
+  min-width: 0;
+  //text-align: center;
+
+  @media (min-width: 668px) {
+    font-size: 20px;
+  }
+`;
+
 //displays the community page header and fetches posts from the server to page
 const Community = () => {
   const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useState([]);
+  const [stats, setStats] = useState({ posts: 0, comments: 0, likes: 0 });
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/community-posts`)
@@ -69,6 +99,13 @@ const Community = () => {
         setPosts(data);
         setLoading(false);
       });
+  }, []);
+
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/community-stats`)
+      .then((res) => res.json())
+      .then((data) => setStats(data.stats))
+      .catch(() => {});
   }, []);
 
   if (loading) {
@@ -92,7 +129,14 @@ const Community = () => {
               alone on your path.
             </p>
           </HeaderSection>
-
+          <StatsSection aria-label="Community stats this week">
+            <h2>This week in the community</h2>
+            <StatsList>
+              <StatItem>{stats?.posts || 0} new posts</StatItem>
+              <StatItem>{stats?.comments || 0} new comments</StatItem>
+              <StatItem>{stats?.likes || 0} new likes</StatItem>
+            </StatsList>
+          </StatsSection>
           <PostsGrid>
             {posts.map((post) => (
               <CommunityPost key={post._id} post={post} />

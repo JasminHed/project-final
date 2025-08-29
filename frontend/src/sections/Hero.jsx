@@ -105,27 +105,30 @@ const Description = styled.p`
 const Hero = () => {
   return (
     <HeroContainer>
-      <HeroImage src="/assets/test.jpg" alt="Woman sitting with the stars" />
+      <HeroImage
+        src="/assets/test.jpg"
+        alt="Woman form reaching for the stars"
+      />
 
       <MainSection>
         <FeatureList role="list">
           <Tagline>
-            <strong>Learn about </strong> intentions and SMART goals to get you
+            <strong>LEARN about </strong> intentions and SMART goals to get you
             started with confidence today.
           </Tagline>
 
           <Tagline>
-            <strong>Access your dashboard </strong> that contains your intention
+            <strong>ACESS your dashboard </strong> that contains your intention
             and goals and progress chart complete tracking.
           </Tagline>
 
           <Tagline>
-            <strong> Get access to your AI Assistant </strong> for support on
+            <strong> GET access to your AI Assistant </strong> for support on
             your journey.
           </Tagline>
 
           <Tagline>
-            <strong> Create and set up </strong> your intentions and goals —
+            <strong> CREATE and set up </strong> your intentions and goals —
             Build habits that last with clear structure and purpose.
           </Tagline>
 
@@ -136,7 +139,7 @@ const Hero = () => {
           </Tagline>
 
           <Tagline>
-            <strong> Sign Up </strong> to get clear, focused and support.
+            <strong> SIGN UP </strong> to get clear, focused and support.
             Welcome to Intention Hub.
           </Tagline>
         </FeatureList>

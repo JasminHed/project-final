@@ -29,7 +29,9 @@ const MainBox = styled.div`
   }
 `;
 
-const Box = styled.div`
+const Box = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "showError",
+})`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -59,6 +61,12 @@ const Box = styled.div`
       box-shadow: none;
       transform: none;
     `}
+  ${(props) =>
+    props.showError &&
+    `
+    border-color: red;
+  `}
+
 
   @media (min-width: 668px) and (max-width: 1023px) {
     width: 80%;
@@ -126,6 +134,7 @@ const WelcomeScreen = () => {
   const navigate = useNavigate();
   const onboardingRef = useRef(null);
   const signUpRef = useRef(null);
+  const [clickedDisabledBox, setClickedDisabledBox] = useState(false);
 
   //checks for a saved token to set the user as logged in
   useEffect(() => {
@@ -240,9 +249,12 @@ const WelcomeScreen = () => {
           role="button"
           tabIndex={0}
           disabled={!isLoggedIn}
+          showError={clickedDisabledBox}
           onClick={() => {
             if (!isLoggedIn) {
               setShowError("You need to be logged in to access  this content");
+              setClickedDisabledBox(true);
+
               return;
             }
             handleOnboardingClick();
@@ -264,11 +276,14 @@ const WelcomeScreen = () => {
           role="button"
           tabIndex={0}
           disabled={!isLoggedIn}
+          showError={clickedDisabledBox}
           aria-disabled={!isLoggedIn}
           aria-label="Set your intention and goals with clarity and purpose here"
           onClick={() => {
             if (!isLoggedIn) {
               setShowError("You need to be logged in to access this content");
+              setClickedDisabledBox(true);
+
               return;
             }
             handleSetupClick();
@@ -289,11 +304,14 @@ const WelcomeScreen = () => {
           role="button"
           tabIndex={0}
           disabled={!isLoggedIn}
+          showError={clickedDisabledBox}
           aria-disabled={!isLoggedIn}
           aria-label="Track your journey here"
           onClick={() => {
             if (!isLoggedIn) {
               setShowError("You need to be logged in to access this content");
+              setClickedDisabledBox(true);
+
               return;
             }
             handleDashboardClick();

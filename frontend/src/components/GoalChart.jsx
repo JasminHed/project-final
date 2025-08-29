@@ -38,7 +38,7 @@ const Medal = styled.div`
 
 const MedalIcon = styled(FaMedal)`
   font-size: 40px;
-  color: gold;
+  color: var(--color-button-bg);
 `;
 
 const GoalChart = () => {
@@ -99,9 +99,11 @@ const GoalChart = () => {
     <>
       <ChartContainer
         role="progressbar"
-        aria-valuenow={stats.started}
+        aria-valuenow={Number(stats.started) || 0}
         aria-valuemin={0}
-        aria-valuemax={stats.started + stats.notStarted}
+        aria-valuemax={
+          (Number(stats.started) || 0) + (Number(stats.notStarted) || 0)
+        }
         aria-label="Goal progress"
       >
         <Doughnut data={chartData} options={chartOptions} />

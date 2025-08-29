@@ -39,9 +39,8 @@ const StatItem = styled.div`
     font-size: 1.5rem;
   }
 `;
-
-const CommunityImpact = () => {
-  const { accessToken } = useUserStore();
+const CommunityImpact = React.forwardRef((props, ref) => {
+  const { token } = useUserStore();
   const [stats, setStats] = useState({
     totalLikes: 0,
     totalComments: 0,
@@ -49,32 +48,35 @@ const CommunityImpact = () => {
     totalPosts: 0,
   });
 
-  useEffect(() => {
-    if (!accessToken) return;
+  const fetchStats = () => {
+    if (!token) {
+      return;
+    }
 
-    const fetchStats = () => {
-      fetch(`${API_BASE_URL}/my-activity-stats`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
+    fetch(`${API_BASE_URL}/my-activity-stats`, {
+      headers: { Authorization: token },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Unauthorized");
+        return res.json();
       })
-        .then((res) => {
-          if (!res.ok) throw new Error("Unauthorized");
-          return res.json();
-        })
-        .then((data) => {
-          if (data.success && data.stats) setStats(data.stats);
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.error("Failed to fetch community impact:", err);
-          setLoading(false);
-        });
-    };
+      .then((data) => {
+        if (data.success && data.stats) {
+          setStats(data.stats);
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to fetch community impact:", err);
+      });
+  };
 
+  React.useImperativeHandle(ref, () => ({ fetchStats }));
+
+  useEffect(() => {
     fetchStats();
-
-    const interval = setInterval(fetchStats, 30000);
+    const interval = setInterval(fetchStats, 3000);
     return () => clearInterval(interval);
-  }, [accessToken]);
+  }, [token]);
 
   return (
     <ImpactBox aria-labelledby="impact-title" role="region">
@@ -82,28 +84,25 @@ const CommunityImpact = () => {
       <ImpactStats>
         <StatItem
           tabIndex="0"
-          aria-label={`${stats.totalLikes || 0} total likes received`}
+          aria-label={`${stats.totalLikes} total likes received`}
         >
-          <strong>{stats.totalLikes || 0}</strong>
+          <strong>{stats.totalLikes}</strong>
           Total Likes
         </StatItem>
         <StatItem
           tabIndex="0"
-          aria-label={`${stats.recentComments || 0} new comments today`}
+          aria-label={`${stats.recentComments} new comments today`}
         >
-          <strong>{stats.recentComments || 0}</strong>
+          <strong>{stats.recentComments}</strong>
           New Comments Today
         </StatItem>
-        <StatItem
-          tabIndex="0"
-          aria-label={`${stats.totalPosts || 0} posts created`}
-        >
-          <strong>{stats.totalPosts || 0}</strong>
+        <StatItem tabIndex="0" aria-label={`${stats.totalPosts} posts created`}>
+          <strong>{stats.totalPosts}</strong>
           Posts Created
         </StatItem>
       </ImpactStats>
     </ImpactBox>
   );
-};
+});
 
 export default CommunityImpact;

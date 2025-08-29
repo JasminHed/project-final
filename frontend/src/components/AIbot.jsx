@@ -156,7 +156,7 @@ const AIbot = () => {
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
   const token = useUserStore((state) => state.token);
 
-  //clear and fetch logged in users chat
+  //clears messages and fetch
   useEffect(() => {
     setMessages([]);
     if (isLoggedIn && user.userId) {
@@ -166,7 +166,6 @@ const AIbot = () => {
     }
   }, [isLoggedIn, user.userId]);
 
-  //close clickoutside
   useClickOutside(chatRef, (event) => {
     if (buttonRef.current && buttonRef.current.contains(event.target)) return;
     setIsOpen(false);

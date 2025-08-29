@@ -616,45 +616,7 @@ let chat = null;
   }
 });
 
- // GET - fetch chat history + daily check-in
-app.get("/api/chat/checkin", authenticateUser, async (req, res) => {
-  try {
-    const userId = req.user._id;
-    const user = await User.findById(userId);
-
-    if (!user) return res.status(404).json({ error: "User not found" });
-
-    // check in or not?
-    if (!user.lastCheckIn || !isToday(user.lastCheckIn)) {
-      const greetings = [
-        `Welcome back, ${user.name}! Ready for today's goals?`,
-        `Hi ${user.name}, let's check in!`,
-        `Hey ${user.name}, how's your journey going today?`,
-      ];
-      const greeting = greetings[Math.floor(Math.random() * greetings.length)];
-
-      // Save in chat
-      let chat = await Chat.findOne({ userId });
-      if (!chat) {
-        chat = new Chat({ userId, sessionId: userId.toString(), messages: [] });
-      }
-      chat.messages.push({ role: "assistant", content: greeting });
-      await chat.save();
-
-      // Update lastCheckIn
-      user.lastCheckIn = new Date();
-      await user.save();
-    }
-
-    // Return
-    const chat = await Chat.findOne({ userId });
-    res.json({ messages: chat?.messages || [] });
-
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Something went wrong" });
-  }
-});
+ 
 
 
 // Start the server

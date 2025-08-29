@@ -1,6 +1,7 @@
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from "chart.js";
 import React, { useEffect, useState } from "react";
 import { Doughnut } from "react-chartjs-2";
+import { FaMedal } from "react-icons/fa";
 import styled from "styled-components";
 
 import { Message } from "../styling/LoadingMessage.jsx";
@@ -24,6 +25,20 @@ const ChartStats = styled.p`
   text-align: center;
   margin-top: 13px;
   color: var(--color-text-primary);
+`;
+
+const Medal = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 15px;
+  font-size: 20px;
+  color: #0891b2;
+`;
+
+const MedalIcon = styled(FaMedal)`
+  font-size: 40px;
+  color: gold;
 `;
 
 const GoalChart = () => {
@@ -60,11 +75,11 @@ const GoalChart = () => {
   if (loading) return <Message>Loading chart...</Message>;
 
   const chartData = {
-    labels: ["Started", "Not Started", "Completed"],
+    labels: ["Started", "Not Started"],
     datasets: [
       {
-        data: [stats.started, stats.notStarted, stats.completed],
-        backgroundColor: ["#1e293b", "#d1d5db", "#0891b2"],
+        data: [stats.started, stats.notStarted],
+        backgroundColor: ["#1e293b", "#d1d5db"],
       },
     ],
   };
@@ -86,11 +101,16 @@ const GoalChart = () => {
         role="progressbar"
         aria-valuenow={stats.started}
         aria-valuemin={0}
-        aria-valuemax={stats.started + stats.notStarted + stats.completed}
+        aria-valuemax={stats.started + stats.notStarted}
         aria-label="Goal progress"
       >
         <Doughnut data={chartData} options={chartOptions} />
       </ChartContainer>
+
+      <Medal>
+        <MedalIcon aria-label="Completed goals medal" />
+        {stats.completed} Completed
+      </Medal>
       <ChartStats>
         Started: {stats.started} | Not Started: {stats.notStarted} | Completed:{" "}
         {stats.completed}

@@ -1,9 +1,11 @@
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from "chart.js";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Doughnut } from "react-chartjs-2";
 import styled from "styled-components";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
+
+const API_BASE_URL = "https://project-final-ualo.onrender.com";
 
 const ChartContainer = styled.div`
   width: 150px;
@@ -22,16 +24,45 @@ const ChartStats = styled.p`
   color: var(--color-text-primary);
 `;
 
-const GoalChart = ({ goals }) => {
-  const startedGoals = goals.filter((goal) => goal.started).length;
-  const notStartedGoals = goals.length - startedGoals;
+const GoalChart = () => {
+  const [stats, setStats] = useState({
+    started: 0,
+    notStarted: 0,
+    completed: 0,
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchStats = () => {
+      const token = localStorage.getItem("accessToken");
+      fetch(`${API_BASE_URL}/goals/stats`, {
+        headers: { Authorization: token },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setStats(data);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error("Error fetching goal stats:", error);
+          setLoading(false);
+        });
+    };
+
+    fetchStats(); // Initial fetch
+    const interval = setInterval(fetchStats, 5000); // Every 5 seconds
+
+    return () => clearInterval(interval); // Cleanup
+  }, []);
+
+  if (loading) return <div>Loading chart...</div>;
 
   const chartData = {
-    labels: ["Started", "Not Started"],
+    labels: ["Started", "Not Started", "Completed"],
     datasets: [
       {
-        data: [startedGoals, notStartedGoals],
-        backgroundColor: ["#1e293b", "#d1d5db"],
+        data: [stats.started, stats.notStarted, stats.completed],
+        backgroundColor: ["#1e293b", "#d1d5db", "#0891b2"],
       },
     ],
   };
@@ -51,15 +82,16 @@ const GoalChart = ({ goals }) => {
     <>
       <ChartContainer
         role="progressbar"
-        aria-valuenow={startedGoals}
+        aria-valuenow={stats.started}
         aria-valuemin={0}
-        aria-valuemax={goals.length}
+        aria-valuemax={stats.started + stats.notStarted + stats.completed}
         aria-label="Goal progress"
       >
         <Doughnut data={chartData} options={chartOptions} />
       </ChartContainer>
       <ChartStats>
-        Started: {startedGoals} | Not Started: {notStartedGoals}
+        Started: {stats.started} | Not Started: {stats.notStarted} | Completed:{" "}
+        {stats.completed}
       </ChartStats>
     </>
   );

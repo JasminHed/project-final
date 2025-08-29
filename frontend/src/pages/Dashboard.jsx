@@ -175,7 +175,7 @@ const Dashboard = () => {
               <p>No active intention and goal. Create your first!</p>
             )}
           </GoalsGrid>
-          <GoalChart goals={goals} />
+          <GoalChart />
         </Container>
       </main>
     </>

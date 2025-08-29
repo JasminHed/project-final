@@ -262,20 +262,7 @@ const Onboarding = ({ goBack, signUpRef, autoStart = false }) => {
     const token = localStorage.getItem("accessToken");
     if (token) {
       navigate("/setup");
-    } /*else {
-      setShowError(
-        "You need to be logged in to continue. Scrolling to Sign Up button"
-      );
-      setTimeout(() => {
-        if (signUpRef.current) {
-          signUpRef.current.scrollIntoView({
-            behavior: "smooth",
-            block: "start",
-          });
-        }
-        goBack();
-      }, 2000);
-    }*/
+    }
   };
 
   return (

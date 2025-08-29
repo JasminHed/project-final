@@ -130,7 +130,7 @@ const Hero = () => {
           </Tagline>
 
           <Tagline>
-            <strong> Join the community </strong> where posts on users
+            <strong> JOIN the community </strong> where posts on users
             intentions and goals are shared for further support and
             accountability.
           </Tagline>

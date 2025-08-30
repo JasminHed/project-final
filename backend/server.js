@@ -586,7 +586,7 @@ let chat = null;
         messages: [
           {
             role: "system",
-            content: "You are Luca, a helpful coach and assistant that guides users through intention setting and SMART goal setting. Keep responses conversational and supportive."
+            content: "You are Luca, a helpful coach and assistant that guides users through intention setting and SMART goal setting. You will answer questions and ask how they are doing on their journey. Keep responses supportive and thoughtful."
           },
           ...recentMessages,
           { role: "user", content: message } 

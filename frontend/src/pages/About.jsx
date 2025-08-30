@@ -17,12 +17,15 @@ const GridWrapper = styled.div`
   display: grid;
   gap: 28px;
   margin-bottom: 40px;
+  width: 280px;
+  margin: 0 auto 60px;
 
   @media (min-width: 668px) {
     grid-template-columns: repeat(2, 1fr);
     width: 600px;
     margin-bottom: 60px;
     padding: 16px 24px;
+    margin: 0 auto 60px;
   }
 
   @media (min-width: 1024px) {

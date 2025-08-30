@@ -20,7 +20,7 @@ const GridWrapper = styled.div`
 
   @media (min-width: 668px) {
     grid-template-columns: repeat(2, 1fr);
-    width: 700px;
+    width: 600px;
     margin-bottom: 60px;
     padding: 16px 24px;
   }

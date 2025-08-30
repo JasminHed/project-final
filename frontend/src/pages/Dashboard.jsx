@@ -145,11 +145,11 @@ const Dashboard = () => {
           <section aria-label="Introduction">
             <p>
               Here you'll see your active goals, up to three at a time —
-              designed to keep you focused and purposeful. You can add, edit,
-              and save your goals whenever you like.Choose to make your profile
-              public and your goals will be shared automatically with the
-              community — so others can cheer you on, offer support, and
-              celebrate your progress.
+              designed to keep you focused and purposeful. You can add and save
+              a new intention with goals whenever you like. Set as started,
+              choose to share your post to and it will be shared automatically
+              with the community — so others can cheer you on, offer support,
+              and celebrate your progress.
             </p>
             <p>You've got this! One clear step at a time.</p>
           </section>

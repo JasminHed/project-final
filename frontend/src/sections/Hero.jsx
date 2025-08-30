@@ -119,7 +119,7 @@ const Hero = () => {
 
           <Tagline>
             <strong>ACESS your dashboard </strong> that contains your intention
-            and goals and progress chart complete tracking.
+            and goals and progress chart with tracking.
           </Tagline>
 
           <Tagline>

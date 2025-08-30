@@ -68,7 +68,7 @@ const SignUp = ({
 
           setFormData({ name: "", email: "", password: "" });
 
-          setSuccessMessage("Successful! Redirecting to onboarding...");
+          setSuccessMessage("Success! Redirecting to onboarding");
           setIsLoggedIn(true);
 
           setTimeout(() => {

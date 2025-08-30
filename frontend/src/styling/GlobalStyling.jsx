@@ -53,6 +53,7 @@ body {
     font-family: 'Bodoni Moda', serif;
     line-height: 1.6;
     min-height: 100vh; //to make sure when loading footer stays put
+    transition: opacity 0.5s ease;
 
   }
 

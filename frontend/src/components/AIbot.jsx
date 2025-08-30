@@ -256,7 +256,7 @@ const AIbot = () => {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="Welcome to The Intention Hub..."
+            placeholder="Write here.."
           />
           <button type="submit" disabled={loading}>
             Send message

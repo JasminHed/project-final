@@ -63,7 +63,7 @@ const LogIn = ({ setShowLogin, setIsLoggedIn, setIsOpen }) => {
 
           setFormData({ email: "", password: "" });
 
-          setSuccessMessage("Login successful! Redirecting to dashboard");
+          setSuccessMessage("Success! Redirecting to dashboard");
           setIsLoggedIn(true);
 
           setTimeout(() => {

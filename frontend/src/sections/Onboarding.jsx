@@ -6,7 +6,7 @@ import styled from "styled-components";
 const Container = styled.section`
   padding: 60px 4px 60px; //txt wider on small screens
   width: 100%;
-  min-height: 80vh;
+  min-height: 90vh;
   margin: 0 auto;
 
   @media (min-width: 668px) {
@@ -21,21 +21,23 @@ const Container = styled.section`
 
 const ModuleContainer = styled.article`
   margin-bottom: 40px;
-  margin-top: 40px;
-  transition: height 0.5s ease;
   background-color: var(--color-card-background);
   box-shadow: rgba(0, 0, 0, 0.05);
-  padding: 70px;
-  min-height: 50vh;
+  padding: 60px;
   width: 100vw;
+  height: 100vh;
   margin-left: calc(-50vw + 50%);
+  overflow-y: auto;
 
   @media (min-width: 668px) {
     margin-bottom: 60px;
+    min-height: 80vh;
   }
 
   @media (min-width: 1024px) {
     margin-bottom: 80px;
+    margin-top: 40px;
+    height: 80vh;
   }
 `;
 
@@ -43,6 +45,8 @@ const Content = styled.div`
   text-align: left;
   opacity: 1;
   transition: opacity 0.8s ease;
+  transform: translateX(0);
+  transition: transform 0.3s ease;
 
   p {
     margin: 12px 0 20px 0;
@@ -50,6 +54,7 @@ const Content = styled.div`
 
     @media (min-width: 668px) {
       margin: 16px 0 28px 0;
+      font-size: 20px;
     }
 
     @media (min-width: 1024px) {
@@ -79,8 +84,12 @@ const Content = styled.div`
 const ModuleTitle = styled.h2`
   text-align: left;
 
-  @media (min-width: 1024px) {
+  @media (min-width: 668px) {
     margin-top: 60px;
+  }
+
+  @media (min-width: 1024px) {
+    margin-top: 100px;
   }
 `;
 
@@ -127,7 +136,7 @@ const ErrorMessage = styled.p`
 `;
 
 //track module to know where user is, to show next slide
-const Onboarding = ({ goBack, signUpRef, autoStart = false }) => {
+const Onboarding = ({ goBack, autoStart = false }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showError, setShowError] = useState("");
   useEffect(() => {
@@ -146,12 +155,10 @@ const Onboarding = ({ goBack, signUpRef, autoStart = false }) => {
             Visualizing your dream life is a powerful tool for making clear,
             meaningful decisions. Ask yourself: What matters most in your life?
             Whether it’s family, career, travel, or something else, your answers
-            reveal your core values.
-          </p>
-          <p>
-            Picture this dream life in detail. From there, set short-term goals
-            like taking a course or planning a trip, and long-term goals like
-            early retirement or launching a passion project.
+            reveal your core values. Picture this dream life in detail. From
+            there, set short-term goals like taking a course or planning a trip,
+            and long-term goals like early retirement or launching a passion
+            project.
           </p>
         </article>
       ),
@@ -163,8 +170,6 @@ const Onboarding = ({ goBack, signUpRef, autoStart = false }) => {
           <p>
             A clear, well-crafted action plan is what bridges the gap between
             dreaming and doing and it all starts with setting focused goals.
-          </p>
-          <p>
             There is never a “wrong time” to set new goals. With determination
             and discipline, success is possible.
           </p>
@@ -280,39 +285,38 @@ const Onboarding = ({ goBack, signUpRef, autoStart = false }) => {
 
   return (
     <Container>
-      <h1>Start your journey</h1>
-
       <ModuleContainer
         role="region"
         aria-labelledby="module-title"
         aria-describedby="module-content"
       >
+        <h1>Start your journey</h1>
         <ModuleTitle id="module-title">{currentModule.title}</ModuleTitle>
         <Content id="module-content">{currentModule.content}</Content>
-      </ModuleContainer>
 
-      <ButtonContainer role="navigation" aria-label="Onboarding navigation">
-        {showPreviousButton && (
-          <button onClick={handlePrevious} aria-label="Previous slide">
-            <FaArrowLeft />
+        <ButtonContainer role="navigation" aria-label="Onboarding navigation">
+          {showPreviousButton && (
+            <button onClick={handlePrevious} aria-label="Previous slide">
+              <FaArrowLeft />
+            </button>
+          )}
+
+          <span>
+            {currentSlide + 1} / {modules.length}
+          </span>
+
+          <button
+            onClick={handleNext}
+            aria-label={
+              currentSlide < modules.length - 1
+                ? "Next slide"
+                : "Finish onboarding"
+            }
+          >
+            <FaArrowRight />
           </button>
-        )}
-
-        <span>
-          {currentSlide + 1} / {modules.length}
-        </span>
-
-        <button
-          onClick={handleNext}
-          aria-label={
-            currentSlide < modules.length - 1
-              ? "Next slide"
-              : "Finish onboarding"
-          }
-        >
-          <FaArrowRight />
-        </button>
-      </ButtonContainer>
+        </ButtonContainer>
+      </ModuleContainer>
 
       {showError && <ErrorMessage role="alert">{showError}</ErrorMessage>}
     </Container>

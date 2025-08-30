@@ -25,12 +25,16 @@ const HeroImage = styled.img`
   object-fit: cover;
   display: block;
   margin: 20px 0;
+  aspect-ratio: 412/470;
 
   @media (min-width: 1024px) {
     width: 50%;
     height: auto;
     order: 2;
     margin: 0;
+    //aspect-ratio: 412/470;
+    aspect-ratio: auto;
+    object-fit: contain;
   }
 `;
 
@@ -108,6 +112,7 @@ const Hero = () => {
       <HeroImage
         src="/assets/test.jpg"
         alt="Woman form reaching for the stars"
+        loading="lazy"
       />
 
       <MainSection>

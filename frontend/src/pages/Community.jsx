@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import CommunityPost from "../components/CommunityPost.jsx";
-import { Message } from "../styling/LoadingMessage.jsx";
+import { LoadingWrapper, Message } from "../styling/LoadingMessage.jsx";
 
 const API_BASE_URL = "https://project-final-ualo.onrender.com";
 
@@ -108,7 +108,11 @@ const Community = () => {
   }, []);
 
   if (loading) {
-    return <Message>Loading your community board...</Message>;
+    return (
+      <LoadingWrapper>
+        <Message>Loading your community board...</Message>
+      </LoadingWrapper>
+    );
   }
 
   return (

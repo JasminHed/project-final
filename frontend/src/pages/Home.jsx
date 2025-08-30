@@ -6,7 +6,7 @@ import AuthForm from "../components/AuthForm";
 import Taglines from "../sections/Hero.jsx";
 import Onboarding from "../sections/Onboarding.jsx";
 import { useUserStore } from "../store/UserStore.jsx";
-import { Message } from "../styling/LoadingMessage.jsx";
+import { LoadingWrapper, Message } from "../styling/LoadingMessage.jsx";
 
 const MainBox = styled.div`
   display: flex;
@@ -214,7 +214,11 @@ const WelcomeScreen = () => {
   };
 
   if (loading) {
-    return <Message>Loading your homepage...</Message>;
+    return (
+      <LoadingWrapper>
+        <Message>Loading your homepage...</Message>
+      </LoadingWrapper>
+    );
   }
 
   return (

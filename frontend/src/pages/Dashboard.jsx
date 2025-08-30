@@ -8,7 +8,7 @@ import styled from "styled-components";
 import { useUserStore } from "../store/UserStore.jsx";
 import DashboardForm from "../components/DashboardForm.jsx";
 import GoalChart from "../components/GoalChart.jsx";
-import { Message } from "../styling/LoadingMessage.jsx";
+import { Message, LoadingWrapper } from "../styling/LoadingMessage.jsx";
 import useGoal from "../hooks/useGoal.jsx";
 import Widget from "../components/Widget.jsx";
 import CommunityImpact from "../components/CommunityImpact.jsx";
@@ -132,7 +132,11 @@ const Dashboard = () => {
   };
 
   if (loading) {
-    return <Message>Loading your dashboard...</Message>;
+    return (
+      <LoadingWrapper>
+        <Message>Loading your dashboard...</Message>
+      </LoadingWrapper>
+    );
   }
 
   return (

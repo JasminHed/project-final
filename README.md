@@ -15,7 +15,7 @@ I wanted to bridge the gap between meaningful purpose (intentions) and actionabl
 - **Backend:** [https://project-final-ualo.onrender.com/](https://project-final-ualo.onrender.com/)
 
 ## Installation
-```bash
+
 pwd
 cd #frontend or #backend
 # npm run dev

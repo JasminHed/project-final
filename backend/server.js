@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from 'dotenv';
 import express from "express";
 import mongoose from "mongoose";
+import nodemailer from "nodemailer";
 
 import Chat from "./models/Chat.js";
 import CommunityPost from "./models/CommunityPost.js";
@@ -10,7 +11,13 @@ import Goal from "./models/Goal.js"
 import User from "./models/User.js";
 
 dotenv.config();
-
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASSWORD,
+  },
+});
 
 
 //Connects to mongoDB database
@@ -39,7 +46,7 @@ const authenticateUser = async (req, res, next) => {
 const port = process.env.PORT || 8080;
 const app = express();
 
-//app.use(cors());
+
 app.use(cors({
   origin: ["https://intentionhub.netlify.app", "http://localhost:5173"],
   credentials: true 
@@ -50,6 +57,26 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.send("Hello, Welcome to Intention Hub!");
 });
+
+
+const sendWelcomeEmail = async (userEmail, userName) => {
+  try {
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: userEmail,
+      subject: "Welcome to Intention Hub!",
+      html: `
+        <h2>Welcome, ${userName}!</h2>
+        <p>Your account has been created successfully.</p>
+        <p>Start setting your intentions and achieving your goals today.</p>
+        <p>Best regards,<br>The Intention Hub Team</p>
+      `,
+    });
+    console.log("Welcome email sent to:", userEmail);
+  } catch (error) {
+    console.error("Email sending error:", error);
+  }
+};
 
 // Endpoint to register 
 app.post("/users", async (req, res) => {
@@ -62,6 +89,7 @@ app.post("/users", async (req, res) => {
       password: bcrypt.hashSync(password, salt) 
     });
     await user.save();
+    await sendWelcomeEmail(email, name);
     res.status(201).json({
       success: true,
       message: "User created",

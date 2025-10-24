@@ -3,15 +3,7 @@ import { FaSpinner } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 import { useUserStore } from "../store/UserStore";
-import {
-  Error,
-  ErrorDiv,
-  Input,
-  Label,
-  LinkSpan,
-  Loader,
-  RegisterLink,
-} from "../styling/FormStyling.jsx";
+import { Error, ErrorDiv, Input, Label, LinkSpan, Loader, RegisterLink } from "../styling/FormStyling.jsx";
 
 //signup form, including its data, errors, and loading state.
 const SignUp = ({
@@ -68,7 +60,7 @@ const SignUp = ({
 
           setFormData({ name: "", email: "", password: "" });
 
-          setSuccessMessage("Success! Redirecting to onboarding");
+          setSuccessMessage("Success! Check your email for confirmation. Redirecting...");
           setIsLoggedIn(true);
 
           setTimeout(() => {

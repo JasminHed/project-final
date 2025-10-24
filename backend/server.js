@@ -12,10 +12,11 @@ import User from "./models/User.js";
 
 dotenv.config();
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: "smtp.sendgrid.net",
+  port: 587,
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASSWORD,
+    user: "apikey",
+    pass: process.env.SENDGRID_API_KEY,
   },
 });
 
@@ -62,7 +63,7 @@ app.get("/", (req, res) => {
 const sendWelcomeEmail = async (userEmail, userName) => {
   try {
     await transporter.sendMail({
-      from: process.env.EMAIL_USER,
+      from: "jasminhedlund@gmail.com",
       to: userEmail,
       subject: "Welcome to Intention Hub!",
       html: `

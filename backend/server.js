@@ -62,7 +62,7 @@ app.get("/", (req, res) => {
 const sendWelcomeEmail = async (userEmail, userName) => {
   try {
     await transporter.sendMail({
-      from: "jasminhedlund@gmail.com",
+      from: process.env.EMAIL_USER,  
       to: userEmail,
       subject: "Welcome to Intention Hub!",
       html: `
